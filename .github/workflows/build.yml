@@ -57,13 +57,12 @@ jobs:
       - name: Create api_key.dart
         run: echo 'const firebaseWebApi = "\"${{ secrets.API_KEY }}\"";' > lib/api_key.dart
       - run: flutter build windows --release
-      - name: Debug VERSION Environment Variable
-        run: echo "VERSION=${{ env.VERSION }}"
+      - run: cd build\windows\x64\runner\Release\ && zip -r windows.zip *
       - name: Upload Windows App to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build\windows\x64\runner\Release\endernote_flutter.exe
+          file: build\windows\x64\runner\Release\windows.zip
           tag: ${{ env.VERSION }}
           overwrite: true
           body: "Freshly brewed build, ready to shine!"
