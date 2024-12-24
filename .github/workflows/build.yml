@@ -53,21 +53,22 @@ jobs:
       - name: Extract Version from pubspec.yaml
         id: extract_version
         run: |
-          VERSION=$(grep '^version: ' pubspec.yaml | sed 's/version: //')
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          $version = Get-Content pubspec.yaml | Select-String '^version:' | ForEach-Object { $_ -replace 'version: ', '' }
+          echo "VERSION=$version" >> $env:GITHUB_ENV
       - name: Create api_key.dart
         run: echo 'const firebaseWebApi = "\"${{ secrets.API_KEY }}\"";' > lib/api_key.dart
       - run: flutter build windows --release
       - name: Install zip utility
-        run: choco install zip
-      - run: cd build\windows\x64\runner\Release\ && zip -r windows.zip *
+        run: choco install zip -y
+      - run: |
+          cd build\windows\x64\runner\Release\
+          zip -r windows.zip *
       - name: Upload Windows App to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build\windows\x64\runner\Release\windows.zip
-          tag: ${{ steps.extract_version.outputs.VERSION }}
+          file: build/windows/x64/runner/Release/windows.zip
+          tag: ${{ env.VERSION }}
           overwrite: true
           body: "Freshly brewed build, ready to shine!"
 
