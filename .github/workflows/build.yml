@@ -57,6 +57,8 @@ jobs:
       - name: Create api_key.dart
         run: echo 'const firebaseWebApi = "\"${{ secrets.API_KEY }}\"";' > lib/api_key.dart
       - run: flutter build windows --release
+      - name: Debug VERSION Environment Variable
+        run: echo "VERSION=${{ env.VERSION }}"
       - name: Upload Windows App to release
         uses: svenstaro/upload-release-action@v2
         with:
