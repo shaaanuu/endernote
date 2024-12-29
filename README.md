@@ -36,10 +36,11 @@ flutter pub get
 #### Set up Firebase:
 
 1. Create a Firebase project at [Firebase Console](https://console.firebase.google.com/).
-2. Create a new file called `api_key.dart` in the lib folder and add your Firebase web API key:
+2. Create a new file called `api_key.dart` in the lib folder and add your Firebase web API key and the database URL:
 
 ```dart
 const firebaseWebApi = "blablablaa";
+const databaseURL = "https://blablalblaa.firebaseio.com";
 ```
 
 #### Start the development server:

@@ -74,8 +74,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => SyncBloc(
             isar: isar,
-            firebaseUrl:
-                "https://endernote-71c5f-default-rtdb.firebaseio.com/$localId/",
+            firebaseUrl: "$databaseURL/$localId/",
             apiKey: firebaseWebApi,
             idToken: idToken,
           ),
