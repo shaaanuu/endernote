@@ -4,7 +4,7 @@ const Color clrBase = Color(0xFF1e1e2e);
 const Color clrText = Color(0xFFcdd6f4);
 
 final ThemeData enderNoteTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+  colorScheme: const ColorScheme.dark(primary: clrText),
   useMaterial3: true,
   scaffoldBackgroundColor: clrBase,
   appBarTheme: const AppBarTheme(
