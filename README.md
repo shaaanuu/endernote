@@ -10,6 +10,13 @@ Welcome to EnderNote! 🚀 EnderNote is a sleek and powerful note-taking applica
 - 🔍 **Full-Text Search**: Quickly find your notes with robust search functionality (coming soon).
 - 📁 **Organized Folders**: Organize your notes into folders for better management (coming soon).
 
+## 📸 Screenshot
+
+<p align="center">
+  <img src="screenshots/screenshot1.png" alt="Screenshot 1" width="300px" />
+  <img src="screenshots/screenshot2.png" alt="Screenshot 2" width="300px" />
+</p>
+
 ## Getting Started
 
 ### Prerequisites
