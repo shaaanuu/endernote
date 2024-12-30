@@ -41,7 +41,7 @@ class ScreenAbout extends StatelessWidget {
             const ListTile(
               leading: Icon(IconsaxOutline.info_circle),
               title: Text('Version'),
-              subtitle: Text('1.0.0'),
+              subtitle: Text('2.0.0'),
             ),
             const Divider(),
             const ListTile(
