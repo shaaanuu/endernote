@@ -15,7 +15,6 @@ import 'presentation/screens/auth/screen_signin.dart';
 import 'presentation/screens/auth/screen_signup.dart';
 import 'presentation/screens/canvas/screen_canvas.dart';
 import 'presentation/screens/favourite/screen_favourite.dart';
-import 'presentation/screens/guide/screen_guide.dart';
 import 'presentation/screens/hero/screen_hero.dart';
 import 'presentation/screens/home/screen_home.dart';
 import 'presentation/screens/settings/screen_settings.dart';
@@ -90,7 +89,6 @@ class MyApp extends StatelessWidget {
           '/settings': (context) => const ScreenSettings(),
           '/about': (context) => const ScreenAbout(),
           '/favourite': (context) => const ScreenFavourite(),
-          '/guide': (context) => const ScreenGuide(),
           '/sign_in': (context) => ScreenSignIn(),
           '/sign_up': (context) => ScreenSignUp(),
         },
