@@ -1,5 +1,6 @@
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ScreenAbout extends StatelessWidget {
   const ScreenAbout({super.key});
@@ -58,7 +59,11 @@ class ScreenAbout extends StatelessWidget {
                 'It will motivate us to work on cool projects like this.',
               ),
               trailing: const Icon(IconsaxOutline.link),
-              onTap: () {},
+              onTap: () async {
+                await launchUrl(Uri.parse(
+                  'https://www.github.com/shaaanuu/endernote',
+                ));
+              },
             ),
             const Divider(),
             ListTile(
@@ -68,7 +73,11 @@ class ScreenAbout extends StatelessWidget {
                 'Found an issue? Need help? Create an issue here.',
               ),
               trailing: const Icon(IconsaxOutline.link),
-              onTap: () {},
+              onTap: () async {
+                await launchUrl(Uri.parse(
+                  'https://www.github.com/shaaanuu/endernote/issues',
+                ));
+              },
             ),
           ],
         ),
