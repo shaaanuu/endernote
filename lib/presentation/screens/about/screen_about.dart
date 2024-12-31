@@ -1,5 +1,6 @@
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../widgets/custom_list_tile.dart';
@@ -9,6 +10,12 @@ class ScreenAbout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<String> getAppVersion() async {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+      return packageInfo.version;
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -40,11 +47,13 @@ class ScreenAbout extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            const CustomListTile(
-              lead: IconsaxOutline.info_circle,
-              title: 'Version',
-              // TODO Make the version number update itself.
-              subtitle: '2.0.0',
+            FutureBuilder(
+              future: getAppVersion(),
+              builder: (context, snapshot) => CustomListTile(
+                lead: IconsaxOutline.info_circle,
+                title: 'Version',
+                subtitle: snapshot.data,
+              ),
             ),
             const CustomListTile(
               lead: IconsaxOutline.award,
