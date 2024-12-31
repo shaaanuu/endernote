@@ -2,6 +2,8 @@ import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../widgets/custom_list_tile.dart';
+
 class ScreenAbout extends StatelessWidget {
   const ScreenAbout({super.key});
 
@@ -38,46 +40,36 @@ class ScreenAbout extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            const ListTile(
-              leading: Icon(IconsaxOutline.info_circle),
-              title: Text('Version'),
-              subtitle: Text('2.0.0'),
+            const CustomListTile(
+              lead: IconsaxOutline.info_circle,
+              title: 'Version',
+              // TODO Make the version number update itself.
+              subtitle: '2.0.0',
             ),
-            const Divider(),
-            const ListTile(
-              leading: Icon(IconsaxOutline.award),
-              title: Text('Acknowledgments'),
-              subtitle: Text(
-                'Built by Endernote crafters with Flutter, using amazing tools like flutter_bloc, Isar, and more.',
+            const CustomListTile(
+              lead: IconsaxOutline.award,
+              title: 'Acknowledgments',
+              subtitle:
+                  'Built by Endernote crafters with Flutter, using amazing tools like flutter_bloc, Isar, and more.',
+            ),
+            CustomListTile(
+              lead: IconsaxOutline.star,
+              title: 'Star us on Github',
+              subtitle:
+                  'It will motivate us to work on cool projects like this.',
+              trail: IconsaxOutline.link,
+              onTap: () async => await launchUrl(
+                Uri.parse('https://www.github.com/shaaanuu/endernote'),
               ),
             ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(IconsaxOutline.star),
-              title: const Text('Star us on Github'),
-              subtitle: const Text(
-                'It will motivate us to work on cool projects like this.',
+            CustomListTile(
+              lead: IconsaxOutline.message,
+              title: 'Support',
+              subtitle: 'Found an issue? Need help? Create an issue here.',
+              trail: IconsaxOutline.link,
+              onTap: () async => await launchUrl(
+                Uri.parse('https://www.github.com/shaaanuu/endernote/issues'),
               ),
-              trailing: const Icon(IconsaxOutline.link),
-              onTap: () async {
-                await launchUrl(Uri.parse(
-                  'https://www.github.com/shaaanuu/endernote',
-                ));
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(IconsaxOutline.message),
-              title: const Text('Support'),
-              subtitle: const Text(
-                'Found an issue? Need help? Create an issue here.',
-              ),
-              trailing: const Icon(IconsaxOutline.link),
-              onTap: () async {
-                await launchUrl(Uri.parse(
-                  'https://www.github.com/shaaanuu/endernote/issues',
-                ));
-              },
             ),
           ],
         ),

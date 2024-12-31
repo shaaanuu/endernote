@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../bloc/sync/sync_bloc.dart';
+import '../../widgets/custom_list_tile.dart';
 
 class ScreenSettings extends StatelessWidget {
   const ScreenSettings({super.key});
@@ -12,11 +13,10 @@ class ScreenSettings extends StatelessWidget {
   Widget build(BuildContext context) {
     const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
-    Future<String?> fetchEmail() async =>
-        await secureStorage.read(key: "email");
-
-    Future<String?> fetchName() async =>
-        await secureStorage.read(key: "displayName");
+    Future fetchNameAndEmail() async => [
+          await secureStorage.read(key: "email"),
+          await secureStorage.read(key: "displayName"),
+        ];
 
     return Scaffold(
       appBar: AppBar(
@@ -32,37 +32,34 @@ class ScreenSettings extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: ListView(
           children: [
-            ListTile(
-              leading: const Icon(IconsaxOutline.user),
-              title: FutureBuilder(
-                future: fetchName(),
-                builder: (context, snapshot) => Text(
-                  snapshot.data ?? "Not logged in",
-                ),
-              ),
-              subtitle: FutureBuilder(
-                future: fetchEmail(),
-                builder: (context, snapshot) => Text(
-                  snapshot.data ?? "Not logged in",
-                ),
-              ),
-              onTap: () => Navigator.pushNamed(context, "/sign_in"),
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(IconsaxOutline.global_refresh),
-              title: const Text('Sync'),
-              subtitle: const Text('Sync to cloud'),
+            FutureBuilder(
+                future: fetchNameAndEmail(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return CustomListTile(
+                    lead: IconsaxOutline.user,
+                    title: snapshot.data[1] ?? "Not logged in",
+                    subtitle: snapshot.data[0] ?? "Not logged in",
+                    onTap: () => Navigator.pushNamed(context, "/sign_in"),
+                  );
+                }),
+            CustomListTile(
+              lead: IconsaxOutline.global_refresh,
+              title: 'Sync',
+              subtitle: 'Sync to Cloud',
               onTap: () {
                 context.read<SyncBloc>().add(SyncIsarToFirebase());
                 context.read<SyncBloc>().add(SyncFirebaseToIsar());
               },
             ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(IconsaxOutline.brush_3),
-              title: const Text('Theme'),
-              subtitle: const Text('Catppuccin Mocha'),
+            CustomListTile(
+              lead: IconsaxOutline.brush_3,
+              title: 'Theme',
+              subtitle: 'Catppuccin Mocha',
               onTap: () => showModalBottomSheet(
                 context: context,
                 builder: (context) => Container(
@@ -97,7 +94,6 @@ class ScreenSettings extends StatelessWidget {
                 ),
               ),
             ),
-            const Divider(),
           ],
         ),
       ),
