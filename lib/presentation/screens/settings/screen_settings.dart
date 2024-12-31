@@ -50,7 +50,7 @@ class ScreenSettings extends StatelessWidget {
             ),
             const Divider(),
             ListTile(
-              leading: const Icon(Icons.sync_rounded),
+              leading: const Icon(IconsaxOutline.global_refresh),
               title: const Text('Sync'),
               subtitle: const Text('Sync to cloud'),
               onTap: () {
