@@ -34,7 +34,7 @@ Widget showDrawer(BuildContext context) {
             children: [
               GestureDetector(
                 child: const CircleAvatar(radius: 50),
-                onTap: () => Navigator.pushNamed(context, '/sign_in'),
+                onTap: () => Navigator.popAndPushNamed(context, '/sign_in'),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
@@ -64,22 +64,22 @@ Widget showDrawer(BuildContext context) {
         _tiles(
           icn: IconsaxOutline.folder,
           title: 'All Notes',
-          onTap: () => Navigator.pushNamed(context, '/home'),
+          onTap: () => Navigator.popAndPushNamed(context, '/home'),
         ),
         _tiles(
           icn: IconsaxOutline.heart,
           title: 'Favourite',
-          onTap: () => Navigator.pushNamed(context, '/favourite'),
+          onTap: () => Navigator.popAndPushNamed(context, '/favourite'),
         ),
         _tiles(
           icn: IconsaxOutline.setting_2,
           title: 'Settings',
-          onTap: () => Navigator.pushNamed(context, '/settings'),
+          onTap: () => Navigator.popAndPushNamed(context, '/settings'),
         ),
         _tiles(
           icn: IconsaxOutline.book,
           title: 'About',
-          onTap: () => Navigator.pushNamed(context, '/about'),
+          onTap: () => Navigator.popAndPushNamed(context, '/about'),
         ),
       ],
     ),
