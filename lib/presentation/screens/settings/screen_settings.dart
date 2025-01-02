@@ -21,9 +21,7 @@ class ScreenSettings extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
           icon: const Icon(IconsaxOutline.arrow_left_2),
         ),
         title: const Text('Settings'),
