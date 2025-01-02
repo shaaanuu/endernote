@@ -54,6 +54,34 @@ class ScreenSettings extends StatelessWidget {
               onTap: () {
                 context.read<SyncBloc>().add(SyncIsarToFirebase());
                 context.read<SyncBloc>().add(SyncFirebaseToIsar());
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    backgroundColor: Color(0xFF181825),
+                    content: Text(
+                      'Please restart the app to see changes.',
+                      style: TextStyle(color: Color(0xFFbac2de)),
+                    ),
+                  ),
+                );
+              },
+            ),
+            CustomListTile(
+              lead: IconsaxOutline.logout,
+              title: 'Logout',
+              subtitle: 'Logout from the account',
+              onTap: () {
+                secureStorage.deleteAll();
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    backgroundColor: Color(0xFF181825),
+                    content: Text(
+                      'Please restart the app to see changes.',
+                      style: TextStyle(color: Color(0xFFbac2de)),
+                    ),
+                  ),
+                );
               },
             ),
             CustomListTile(
