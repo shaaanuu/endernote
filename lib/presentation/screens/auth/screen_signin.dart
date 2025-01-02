@@ -65,6 +65,16 @@ class ScreenSignIn extends StatelessWidget {
                     );
 
                     Navigator.of(context).pushReplacementNamed('/home');
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Color(0xFF181825),
+                        content: Text(
+                          'Please restart the app to see changes.',
+                          style: TextStyle(color: Color(0xFFbac2de)),
+                        ),
+                      ),
+                    );
                   } else {
                     throw Exception("idToken is missing or null in userData");
                   }
