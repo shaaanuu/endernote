@@ -18,10 +18,7 @@ final ThemeData enderNoteTheme = ThemeData(
   ),
   textTheme: const TextTheme(
     bodyMedium: TextStyle(color: clrText),
-    // headlineSmall: TextStyle(color: clrText),
-    // titleMedium: TextStyle(color: clrText),
-    // titleLarge: TextStyle(color: clrText),
-    bodyLarge: TextStyle(color: clrText), // Text Input form
+    bodyLarge: TextStyle(color: clrText),
   ),
   iconButtonTheme: const IconButtonThemeData(
     style: ButtonStyle(
@@ -34,6 +31,12 @@ final ThemeData enderNoteTheme = ThemeData(
       foregroundColor: WidgetStatePropertyAll(clrText),
     ),
   ),
+  elevatedButtonTheme: const ElevatedButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: WidgetStatePropertyAll(clrBase),
+      backgroundColor: WidgetStatePropertyAll(clrText),
+    ),
+  ),
   drawerTheme: const DrawerThemeData(
     backgroundColor: clrBase,
   ),
@@ -43,5 +46,13 @@ final ThemeData enderNoteTheme = ThemeData(
   ),
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: clrBase,
+  ),
+  inputDecorationTheme: const InputDecorationTheme(
+    floatingLabelStyle: TextStyle(color: clrText),
+    border: OutlineInputBorder(),
+    labelStyle: TextStyle(color: clrText),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: clrText),
+    ),
   ),
 );
