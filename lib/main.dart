@@ -16,6 +16,7 @@ import 'presentation/screens/auth/screen_signup.dart';
 import 'presentation/screens/canvas/screen_canvas.dart';
 import 'presentation/screens/favourite/screen_favourite.dart';
 import 'presentation/screens/hero/screen_hero.dart';
+import 'presentation/screens/home/home_new.dart';
 import 'presentation/screens/home/screen_home.dart';
 import 'presentation/screens/settings/screen_settings.dart';
 import 'presentation/theme/endernote_theme.dart';
@@ -24,7 +25,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   const secureStorage = FlutterSecureStorage();
-  final String dirPath;
+  late final String dirPath;
 
   if (Platform.isAndroid || Platform.isIOS) {
     final dir = await getApplicationDocumentsDirectory();
@@ -91,6 +92,7 @@ class MyApp extends StatelessWidget {
           '/favourite': (context) => const ScreenFavourite(),
           '/sign_in': (context) => ScreenSignIn(),
           '/sign_up': (context) => ScreenSignUp(),
+          '/home2': (context) => const HomeNew(),
         },
         theme: enderNoteTheme,
         home: const ScreenHero(),

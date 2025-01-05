@@ -81,6 +81,11 @@ Widget showDrawer(BuildContext context) {
           title: 'About',
           onTap: () => Navigator.popAndPushNamed(context, '/about'),
         ),
+        _tiles(
+          icn: IconsaxOutline.unlimited,
+          title: 'home2',
+          onTap: () => Navigator.popAndPushNamed(context, '/home2'),
+        ),
       ],
     ),
   );
