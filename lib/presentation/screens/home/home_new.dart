@@ -18,16 +18,15 @@ class HomeNew extends StatelessWidget {
         final directory = await getExternalStorageDirectory();
         path = '${directory!.path}/Endernote';
       }
-      final folder = Directory(path);
-      print(folder);
 
-      return folder.path;
-      // if (await folder.exists()) {
-      //   return folder.path;
-      // } else {
-      //   await folder.create(recursive: true);
-      //   return folder.path;
-      // }
+      final folder = Directory(path);
+
+      if (await folder.exists()) {
+        return folder.path;
+      } else {
+        await folder.create(recursive: true);
+        return folder.path;
+      }
     }
 
     return Scaffold(
