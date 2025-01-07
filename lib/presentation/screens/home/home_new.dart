@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -7,9 +9,25 @@ class HomeNew extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future fetchDir() async {
-      final dirPath = await getApplicationDocumentsDirectory();
+      late final String path;
 
-      return dirPath.path;
+      if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+        final directory = await getApplicationDocumentsDirectory();
+        path = '${directory.path}/Endernote';
+      } else {
+        final directory = await getExternalStorageDirectory();
+        path = '${directory!.path}/Endernote';
+      }
+      final folder = Directory(path);
+      print(folder);
+
+      return folder.path;
+      // if (await folder.exists()) {
+      //   return folder.path;
+      // } else {
+      //   await folder.create(recursive: true);
+      //   return folder.path;
+      // }
     }
 
     return Scaffold(
