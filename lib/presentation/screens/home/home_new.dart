@@ -8,7 +8,7 @@ class HomeNew extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future fetchDir() async {
+    Future<List<String>> fetchDir() async {
       late final String path;
 
       if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
@@ -21,29 +21,42 @@ class HomeNew extends StatelessWidget {
 
       final folder = Directory(path);
 
-      if (await folder.exists()) {
-        return folder.path;
-      } else {
+      if (!await folder.exists()) {
         await folder.create(recursive: true);
-        return folder.path;
       }
+
+      final List<String> allEntities = [];
+
+      void collectEntities(Directory dir) {
+        final entities = dir.listSync();
+        for (var entity in entities) {
+          allEntities.add(entity.path);
+          if (entity is Directory) {
+            collectEntities(entity);
+          }
+        }
+      }
+
+      collectEntities(folder);
+
+      return allEntities;
     }
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("For testing purposes..."),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text("The documents directory is....."),
-          FutureBuilder(
-            future: fetchDir(),
-            builder: (context, snapshot) => Text(
-              snapshot.hasData ? snapshot.data : "none..",
+      body: FutureBuilder(
+        future: fetchDir(),
+        builder: (context, snapshot) => SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) => Text(
+              snapshot.data![index],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
