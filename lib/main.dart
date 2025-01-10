@@ -35,6 +35,26 @@ Future<void> main() async {
     dirPath = dir.path;
   }
 
+  Future<String> fetchRootPath() async {
+    late final String path;
+
+    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+      final directory = await getApplicationDocumentsDirectory();
+      path = '${directory.path}/Endernote';
+    } else {
+      final directory = await getExternalStorageDirectory();
+      path = '${directory!.path}/Endernote';
+    }
+
+    final folder = Directory(path);
+
+    if (!await folder.exists()) {
+      await folder.create(recursive: true);
+    }
+
+    return folder.path;
+  }
+
   runApp(
     MyApp(
       isar: await Isar.open(
@@ -45,6 +65,7 @@ Future<void> main() async {
       idToken: await secureStorage.read(key: "idToken") ?? "",
       email: await secureStorage.read(key: "email") ?? "",
       localId: await secureStorage.read(key: "localId") ?? "",
+      rootPath: await fetchRootPath(),
     ),
   );
 }
@@ -56,12 +77,14 @@ class MyApp extends StatelessWidget {
     required this.idToken,
     required this.email,
     required this.localId,
+    required this.rootPath,
   });
 
   final Isar isar;
   final String idToken;
   final String email;
   final String localId;
+  final String rootPath;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +115,7 @@ class MyApp extends StatelessWidget {
           '/favourite': (context) => const ScreenFavourite(),
           '/sign_in': (context) => ScreenSignIn(),
           '/sign_up': (context) => ScreenSignUp(),
-          '/home2': (context) => const HomeNew(),
+          '/home2': (context) => HomeNew(rootPath: rootPath),
         },
         theme: enderNoteTheme,
         home: const ScreenHero(),
