@@ -73,6 +73,8 @@ class HomeNew extends StatelessWidget {
                         .read<DirectoryBloc>()
                         .add(FetchDirectory(entityPath));
                   }
+                } else {
+                  Navigator.pushNamed(context, '/canvas');
                 }
               },
             ),
