@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,9 +9,9 @@ import '../../../bloc/directory/directory_events.dart';
 import '../../../bloc/directory/directory_states.dart';
 
 class HomeNew extends StatelessWidget {
-  final String rootPath;
-
   const HomeNew({super.key, required this.rootPath});
+
+  final String rootPath;
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +60,9 @@ class HomeNew extends StatelessWidget {
               leading: Icon(
                 isFolder
                     ? (state.openFolders.contains(entityPath)
-                        ? Icons.folder_open
-                        : Icons.folder)
-                    : Icons.insert_drive_file,
+                        ? IconsaxOutline.folder_open
+                        : IconsaxOutline.folder)
+                    : IconsaxOutline.task_square,
               ),
               title: Text(entityPath.split('/').last),
               onTap: () {
