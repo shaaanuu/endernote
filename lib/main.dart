@@ -14,7 +14,6 @@ import 'presentation/screens/auth/screen_signin.dart';
 import 'presentation/screens/auth/screen_signup.dart';
 import 'presentation/screens/canvas/screen_canvas.dart';
 import 'presentation/screens/hero/screen_hero.dart';
-import 'presentation/screens/home/home_new.dart';
 import 'presentation/screens/home/screen_home.dart';
 import 'presentation/screens/settings/screen_settings.dart';
 import 'presentation/theme/endernote_theme.dart';
@@ -103,12 +102,11 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/canvas': (context) => ScreenCanvas(),
-          '/home': (context) => const ScreenHome(),
+          '/home': (context) => ScreenHome(rootPath: rootPath),
           '/settings': (context) => const ScreenSettings(),
           '/about': (context) => const ScreenAbout(),
           '/sign_in': (context) => ScreenSignIn(),
           '/sign_up': (context) => ScreenSignUp(),
-          '/home2': (context) => HomeNew(rootPath: rootPath),
         },
         theme: enderNoteTheme,
         home: const ScreenHero(),
