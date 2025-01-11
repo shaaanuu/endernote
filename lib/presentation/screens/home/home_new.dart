@@ -8,8 +8,8 @@ import '../../../bloc/directory/directory_bloc.dart';
 import '../../../bloc/directory/directory_events.dart';
 import '../../../bloc/directory/directory_states.dart';
 
-class HomeNew extends StatelessWidget {
-  const HomeNew({super.key, required this.rootPath});
+class ScreenHome extends StatelessWidget {
+  const ScreenHome({super.key, required this.rootPath});
 
   final String rootPath;
 
@@ -19,7 +19,7 @@ class HomeNew extends StatelessWidget {
       create: (_) => DirectoryBloc()..add(FetchDirectory(rootPath)),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("For testing purposes..."),
+          title: const Text("Endernote"),
         ),
         body: BlocBuilder<DirectoryBloc, DirectoryState>(
           builder: (context, state) {
