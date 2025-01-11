@@ -79,7 +79,6 @@ class HomeNew extends StatelessWidget {
                     '/canvas',
                     arguments: entityPath,
                   );
-                  print(entityPath);
                 }
               },
             ),
