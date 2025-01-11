@@ -7,7 +7,6 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'api_key.dart';
-import 'bloc/notes/note_bloc.dart';
 import 'bloc/sync/sync_bloc.dart';
 import 'models/note_model.dart';
 import 'presentation/screens/about/screen_about.dart';
@@ -89,10 +88,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          lazy: false,
-          create: (context) => NoteBloc(isar: isar),
-        ),
         BlocProvider(
           create: (context) => SyncBloc(
             isar: isar,

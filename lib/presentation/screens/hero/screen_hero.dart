@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ficonsax/ficonsax.dart';
 
-import '../../../bloc/notes/note_bloc.dart';
-import '../../../bloc/notes/note_events.dart';
 import '../../theme/endernote_theme.dart';
 import '../../widgets/bottom_sheet.dart';
 import '../../widgets/drawer.dart';
@@ -63,11 +60,7 @@ class ScreenHero extends StatelessWidget {
                   Icon(IconsaxOutline.note_2, size: 22),
                 ],
               ),
-              onPressed: () {
-                context.read<NoteBloc>().add(CreateNote());
-
-                Navigator.pushNamed(context, '/canvas');
-              },
+              onPressed: () => Navigator.pushNamed(context, '/canvas'),
             ),
           ),
           Padding(
