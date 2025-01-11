@@ -15,9 +15,6 @@ class ScreenCanvas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? entityPath =
-        ModalRoute.of(context)?.settings.arguments as String?;
-
     return BlocBuilder<NoteBloc, NoteBlocState>(
       builder: (context, state) {
         String noteTitle = "";
@@ -87,8 +84,16 @@ class ScreenCanvas extends StatelessWidget {
                 ],
               ),
               body: value
-                  ? EditMode(entityPath: entityPath ?? "")
-                  : PreviewMode(entityPath: entityPath ?? ""),
+                  ? EditMode(
+                      entityPath: ModalRoute.of(context)?.settings.arguments
+                              as String? ??
+                          "",
+                    )
+                  : PreviewMode(
+                      entityPath: ModalRoute.of(context)?.settings.arguments
+                              as String? ??
+                          "",
+                    ),
             );
           },
         );
