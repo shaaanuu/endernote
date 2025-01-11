@@ -74,7 +74,12 @@ class HomeNew extends StatelessWidget {
                         .add(FetchDirectory(entityPath));
                   }
                 } else {
-                  Navigator.pushNamed(context, '/canvas');
+                  Navigator.pushNamed(
+                    context,
+                    '/canvas',
+                    arguments: entityPath,
+                  );
+                  print(entityPath);
                 }
               },
             ),

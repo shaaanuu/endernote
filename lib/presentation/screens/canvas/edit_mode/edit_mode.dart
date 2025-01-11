@@ -5,7 +5,9 @@ import '../../../../bloc/notes/note_bloc.dart';
 import '../../../../bloc/notes/note_states.dart';
 
 class EditMode extends StatefulWidget {
-  const EditMode({super.key});
+  const EditMode({super.key, this.entityPath});
+
+  final String? entityPath;
 
   @override
   State<EditMode> createState() => _EditModeState();
@@ -39,7 +41,7 @@ class _EditModeState extends State<EditMode> {
             child: TextField(
               focusNode: focusNode,
               decoration: const InputDecoration(border: InputBorder.none),
-              controller: state.noteTextController ?? TextEditingController(),
+              controller: state.noteTextController ?? TextEditingController(text: widget.entityPath),
               expands: true,
               minLines: null,
               maxLines: null,

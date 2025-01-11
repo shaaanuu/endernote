@@ -7,9 +7,9 @@ import '../../../../bloc/notes/note_states.dart';
 import '../../../theme/markdown_theme.dart';
 
 class PreviewMode extends StatelessWidget {
-  const PreviewMode({
-    super.key,
-  });
+  const PreviewMode({super.key, this.entityPath});
+
+  final String? entityPath;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class PreviewMode extends StatelessWidget {
           children: [
             Expanded(
               child: Markdown(
-                data: state.noteTextController?.text ?? '',
+                data: state.noteTextController?.text ?? entityPath!,
                 styleSheet: mdTheme(),
               ),
             ),
