@@ -12,8 +12,7 @@ class EditMode extends StatelessWidget {
       final file = File(entityPath);
       return await file.readAsString();
     } catch (e) {
-      print("Error reading file: $e");
-      return "";
+      return "Error reading file: $e";
     }
   }
 
