@@ -9,8 +9,7 @@ class EditMode extends StatelessWidget {
 
   Future<String> _loadFileContent() async {
     try {
-      final file = File(entityPath);
-      return await file.readAsString();
+      return await File(entityPath).readAsString();
     } catch (e) {
       return "Error reading file: $e";
     }
