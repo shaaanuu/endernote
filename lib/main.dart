@@ -3,12 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'api_key.dart';
 import 'bloc/sync/sync_bloc.dart';
-import 'models/note_model.dart';
 import 'presentation/screens/about/screen_about.dart';
 import 'presentation/screens/auth/screen_signin.dart';
 import 'presentation/screens/auth/screen_signup.dart';
@@ -22,15 +20,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   const secureStorage = FlutterSecureStorage();
-  late final String dirPath;
-
-  if (Platform.isAndroid || Platform.isIOS) {
-    final dir = await getApplicationDocumentsDirectory();
-    dirPath = dir.path;
-  } else {
-    final dir = await getApplicationSupportDirectory();
-    dirPath = dir.path;
-  }
 
   Future<String> fetchRootPath() async {
     late final String path;
@@ -54,11 +43,6 @@ Future<void> main() async {
 
   runApp(
     MyApp(
-      isar: await Isar.open(
-        [NoteModelSchema],
-        directory: dirPath,
-        inspector: false,
-      ),
       idToken: await secureStorage.read(key: "idToken") ?? "",
       email: await secureStorage.read(key: "email") ?? "",
       localId: await secureStorage.read(key: "localId") ?? "",
@@ -70,14 +54,12 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({
     super.key,
-    required this.isar,
     required this.idToken,
     required this.email,
     required this.localId,
     required this.rootPath,
   });
 
-  final Isar isar;
   final String idToken;
   final String email;
   final String localId;
