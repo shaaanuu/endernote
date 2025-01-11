@@ -17,27 +17,16 @@ class ScreenCanvas extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
               icon: const Icon(IconsaxOutline.arrow_left_2),
             ),
-            title: value
-                ? const TextField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                    ),
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  )
-                : const Text(
-                    'noteTitle',
-                    style: TextStyle(
-                      fontSize: 16,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
+            title: const Text(
+              'noteTitle',
+              style: TextStyle(
+                fontSize: 16,
+                letterSpacing: 0.5,
+              ),
+            ),
             actions: [
               IconButton(
                 icon: Icon(
