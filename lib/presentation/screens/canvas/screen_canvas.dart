@@ -87,8 +87,8 @@ class ScreenCanvas extends StatelessWidget {
                 ],
               ),
               body: value
-                  ? EditMode(entityPath: entityPath!)
-                  : PreviewMode(entityPath: entityPath!),
+                  ? EditMode(entityPath: entityPath ?? "")
+                  : PreviewMode(entityPath: entityPath ?? ""),
             );
           },
         );
