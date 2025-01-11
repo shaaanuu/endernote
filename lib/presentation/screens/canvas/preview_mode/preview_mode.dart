@@ -21,29 +21,28 @@ class PreviewMode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: FutureBuilder(
-              future: _loadFileContent(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text("Error: ${snapshot.error}"),
-                  );
-                } else {
-                  return Markdown(
-                    data: snapshot.data!,
-                    styleSheet: mdTheme(),
-                  );
-                }
-              }),
-        ),
-      ],
+    return SizedBox(
+      height: MediaQuery.of(context).size.height -
+                (kToolbarHeight - MediaQuery.of(context).padding.top),
+      child: FutureBuilder(
+        future: _loadFileContent(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text("Error: ${snapshot.error}"),
+            );
+          } else {
+            return Markdown(
+              data: snapshot.data!,
+              styleSheet: mdTheme(),
+            );
+          }
+        },
+      ),
     );
   }
 }
