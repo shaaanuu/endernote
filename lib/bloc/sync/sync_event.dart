@@ -7,6 +7,6 @@ abstract class SyncEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class SyncIsarToFirebase extends SyncEvent {}
+class SyncDirectoryToFirebase extends SyncEvent {}
 
-class SyncFirebaseToIsar extends SyncEvent {}
+class SyncFirebaseToDirectory extends SyncEvent {}

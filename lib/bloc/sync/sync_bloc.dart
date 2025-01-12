@@ -1,149 +1,126 @@
+import 'dart:io';
 import 'dart:convert';
 
-import '../../models/note_model.dart';
-
+import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:isar/isar.dart';
+import 'package:path/path.dart';
 
 part 'sync_event.dart';
 part 'sync_state.dart';
 
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
-  final Isar isar;
   final String firebaseUrl;
-  final String apiKey;
-  String idToken;
+  final String localNotesDirectory;
 
   SyncBloc({
-    required this.isar,
+    required this.localNotesDirectory,
     required this.firebaseUrl,
-    required this.apiKey,
-    required this.idToken,
   }) : super(SyncInitial()) {
-    on<SyncIsarToFirebase>(_handleSyncIsarToFirebase);
-    on<SyncFirebaseToIsar>(_handleSyncFirebaseToIsar);
+    on<SyncDirectoryToFirebase>(_handleSyncDirectoryToFirebase);
+    on<SyncFirebaseToDirectory>(_handleSyncFirebaseToDirectory);
   }
 
-  Future<void> _handleSyncIsarToFirebase(
-    SyncIsarToFirebase event,
+  Future<void> _handleSyncDirectoryToFirebase(
+    SyncDirectoryToFirebase event,
     Emitter<SyncState> emit,
   ) async {
     emit(SyncLoading());
 
     try {
-      final notes = await isar.noteModels.where().findAll();
-      for (var note in notes) {
-        await _addOrUpdateNoteToFirebase(note);
+      final directory = Directory(localNotesDirectory);
+      if (!directory.existsSync()) {
+        emit(const SyncFailure(error: 'Directory not found'));
+        return;
       }
+
+      final files = directory.listSync(recursive: true);
+
+      for (var file in files) {
+        if (file is File) {
+          await _uploadFileToFirebase(file);
+        }
+      }
+
       emit(SyncSuccess());
     } catch (e) {
       emit(SyncFailure(error: e.toString()));
     }
   }
 
-  Future<void> _handleSyncFirebaseToIsar(
-    SyncFirebaseToIsar event,
+  Future<void> _handleSyncFirebaseToDirectory(
+    SyncFirebaseToDirectory event,
     Emitter<SyncState> emit,
   ) async {
     emit(SyncLoading());
 
-    final response = await http.get(
-      Uri.parse('$firebaseUrl/notes.json?auth=$idToken'),
-    );
-
     try {
+      final directory = Directory(localNotesDirectory);
+      if (!directory.existsSync()) {
+        directory.createSync(recursive: true);
+      }
+
+      final response = await http.get(
+        Uri.parse('$firebaseUrl/notes.json'),
+      );
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
 
-        final notes = data.entries.map((entry) {
-          final noteMap = entry.value['fields'];
-          return NoteModel.fromMap(noteMap);
-        }).toList();
+        for (var entry in data.entries) {
+          final fileName = entry.key;
+          final content = entry.value['fields']['content'];
 
-        await isar.writeTxn(() async {
-          for (var note in notes) {
-            await isar.noteModels.putByUuid(note);
+          final sanitizedFileName = fileName.replaceAll('_', '.');
+
+          final filePath = join(directory.path, sanitizedFileName);
+          final fileDir = Directory(dirname(filePath));
+
+          if (!fileDir.existsSync()) {
+            fileDir.createSync(recursive: true);
           }
-        });
+
+          final file = File(filePath);
+          await file.writeAsString(content);
+        }
 
         emit(SyncSuccess());
-      } else if (response.statusCode == 401) {
-        await refreshIdToken();
-
-        final data = jsonDecode(response.body) as Map<String, dynamic>;
-
-        final notes = data.entries.map((entry) {
-          final noteMap = entry.value['fields'];
-          return NoteModel.fromMap(noteMap);
-        }).toList();
-
-        await isar.writeTxn(() async {
-          for (var note in notes) {
-            await isar.noteModels.put(note);
-          }
-        });
+      } else {
+        emit(const SyncFailure(error: 'Failed to fetch files from Firebase'));
       }
     } catch (e) {
       emit(SyncFailure(error: e.toString()));
     }
   }
 
-  Future<void> _addOrUpdateNoteToFirebase(NoteModel note) async {
-    final url = '$firebaseUrl/notes/${note.uuid}.json?auth=$idToken';
-    final body = jsonEncode({
-      'fields': note.toMap(),
-    });
+  Future<void> _uploadFileToFirebase(File file) async {
+    final fileName = basename(file.path);
 
-    var response = await http.put(
-      Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
-      body: body,
+    final sanitizedFileName = fileName.replaceAll(
+      RegExp(r'[^a-zA-Z0-9-_]'),
+      '_',
     );
 
-    if (response.statusCode == 401) {
-      await refreshIdToken();
-      response = await http.put(
+    var url = '$firebaseUrl/notes/$sanitizedFileName.json';
+
+    final fileContent = await file.readAsString();
+    final body = jsonEncode({
+      'fields': {'content': fileContent},
+    });
+
+    try {
+      var response = await http.put(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
         body: body,
       );
-    }
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to add or update note on Firebase');
-    }
-  }
-
-  Future<void> refreshIdToken() async {
-    const secureStorage = FlutterSecureStorage();
-    String? refreshToken = await secureStorage.read(key: "refreshToken");
-
-    if (refreshToken == null) {
-      throw Exception("Refresh token not found.");
-    }
-
-    final url = 'https://securetoken.googleapis.com/v1/token?key=$apiKey';
-    final body = jsonEncode({
-      'grant_type': 'refresh_token',
-      'refresh_token': refreshToken,
-    });
-
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
-      body: body,
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final newIdToken = data['id_token'];
-      await secureStorage.write(key: "idToken", value: newIdToken);
-      idToken = newIdToken;
-    } else {
-      throw Exception('Failed to refresh ID Token');
-    }
+      if (response.statusCode == 200) {
+      } else {
+        throw Exception(
+          'Failed to upload file: $fileName. Status code: ${response.statusCode}',
+        );
+      }
+    } catch (e) {}
   }
 }

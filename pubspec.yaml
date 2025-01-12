@@ -26,6 +26,8 @@ dependencies:
   http: ^1.2.2
   url_launcher: ^6.3.1
   package_info_plus: ^8.1.2
+  bloc: ^8.1.4
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:

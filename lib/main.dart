@@ -71,10 +71,10 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => SyncBloc(
-            isar: isar,
-            firebaseUrl: "$databaseURL/$localId/",
-            apiKey: firebaseWebApi,
-            idToken: idToken,
+            localNotesDirectory: rootPath,
+            firebaseUrl: "$databaseURL/$localId",
+            // apiKey: firebaseWebApi,
+            // idToken: idToken,
           ),
         ),
       ],
