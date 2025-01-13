@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import '../../../theme/endernote_theme.dart';
+
 class EditMode extends StatelessWidget {
   const EditMode({super.key, required this.entityPath});
 
@@ -27,10 +29,6 @@ class EditMode extends StatelessWidget {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if (snapshot.hasError) {
-          return Center(
-            child: Text("Error: ${snapshot.error}"),
-          );
         } else {
           return Padding(
             padding: const EdgeInsets.all(8.0),
@@ -38,7 +36,12 @@ class EditMode extends StatelessWidget {
               padding: const EdgeInsets.all(5),
               color: Colors.black12,
               child: TextField(
-                decoration: const InputDecoration(border: InputBorder.none),
+                decoration: const InputDecoration(
+                  floatingLabelStyle: TextStyle(color: clrText),
+                  border: InputBorder.none,
+                  labelStyle: TextStyle(color: clrText),
+                  enabledBorder: InputBorder.none,
+                ),
                 controller: textController,
                 expands: true,
                 minLines: null,

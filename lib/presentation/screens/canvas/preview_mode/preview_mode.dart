@@ -30,10 +30,6 @@ class PreviewMode extends StatelessWidget {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text("Error: ${snapshot.error}"),
-            );
           } else {
             return Markdown(
               data: snapshot.data!,
