@@ -1,9 +1,7 @@
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../../bloc/sync/sync_bloc.dart';
 import '../../widgets/custom_list_tile.dart';
 
 class ScreenSettings extends StatelessWidget {
@@ -46,24 +44,25 @@ class ScreenSettings extends StatelessWidget {
                 );
               },
             ),
-            CustomListTile(
+            const CustomListTile(
               lead: IconsaxOutline.global_refresh,
               title: 'Sync',
-              subtitle: 'Sync to Cloud',
-              onTap: () {
-                // context.read<SyncBloc>().add(SyncDirectoryToFirebase());
-                // context.read<SyncBloc>().add(SyncFirebaseToDirectory());
+              // subtitle: 'Sync to Cloud',
+              subtitle: 'Currently unavailable'
+              // onTap: () {
+              //   context.read<SyncBloc>().add(SyncDirectoryToFirebase());
+              //   context.read<SyncBloc>().add(SyncFirebaseToDirectory());
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    backgroundColor: Color(0xFF181825),
-                    content: Text(
-                      'Please restart the app to see changes.',
-                      style: TextStyle(color: Color(0xFFbac2de)),
-                    ),
-                  ),
-                );
-              },
+              //   ScaffoldMessenger.of(context).showSnackBar(
+              //     const SnackBar(
+              //       backgroundColor: Color(0xFF181825),
+              //       content: Text(
+              //         'Please restart the app to see changes.',
+              //         style: TextStyle(color: Color(0xFFbac2de)),
+              //       ),
+              //     ),
+              //   );
+              // },
             ),
             CustomListTile(
               lead: IconsaxOutline.logout,
