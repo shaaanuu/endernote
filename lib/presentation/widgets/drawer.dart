@@ -21,8 +21,8 @@ ListTile _tiles({
 Widget showDrawer(BuildContext context) {
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
-  Future<String> fetchEmail() async =>
-      await secureStorage.read(key: "displayName") ?? "Who...?";
+  Future<String?> fetchEmail() async =>
+      await secureStorage.read(key: "displayName");
 
   return Drawer(
     width: 250,
