@@ -47,7 +47,7 @@ class ScreenHome extends StatelessWidget {
 
     return ListView.builder(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       itemCount: contents.length,
       itemBuilder: (context, index) {
         final entityPath = contents[index];
