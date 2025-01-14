@@ -16,7 +16,6 @@ dependencies:
   ficonsax: ^0.0.3
   equatable: ^2.0.5
   flutter_bloc: ^8.1.6
-  uuid: ^4.4.2
   intl: ^0.19.0
   path_provider: ^2.1.4
   flutter_secure_storage: ^9.2.2
