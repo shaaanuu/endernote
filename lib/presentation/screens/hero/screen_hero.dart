@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ficonsax/ficonsax.dart';
@@ -7,7 +9,9 @@ import '../../widgets/bottom_sheet.dart';
 import '../../widgets/drawer.dart';
 
 class ScreenHero extends StatelessWidget {
-  const ScreenHero({super.key});
+  const ScreenHero({super.key, required this.rootPath});
+
+  final String rootPath;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +64,18 @@ class ScreenHero extends StatelessWidget {
                   Icon(IconsaxOutline.note_2, size: 22),
                 ],
               ),
-              onPressed: () => Navigator.pushNamed(context, '/canvas'),
+              onPressed: () async {
+                final newFile = File(
+                  '$rootPath/new_note_${DateTime.now().millisecondsSinceEpoch}.md',
+                );
+                await newFile.create();
+
+                Navigator.pushNamed(
+                  context,
+                  '/canvas',
+                  arguments: newFile.path,
+                );
+              },
             ),
           ),
           Padding(

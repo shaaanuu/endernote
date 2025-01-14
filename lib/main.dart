@@ -91,7 +91,7 @@ class MyApp extends StatelessWidget {
           '/sign_up': (context) => ScreenSignUp(),
         },
         theme: enderNoteTheme,
-        home: const ScreenHero(),
+        home: ScreenHero(rootPath: rootPath),
       ),
     );
   }
