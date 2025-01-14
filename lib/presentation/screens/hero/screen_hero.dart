@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ficonsax/ficonsax.dart';
 
 import '../../theme/endernote_theme.dart';
-import '../../widgets/bottom_sheet.dart';
+import '../../widgets/custom_fab.dart';
 import '../../widgets/drawer.dart';
 
 class ScreenHero extends StatelessWidget {
@@ -97,16 +97,7 @@ class ScreenHero extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: IconButton.filled(
-        style: const ButtonStyle(
-          backgroundColor: WidgetStatePropertyAll(clrText),
-        ),
-        icon: const Icon(
-          IconsaxOutline.add,
-          color: clrBase,
-        ),
-        onPressed: () => showCustomBottomSheet(context),
-      ),
+      floatingActionButton: CustomFAB(rootPath: rootPath),
     );
   }
 }
