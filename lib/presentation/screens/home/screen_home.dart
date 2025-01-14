@@ -165,7 +165,7 @@ class ScreenHome extends StatelessWidget {
                                 onPressed: () async {
                                   if (fileController.text != "") {
                                     await File(
-                                      '$rootPath/${fileController.text}',
+                                      '$rootPath/${fileController.text}.md',
                                     ).create(recursive: true);
                                   }
                                   fileController.clear();
