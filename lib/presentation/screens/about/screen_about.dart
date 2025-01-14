@@ -59,7 +59,7 @@ class ScreenAbout extends StatelessWidget {
               lead: IconsaxOutline.award,
               title: 'Acknowledgments',
               subtitle:
-                  'Built by Endernote crafters with Flutter, using amazing tools like flutter_bloc, Isar, and more.',
+                  'Built by Endernote crafters with Flutter, using amazing tools like flutter_bloc and more.',
             ),
             CustomListTile(
               lead: IconsaxOutline.star,

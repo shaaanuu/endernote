@@ -1,104 +1,95 @@
+import 'dart:io';
+
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:intl/intl.dart';
 
-import '../../../bloc/notes/note_bloc.dart';
-import '../../../bloc/notes/note_events.dart';
-import '../../../bloc/notes/note_states.dart';
-import '../../../models/note_model.dart';
-import '../../theme/endernote_theme.dart';
+import '../../../bloc/directory/directory_bloc.dart';
+import '../../../bloc/directory/directory_events.dart';
+import '../../../bloc/directory/directory_states.dart';
+import '../../widgets/custom_fab.dart';
 
 class ScreenHome extends StatelessWidget {
-  const ScreenHome({super.key});
+  const ScreenHome({super.key, required this.rootPath});
+
+  final String rootPath;
 
   @override
   Widget build(BuildContext context) {
-    context.read<NoteBloc>().add(LoadNotes());
+    return BlocProvider(
+      create: (_) => DirectoryBloc()..add(FetchDirectory(rootPath)),
+      child: Scaffold(
+        appBar: AppBar(title: const Text("Endernote")),
+        body: BlocBuilder<DirectoryBloc, DirectoryState>(
+          builder: (context, state) {
+            if (state.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(IconsaxOutline.arrow_left_2),
+            if (state.errorMessage != null) {
+              return Center(child: Text('Error: ${state.errorMessage}'));
+            }
+
+            return _buildDirectoryList(context, rootPath, state);
+          },
         ),
-        title: const Text(
-          'All Notes',
-          style: TextStyle(
-            fontSize: 16,
-          ),
-        ),
-        centerTitle: true,
+        floatingActionButton: CustomFAB(rootPath: rootPath),
       ),
-      body: BlocBuilder<NoteBloc, NoteBlocState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    );
+  }
 
-          List<NoteModel> reversedList = state.notes.reversed.toList();
+  Widget _buildDirectoryList(
+    BuildContext context,
+    String path,
+    DirectoryState state,
+  ) {
+    final contents = state.folderContents[path] ?? [];
 
-          if (reversedList.isEmpty) {
-            return const Center(
-              child: Text(
-                "No notes available",
-                style: TextStyle(fontSize: 16),
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const BouncingScrollPhysics(),
+      itemCount: contents.length,
+      itemBuilder: (context, index) {
+        final entityPath = contents[index];
+        final isFolder = Directory(entityPath).existsSync();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              leading: Icon(
+                isFolder
+                    ? (state.openFolders.contains(entityPath)
+                        ? IconsaxOutline.folder_open
+                        : IconsaxOutline.folder)
+                    : IconsaxOutline.task_square,
               ),
-            );
-          }
-
-          return ListView.builder(
-            itemCount: reversedList.length,
-            itemBuilder: (context, index) {
-              final note = reversedList[index];
-
-              return Slidable(
-                endActionPane: ActionPane(
-                  motion: const ScrollMotion(),
-                  children: [
-                    IconButton(
-                      icon: const Icon(IconsaxOutline.trash),
-                      onPressed: () {
-                        context.read<NoteBloc>().add(
-                              DeleteNote(noteId: note.uuid),
-                            );
-                      },
-                    ),
-                    IconButton(
-                      icon: note.isFavorite
-                          ? const Icon(IconsaxBold.heart)
-                          : const Icon(IconsaxOutline.heart),
-                      onPressed: () =>
-                          context.read<NoteBloc>().add(ToggleFavorite(note),),
-                    ),
-                  ],
-                ),
-                child: Container(
-                  margin: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: clrText),
-                  ),
-                  child: ListTile(
-                    onTap: () {
-                      context.read<NoteBloc>().add(
-                            ChangeNote(newNote: note),
-                          );
-                      Navigator.pushNamed(context, '/canvas');
-                    },
-                    leading: const Icon(IconsaxOutline.note),
-                    title: Text(note.title),
-                    subtitle: Text(
-                      "${DateFormat.jm().format(note.creationDate)} on ${DateFormat('dd-MM-yyyy').format(note.creationDate)}",
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
+              title: Text(entityPath.split('/').last),
+              onTap: () {
+                if (isFolder) {
+                  context.read<DirectoryBloc>().add(ToggleFolder(entityPath));
+                  if (!state.folderContents.containsKey(entityPath)) {
+                    context
+                        .read<DirectoryBloc>()
+                        .add(FetchDirectory(entityPath));
+                  }
+                } else {
+                  Navigator.pushNamed(
+                    context,
+                    '/canvas',
+                    arguments: entityPath,
+                  );
+                }
+              },
+            ),
+            if (isFolder && state.openFolders.contains(entityPath))
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: _buildDirectoryList(context, entityPath, state),
+              ),
+          ],
+        );
+      },
     );
   }
 }

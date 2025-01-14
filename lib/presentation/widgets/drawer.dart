@@ -21,8 +21,8 @@ ListTile _tiles({
 Widget showDrawer(BuildContext context) {
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
-  Future<String> fetchEmail() async =>
-      await secureStorage.read(key: "displayName") ?? "Who...?";
+  Future<String?> fetchEmail() async =>
+      await secureStorage.read(key: "displayName");
 
   return Drawer(
     width: 250,
@@ -65,11 +65,6 @@ Widget showDrawer(BuildContext context) {
           icn: IconsaxOutline.folder,
           title: 'All Notes',
           onTap: () => Navigator.popAndPushNamed(context, '/home'),
-        ),
-        _tiles(
-          icn: IconsaxOutline.heart,
-          title: 'Favourite',
-          onTap: () => Navigator.popAndPushNamed(context, '/favourite'),
         ),
         _tiles(
           icn: IconsaxOutline.setting_2,

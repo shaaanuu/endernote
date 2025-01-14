@@ -1,31 +1,43 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-import '../../../../bloc/notes/note_bloc.dart';
-import '../../../../bloc/notes/note_states.dart';
 import '../../../theme/markdown_theme.dart';
 
 class PreviewMode extends StatelessWidget {
-  const PreviewMode({
-    super.key,
-  });
+  const PreviewMode({super.key, required this.entityPath});
+
+  final String entityPath;
+
+  Future<String> _loadFileContent() async {
+    try {
+      return await File(entityPath).readAsString();
+    } catch (e) {
+      return "Error reading file: $e";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NoteBloc, NoteBlocState>(
-      builder: (context, state) {
-        return Column(
-          children: [
-            Expanded(
-              child: Markdown(
-                data: state.noteTextController?.text ?? '',
-                styleSheet: mdTheme(),
-              ),
-            ),
-          ],
-        );
-      },
+    return SizedBox(
+      height: MediaQuery.of(context).size.height -
+                (kToolbarHeight - MediaQuery.of(context).padding.top),
+      child: FutureBuilder(
+        future: _loadFileContent(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return Markdown(
+              data: snapshot.data!,
+              styleSheet: mdTheme(),
+            );
+          }
+        },
+      ),
     );
   }
 }

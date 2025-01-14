@@ -16,24 +16,21 @@ dependencies:
   ficonsax: ^0.0.3
   equatable: ^2.0.5
   flutter_bloc: ^8.1.6
-  uuid: ^4.4.2
   intl: ^0.19.0
-  isar: ^3.1.0+1
-  isar_flutter_libs: ^3.1.0+1
   path_provider: ^2.1.4
-  flutter_slidable: ^3.1.2
   flutter_secure_storage: ^9.2.2
   http: ^1.2.2
   url_launcher: ^6.3.1
   package_info_plus: ^8.1.2
+  bloc: ^8.1.4
+  path: ^1.9.0
+  flutter_speed_dial: ^7.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^3.0.0
-  isar_generator: ^3.1.0+1
-  build_runner: ^2.4.12
 
 flutter:
   uses-material-design: true

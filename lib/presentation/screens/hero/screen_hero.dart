@@ -1,16 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ficonsax/ficonsax.dart';
 
-import '../../../bloc/notes/note_bloc.dart';
-import '../../../bloc/notes/note_events.dart';
 import '../../theme/endernote_theme.dart';
-import '../../widgets/bottom_sheet.dart';
+import '../../widgets/custom_fab.dart';
 import '../../widgets/drawer.dart';
 
 class ScreenHero extends StatelessWidget {
-  const ScreenHero({super.key});
+  const ScreenHero({super.key, required this.rootPath});
+
+  final String rootPath;
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +64,17 @@ class ScreenHero extends StatelessWidget {
                   Icon(IconsaxOutline.note_2, size: 22),
                 ],
               ),
-              onPressed: () {
-                context.read<NoteBloc>().add(CreateNote());
+              onPressed: () async {
+                final newFile = File(
+                  '$rootPath/new_note_${DateTime.now().millisecondsSinceEpoch}.md',
+                );
+                await newFile.create();
 
-                Navigator.pushNamed(context, '/canvas');
+                Navigator.pushNamed(
+                  context,
+                  '/canvas',
+                  arguments: newFile.path,
+                );
               },
             ),
           ),
@@ -89,16 +97,7 @@ class ScreenHero extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: IconButton.filled(
-        style: const ButtonStyle(
-          backgroundColor: WidgetStatePropertyAll(clrText),
-        ),
-        icon: const Icon(
-          IconsaxOutline.add,
-          color: clrBase,
-        ),
-        onPressed: () => showCustomBottomSheet(context),
-      ),
+      floatingActionButton: CustomFAB(rootPath: rootPath),
     );
   }
 }
