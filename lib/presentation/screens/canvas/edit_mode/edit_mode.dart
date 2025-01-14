@@ -22,14 +22,25 @@ class EditMode extends StatelessWidget {
     return FutureBuilder<String>(
       future: _loadFileContent(),
       builder: (context, snapshot) {
-        final fileContent = snapshot.data ?? "";
-        final textController = TextEditingController(text: fileContent);
-
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         } else {
+          final textController = TextEditingController(
+            text: snapshot.data ?? "",
+          );
+
+          textController.addListener(
+            () async {
+              try {
+                await File(entityPath).writeAsString(textController.text);
+              } catch (e) {
+                debugPrint("Error saving file: $e");
+              }
+            },
+          );
+
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
