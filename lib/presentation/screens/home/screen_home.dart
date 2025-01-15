@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/directory/directory_bloc.dart';
 import '../../../bloc/directory/directory_events.dart';
 import '../../../bloc/directory/directory_states.dart';
+import '../../theme/endernote_theme.dart';
 import '../../widgets/custom_fab.dart';
 
 class ScreenHome extends StatelessWidget {
@@ -65,31 +66,36 @@ class ScreenHome extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              leading: Icon(
-                isFolder
-                    ? (state.openFolders.contains(entityPath)
-                        ? IconsaxOutline.folder_open
-                        : IconsaxOutline.folder)
-                    : IconsaxOutline.task_square,
-              ),
-              title: Text(entityPath.split('/').last),
-              onTap: () {
-                if (isFolder) {
-                  context.read<DirectoryBloc>().add(ToggleFolder(entityPath));
-                  if (!state.folderContents.containsKey(entityPath)) {
-                    context
-                        .read<DirectoryBloc>()
-                        .add(FetchDirectory(entityPath));
-                  }
-                } else {
-                  Navigator.pushNamed(
-                    context,
-                    '/canvas',
-                    arguments: entityPath,
-                  );
-                }
+            GestureDetector(
+              onLongPress: () {
+                _showContextMenu(context, entityPath, isFolder);
               },
+              child: ListTile(
+                leading: Icon(
+                  isFolder
+                      ? (state.openFolders.contains(entityPath)
+                          ? IconsaxOutline.folder_open
+                          : IconsaxOutline.folder)
+                      : IconsaxOutline.task_square,
+                ),
+                title: Text(entityPath.split('/').last),
+                onTap: () {
+                  if (isFolder) {
+                    context.read<DirectoryBloc>().add(ToggleFolder(entityPath));
+                    if (!state.folderContents.containsKey(entityPath)) {
+                      context
+                          .read<DirectoryBloc>()
+                          .add(FetchDirectory(entityPath));
+                    }
+                  } else {
+                    Navigator.pushNamed(
+                      context,
+                      '/canvas',
+                      arguments: entityPath,
+                    );
+                  }
+                },
+              ),
             ),
             if (isFolder && state.openFolders.contains(entityPath))
               Padding(
@@ -99,6 +105,117 @@ class ScreenHome extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  void _showContextMenu(
+    BuildContext context,
+    String entityPath,
+    bool isFolder,
+  ) {
+    showMenu(
+      color: clrBase,
+      context: context,
+      position: const RelativeRect.fromLTRB(100, 100, 100, 100),
+      items: [
+        const PopupMenuItem(
+          value: 'rename',
+          child: ListTile(
+            leading: Icon(IconsaxOutline.edit_2),
+            title: Text('Rename'),
+          ),
+        ),
+        const PopupMenuItem(
+          value: 'delete',
+          child: ListTile(
+            leading: Icon(IconsaxOutline.folder_cross),
+            title: Text('Delete'),
+          ),
+        ),
+      ],
+    ).then((value) {
+      if (value == 'rename') {
+        _renameEntity(context, entityPath);
+      } else if (value == 'delete') {
+        _deleteEntity(context, entityPath, isFolder);
+      }
+    });
+  }
+
+  void _renameEntity(BuildContext context, String entityPath) {
+    final controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: clrBase,
+        title: const Text('Rename', style: TextStyle(color: clrText)),
+        content: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            hintText: 'New name for ${entityPath.split('/').last}',
+            hintStyle: const TextStyle(color: Colors.grey),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              final newName = controller.text.trim();
+              if (newName.isNotEmpty) {
+                final newPath =
+                    '${Directory(entityPath).parent.path}/$newName.md';
+                File(entityPath).renameSync(newPath);
+                context
+                    .read<DirectoryBloc>()
+                    .add(FetchDirectory(Directory(entityPath).parent.path));
+              }
+              Navigator.pop(context);
+            },
+            child: const Text('Rename'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _deleteEntity(
+    BuildContext context,
+    String entityPath,
+    bool isFolder,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: clrBase,
+        title: const Text('Delete', style: TextStyle(color: clrText)),
+        content: Text(
+          'Are you sure you want to delete "${entityPath.split('/').last}"?',
+          style: const TextStyle(fontSize: 16),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              if (isFolder) {
+                Directory(entityPath).deleteSync(recursive: true);
+              } else {
+                File(entityPath).deleteSync();
+              }
+              context
+                  .read<DirectoryBloc>()
+                  .add(FetchDirectory(Directory(entityPath).parent.path));
+              Navigator.pop(context);
+            },
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
     );
   }
 }
