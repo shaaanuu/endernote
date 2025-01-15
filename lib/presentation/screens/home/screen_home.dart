@@ -45,6 +45,15 @@ class ScreenHome extends StatelessWidget {
   ) {
     final contents = state.folderContents[path] ?? [];
 
+    if (contents.isEmpty) {
+      return const Center(
+        child: Text(
+          "This folder is feeling lonely.",
+          style: TextStyle(fontSize: 16),
+        ),
+      );
+    }
+
     return ListView.builder(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
