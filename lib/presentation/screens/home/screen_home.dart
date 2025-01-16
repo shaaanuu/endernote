@@ -46,7 +46,7 @@ class ScreenHome extends StatelessWidget {
   ) {
     final contents = state.folderContents[path] ?? [];
 
-    if (contents.isEmpty) {
+    if (path == rootPath && contents.isEmpty) {
       return const Center(
         child: Text(
           "This folder is feeling lonely.",
