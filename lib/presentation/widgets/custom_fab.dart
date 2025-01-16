@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:ficonsax/ficonsax.dart';
 
+import '../../bloc/directory/directory_bloc.dart';
+import '../../bloc/directory/directory_events.dart';
 import '../theme/endernote_theme.dart';
 
 class CustomFAB extends StatelessWidget {
@@ -32,6 +35,7 @@ class CustomFAB extends StatelessWidget {
               await Directory(
                 '$rootPath/${folderController.text}',
               ).create(recursive: true);
+              context.read<DirectoryBloc>().add(FetchDirectory(rootPath));
             }
           },
         ),
@@ -47,6 +51,7 @@ class CustomFAB extends StatelessWidget {
               await File(
                 '$rootPath/${fileController.text}.md',
               ).create(recursive: true);
+              context.read<DirectoryBloc>().add(FetchDirectory(rootPath));
             }
           },
         ),
