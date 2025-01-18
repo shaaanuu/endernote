@@ -138,7 +138,7 @@ class ScreenHome extends StatelessWidget {
           const PopupMenuItem(
             value: 'new_folder',
             child: ListTile(
-              leading: Icon(IconsaxOutline.folder_add),
+              leading: Icon(IconsaxOutline.folder_open),
               title: Text('New Folder'),
             ),
           ),
