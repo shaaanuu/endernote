@@ -79,8 +79,8 @@ class MyApp extends StatelessWidget {
             // idToken: idToken,
           ),
         ),
-        BlocProvider<DirectoryBloc>(
-          create: (_) => DirectoryBloc()..add(FetchDirectory(rootPath)),
+        BlocProvider(
+          create: (context) => DirectoryBloc()..add(FetchDirectory(rootPath)),
         ),
       ],
       child: MaterialApp(

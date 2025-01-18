@@ -17,25 +17,27 @@ class ScreenHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => DirectoryBloc()..add(FetchDirectory(rootPath)),
-      child: Scaffold(
-        appBar: AppBar(title: const Text("Endernote")),
-        body: BlocBuilder<DirectoryBloc, DirectoryState>(
-          builder: (context, state) {
-            if (state.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
+    return Scaffold(
+      appBar: AppBar(title: const Text("Endernote")),
+      body: BlocBuilder<DirectoryBloc, DirectoryState>(
+        builder: (context, state) {
+          if (state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            if (state.errorMessage != null) {
-              return Center(child: Text('Error: ${state.errorMessage}'));
-            }
+          if (state.errorMessage != null) {
+            return Center(
+              child: Text(
+                'Error: ${state.errorMessage}',
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
+          }
 
-            return _buildDirectoryList(context, rootPath, state);
-          },
-        ),
-        floatingActionButton: CustomFAB(rootPath: rootPath),
+          return _buildDirectoryList(context, rootPath, state);
+        },
       ),
+      floatingActionButton: CustomFAB(rootPath: rootPath),
     );
   }
 
@@ -181,11 +183,7 @@ class ScreenHome extends StatelessWidget {
     );
   }
 
-  void _deleteEntity(
-    BuildContext context,
-    String entityPath,
-    bool isFolder,
-  ) {
+  void _deleteEntity(BuildContext context, String entityPath, bool isFolder) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
