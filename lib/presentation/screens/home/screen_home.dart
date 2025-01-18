@@ -134,14 +134,101 @@ class ScreenHome extends StatelessWidget {
             title: Text('Delete'),
           ),
         ),
+        const PopupMenuItem(
+          value: 'new_folder',
+          child: ListTile(
+            leading: Icon(IconsaxOutline.folder_add),
+            title: Text('New Folder'),
+          ),
+        ),
+        const PopupMenuItem(
+          value: 'new_file',
+          child: ListTile(
+            leading: Icon(IconsaxOutline.add_square),
+            title: Text('New File'),
+          ),
+        ),
       ],
     ).then((value) {
       if (value == 'rename') {
         _renameEntity(context, entityPath);
       } else if (value == 'delete') {
         _deleteEntity(context, entityPath, isFolder);
+      } else if (value == 'new_folder') {
+        _createNewFolder(context, entityPath);
+      } else if (value == 'new_file') {
+        _createNewFile(context, entityPath);
       }
     });
+  }
+
+  void _createNewFolder(BuildContext context, String entityPath) {
+    final controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: clrBase,
+        title: const Text('New Folder', style: TextStyle(color: clrText)),
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(
+            hintText: 'Folder name',
+            hintStyle: TextStyle(color: Colors.grey),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              if (controller.text.trim().isNotEmpty) {
+                final newFolderPath = '$entityPath/${controller.text.trim()}';
+                Directory(newFolderPath).createSync();
+                context.read<DirectoryBloc>().add(FetchDirectory(entityPath));
+              }
+              Navigator.pop(context);
+            },
+            child: const Text('Create'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _createNewFile(BuildContext context, String entityPath) {
+    final controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: clrBase,
+        title: const Text('New File', style: TextStyle(color: clrText)),
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(
+            hintText: 'File name',
+            hintStyle: TextStyle(color: Colors.grey),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              if (controller.text.trim().isNotEmpty) {
+                File('$entityPath/${controller.text.trim()}.md').createSync();
+                context.read<DirectoryBloc>().add(FetchDirectory(entityPath));
+              }
+              Navigator.pop(context);
+            },
+            child: const Text('Create'),
+          ),
+        ],
+      ),
+    );
   }
 
   void _renameEntity(BuildContext context, String entityPath) {
