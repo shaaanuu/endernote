@@ -115,40 +115,49 @@ class ScreenHome extends StatelessWidget {
     String entityPath,
     bool isFolder,
   ) {
+    final menuItems = <PopupMenuEntry<String>>[
+      const PopupMenuItem(
+        value: 'rename',
+        child: ListTile(
+          leading: Icon(IconsaxOutline.edit_2),
+          title: Text('Rename'),
+        ),
+      ),
+      const PopupMenuItem(
+        value: 'delete',
+        child: ListTile(
+          leading: Icon(IconsaxOutline.folder_cross),
+          title: Text('Delete'),
+        ),
+      ),
+    ];
+
+    if (isFolder) {
+      menuItems.addAll(
+        [
+          const PopupMenuItem(
+            value: 'new_folder',
+            child: ListTile(
+              leading: Icon(IconsaxOutline.folder_add),
+              title: Text('New Folder'),
+            ),
+          ),
+          const PopupMenuItem(
+            value: 'new_file',
+            child: ListTile(
+              leading: Icon(IconsaxOutline.add_square),
+              title: Text('New File'),
+            ),
+          ),
+        ],
+      );
+    }
+
     showMenu(
       color: clrBase,
       context: context,
       position: const RelativeRect.fromLTRB(100, 100, 100, 100),
-      items: [
-        const PopupMenuItem(
-          value: 'rename',
-          child: ListTile(
-            leading: Icon(IconsaxOutline.edit_2),
-            title: Text('Rename'),
-          ),
-        ),
-        const PopupMenuItem(
-          value: 'delete',
-          child: ListTile(
-            leading: Icon(IconsaxOutline.folder_cross),
-            title: Text('Delete'),
-          ),
-        ),
-        const PopupMenuItem(
-          value: 'new_folder',
-          child: ListTile(
-            leading: Icon(IconsaxOutline.folder_add),
-            title: Text('New Folder'),
-          ),
-        ),
-        const PopupMenuItem(
-          value: 'new_file',
-          child: ListTile(
-            leading: Icon(IconsaxOutline.add_square),
-            title: Text('New File'),
-          ),
-        ),
-      ],
+      items: menuItems,
     ).then((value) {
       if (value == 'rename') {
         _renameEntity(context, entityPath);
