@@ -53,6 +53,7 @@ class EditMode extends StatelessWidget {
                   labelStyle: TextStyle(color: clrText),
                   enabledBorder: InputBorder.none,
                 ),
+                style: const TextStyle(fontFamily: 'FiraCode'),
                 controller: textController,
                 expands: true,
                 minLines: null,
