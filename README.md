@@ -11,7 +11,7 @@ Welcome to **EnderNote**—a minimal, fast, and open-source note-taking app desi
 ### **Built for Productivity**
 
 - 📝 **Markdown Support**: Write with Markdown, see live previews.
-- ☁️ **Cloud Sync**: Access your notes anywhere, anytime.
+- ☁️ **Cloud Sync**: Access your notes anywhere, anytime _(currently unavailable)_.
 - 🔍 **Full-Text Search**: Quickly find your notes (coming soon).
 - 📁 **Organized Folders**: Keep your workspace tidy and intuitive (coming soon).
 
