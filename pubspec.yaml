@@ -1,7 +1,7 @@
 name: endernote
 description: "Your versatile note-taking companion. Craft, create, and unleash your ideas with ease!"
 
-version: 2.2.1
+version: 2.2.2
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
