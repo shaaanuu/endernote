@@ -42,3 +42,9 @@ flutter:
     - family: FiraCode
       fonts:
         - asset: lib/assets/FiraCode.ttf
+    - family: PlayfairDisplay
+      fonts:
+        - asset: lib/assets/PlayfairDisplay.ttf
+    - family: Roboto
+      fonts:
+        - asset: lib/assets/Roboto.ttf
