@@ -69,10 +69,11 @@ MarkdownStyleSheet mdTheme() => MarkdownStyleSheet(
       codeblockDecoration: BoxDecoration(
         color: markdownCodeColor,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: markdownParagraphColor.withOpacity(0.2)),
+        border:
+            Border.all(color: markdownParagraphColor.withValues(alpha: 0.2)),
       ),
       blockquoteDecoration: BoxDecoration(
-        color: markdownCodeColor.withOpacity(0.8),
+        color: markdownCodeColor.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(10),
         border: const Border(
           left: BorderSide(
