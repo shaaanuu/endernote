@@ -76,6 +76,11 @@ Widget showDrawer(BuildContext context) {
           title: 'About',
           onTap: () => Navigator.popAndPushNamed(context, '/about'),
         ),
+        _tiles(
+          icn: IconsaxOutline.clipboard_text,
+          title: 'To-Dos',
+          onTap: () => Navigator.popAndPushNamed(context, '/todos'),
+        ),
       ],
     ),
   );

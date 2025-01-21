@@ -16,6 +16,7 @@ import 'presentation/screens/canvas/screen_canvas.dart';
 import 'presentation/screens/hero/screen_hero.dart';
 import 'presentation/screens/home/screen_home.dart';
 import 'presentation/screens/settings/screen_settings.dart';
+import 'presentation/screens/todos/screen_todos.dart';
 import 'presentation/theme/endernote_theme.dart';
 
 Future<void> main() async {
@@ -94,6 +95,7 @@ class MyApp extends StatelessWidget {
           '/about': (context) => const ScreenAbout(),
           '/sign_in': (context) => ScreenSignIn(),
           '/sign_up': (context) => ScreenSignUp(),
+          '/todos': (context) => ScreenTodos(rootPath: rootPath),
         },
         theme: enderNoteTheme,
         home: ScreenHero(rootPath: rootPath),
