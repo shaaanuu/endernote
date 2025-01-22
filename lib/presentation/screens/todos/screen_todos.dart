@@ -114,14 +114,6 @@ class ScreenTodos extends StatelessWidget {
             itemBuilder: (context, index) {
               final todo = todos[index];
               return ListTile(
-                title: Text(
-                  todo["task"],
-                  style: TextStyle(
-                    decoration: todo["completed"]
-                        ? TextDecoration.lineThrough
-                        : TextDecoration.none,
-                  ),
-                ),
                 leading: Container(
                   width: 24,
                   height: 24,
@@ -136,6 +128,17 @@ class ScreenTodos extends StatelessWidget {
                       indexToUpdate: index,
                       toggleComplete: true,
                     ),
+                  ),
+                ),
+                title: Text(
+                  todo["task"],
+                  style: TextStyle(
+                    fontFamily: 'FiraCode',
+                    decoration: todo["completed"]
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                    decorationThickness: 3,
+                    decorationColor: clrText,
                   ),
                 ),
                 trailing: Row(
