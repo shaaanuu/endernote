@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 
+import '../../theme/endernote_theme.dart';
+
 class ScreenTodos extends StatelessWidget {
   ScreenTodos({super.key, required this.rootPath}) {
     _initializeTodos();
@@ -120,11 +122,20 @@ class ScreenTodos extends StatelessWidget {
                         : TextDecoration.none,
                   ),
                 ),
-                leading: Checkbox(
-                  value: todo["completed"],
-                  onChanged: (_) => _addOrUpdateTodo(
-                    indexToUpdate: index,
-                    toggleComplete: true,
+                leading: Container(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: clrText, width: 1.5),
+                    color: todo["completed"] ? clrText : null,
+                  ),
+                  child: Checkbox(
+                    value: todo["completed"],
+                    onChanged: (_) => _addOrUpdateTodo(
+                      indexToUpdate: index,
+                      toggleComplete: true,
+                    ),
                   ),
                 ),
                 trailing: Row(

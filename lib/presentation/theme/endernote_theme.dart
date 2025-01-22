@@ -55,4 +55,9 @@ final ThemeData enderNoteTheme = ThemeData(
       borderSide: BorderSide(color: clrText),
     ),
   ),
+  checkboxTheme: const CheckboxThemeData(
+    checkColor: WidgetStatePropertyAll(clrBase),
+    fillColor: WidgetStatePropertyAll(Colors.transparent),
+    side: BorderSide.none,
+  ),
 );
