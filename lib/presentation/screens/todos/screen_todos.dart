@@ -31,20 +31,18 @@ class ScreenTodos extends StatelessWidget {
         .writeAsString(jsonEncode(todosNotifier.value));
   }
 
-  void _addOrUpdateTodo({
+  void _addTodo({
     required BuildContext context,
-    String? newTask,
-    String? taskToUpdate,
-    bool toggleComplete = false,
+    required String newTask,
   }) {
-    if (newTask != null && newTask.trim().isEmpty) {
+    if (newTask.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Task name cannot be empty.")),
       );
       return;
     }
 
-    if (newTask != null && todosNotifier.value.containsKey(newTask)) {
+    if (todosNotifier.value.containsKey(newTask)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Task '$newTask' already exists.")),
       );
@@ -52,13 +50,14 @@ class ScreenTodos extends StatelessWidget {
     }
 
     final updatedTodos = Map<String, bool>.from(todosNotifier.value);
-    if (taskToUpdate != null) {
-      updatedTodos[taskToUpdate] = toggleComplete
-          ? !updatedTodos[taskToUpdate]!
-          : updatedTodos[taskToUpdate]!;
-    } else if (newTask != null) {
-      updatedTodos[newTask] = false;
-    }
+    updatedTodos[newTask] = false;
+    todosNotifier.value = updatedTodos;
+    _updateTodosFile();
+  }
+
+  void _toggleTodoCompletion(String taskName) {
+    final updatedTodos = Map<String, bool>.from(todosNotifier.value);
+    updatedTodos[taskName] = !updatedTodos[taskName]!;
     todosNotifier.value = updatedTodos;
     _updateTodosFile();
   }
@@ -70,16 +69,14 @@ class ScreenTodos extends StatelessWidget {
     _updateTodosFile();
   }
 
-  Future<void> _showTodoDialog(BuildContext context,
-      {String? initialTask, String? taskToEdit}) async {
-    String task = initialTask ?? "";
+  Future<void> _showAddTodoDialog(BuildContext context) async {
+    String task = "";
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(taskToEdit == null ? "Add Task" : "Edit Task"),
+        title: const Text("Add Task"),
         content: TextField(
           autofocus: true,
-          controller: TextEditingController(text: task),
           decoration: const InputDecoration(hintText: "Enter task"),
           onChanged: (value) => task = value,
         ),
@@ -95,15 +92,11 @@ class ScreenTodos extends StatelessWidget {
                   const SnackBar(content: Text("Task name cannot be empty.")),
                 );
               } else {
-                _addOrUpdateTodo(
-                  context: context,
-                  newTask: task,
-                  taskToUpdate: taskToEdit,
-                );
+                _addTodo(context: context, newTask: task);
                 Navigator.pop(context);
               }
             },
-            child: Text(taskToEdit == null ? "Add" : "Update"),
+            child: const Text("Add"),
           ),
         ],
       ),
@@ -142,11 +135,7 @@ class ScreenTodos extends StatelessWidget {
                   ),
                   child: Checkbox(
                     value: isCompleted,
-                    onChanged: (_) => _addOrUpdateTodo(
-                      context: context,
-                      taskToUpdate: taskName,
-                      toggleComplete: true,
-                    ),
+                    onChanged: (_) => _toggleTodoCompletion(taskName),
                   ),
                 ),
                 title: Text(
@@ -160,19 +149,9 @@ class ScreenTodos extends StatelessWidget {
                     decorationColor: clrText,
                   ),
                 ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: const Icon(IconsaxOutline.edit_2),
-                      onPressed: () => _showTodoDialog(context,
-                          initialTask: taskName, taskToEdit: taskName),
-                    ),
-                    IconButton(
-                      icon: const Icon(IconsaxOutline.slash),
-                      onPressed: () => _removeTodo(taskName),
-                    ),
-                  ],
+                trailing: IconButton(
+                  icon: const Icon(IconsaxOutline.slash),
+                  onPressed: () => _removeTodo(taskName),
                 ),
               );
             },
@@ -181,7 +160,7 @@ class ScreenTodos extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(IconsaxOutline.add),
-        onPressed: () => _showTodoDialog(context),
+        onPressed: () => _showAddTodoDialog(context),
       ),
     );
   }
