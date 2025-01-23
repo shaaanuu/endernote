@@ -12,18 +12,17 @@ class ScreenTodos extends StatelessWidget {
   }
 
   final String rootPath;
-  final ValueNotifier<List<Map<String, dynamic>>> todosNotifier =
-      ValueNotifier([]);
+  final ValueNotifier<Map<String, bool>> todosNotifier = ValueNotifier({});
 
   void _initializeTodos() async {
     final todosFile = File('$rootPath/todos.json');
     if (await todosFile.exists()) {
-      todosNotifier.value = List<Map<String, dynamic>>.from(
+      todosNotifier.value = Map<String, bool>.from(
         jsonDecode(await todosFile.readAsString()),
       );
     } else {
-      todosNotifier.value = [];
-      await todosFile.writeAsString(jsonEncode([]));
+      todosNotifier.value = {};
+      await todosFile.writeAsString(jsonEncode({}));
     }
   }
 
@@ -33,41 +32,51 @@ class ScreenTodos extends StatelessWidget {
   }
 
   void _addOrUpdateTodo({
+    required BuildContext context,
     String? newTask,
-    int? indexToUpdate,
+    String? taskToUpdate,
     bool toggleComplete = false,
   }) {
-    todosNotifier.value = [
-      for (int i = 0; i < todosNotifier.value.length; i++)
-        if (i == indexToUpdate)
-          {
-            "task": newTask ?? todosNotifier.value[i]["task"],
-            "completed": toggleComplete
-                ? !todosNotifier.value[i]["completed"]
-                : todosNotifier.value[i]["completed"],
-          }
-        else
-          todosNotifier.value[i],
-      if (indexToUpdate == null) {"task": newTask, "completed": false}
-    ];
+    if (newTask != null && newTask.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Task name cannot be empty.")),
+      );
+      return;
+    }
+
+    if (newTask != null && todosNotifier.value.containsKey(newTask)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Task '$newTask' already exists.")),
+      );
+      return;
+    }
+
+    final updatedTodos = Map<String, bool>.from(todosNotifier.value);
+    if (taskToUpdate != null) {
+      updatedTodos[taskToUpdate] = toggleComplete
+          ? !updatedTodos[taskToUpdate]!
+          : updatedTodos[taskToUpdate]!;
+    } else if (newTask != null) {
+      updatedTodos[newTask] = false;
+    }
+    todosNotifier.value = updatedTodos;
     _updateTodosFile();
   }
 
-  void _removeTodoAt(int index) {
-    todosNotifier.value = [
-      for (int i = 0; i < todosNotifier.value.length; i++)
-        if (i != index) todosNotifier.value[i]
-    ];
+  void _removeTodo(String taskName) {
+    final updatedTodos = Map<String, bool>.from(todosNotifier.value);
+    updatedTodos.remove(taskName);
+    todosNotifier.value = updatedTodos;
     _updateTodosFile();
   }
 
   Future<void> _showTodoDialog(BuildContext context,
-      {String? initialTask, int? indexToEdit}) async {
+      {String? initialTask, String? taskToEdit}) async {
     String task = initialTask ?? "";
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(indexToEdit == null ? "Add Task" : "Edit Task"),
+        title: Text(taskToEdit == null ? "Add Task" : "Edit Task"),
         content: TextField(
           autofocus: true,
           controller: TextEditingController(text: task),
@@ -81,12 +90,20 @@ class ScreenTodos extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              if (task.isNotEmpty) {
-                _addOrUpdateTodo(newTask: task, indexToUpdate: indexToEdit);
+              if (task.trim().isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Task name cannot be empty.")),
+                );
+              } else {
+                _addOrUpdateTodo(
+                  context: context,
+                  newTask: task,
+                  taskToUpdate: taskToEdit,
+                );
+                Navigator.pop(context);
               }
-              Navigator.pop(context);
             },
-            child: Text(indexToEdit == null ? "Add" : "Update"),
+            child: Text(taskToEdit == null ? "Add" : "Update"),
           ),
         ],
       ),
@@ -103,7 +120,7 @@ class ScreenTodos extends StatelessWidget {
         ),
         title: const Text("To-Dos"),
       ),
-      body: ValueListenableBuilder<List<Map<String, dynamic>>>(
+      body: ValueListenableBuilder<Map<String, bool>>(
         valueListenable: todosNotifier,
         builder: (context, todos, _) {
           if (todos.isEmpty) {
@@ -112,7 +129,8 @@ class ScreenTodos extends StatelessWidget {
           return ListView.builder(
             itemCount: todos.length,
             itemBuilder: (context, index) {
-              final todo = todos[index];
+              final taskName = todos.keys.elementAt(index);
+              final isCompleted = todos[taskName]!;
               return ListTile(
                 leading: Container(
                   width: 24,
@@ -120,21 +138,22 @@ class ScreenTodos extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: clrText, width: 1.5),
-                    color: todo["completed"] ? clrText : null,
+                    color: isCompleted ? clrText : null,
                   ),
                   child: Checkbox(
-                    value: todo["completed"],
+                    value: isCompleted,
                     onChanged: (_) => _addOrUpdateTodo(
-                      indexToUpdate: index,
+                      context: context,
+                      taskToUpdate: taskName,
                       toggleComplete: true,
                     ),
                   ),
                 ),
                 title: Text(
-                  todo["task"],
+                  taskName,
                   style: TextStyle(
                     fontFamily: 'FiraCode',
-                    decoration: todo["completed"]
+                    decoration: isCompleted
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
                     decorationThickness: 3,
@@ -147,11 +166,11 @@ class ScreenTodos extends StatelessWidget {
                     IconButton(
                       icon: const Icon(IconsaxOutline.edit_2),
                       onPressed: () => _showTodoDialog(context,
-                          initialTask: todo["task"], indexToEdit: index),
+                          initialTask: taskName, taskToEdit: taskName),
                     ),
                     IconButton(
                       icon: const Icon(IconsaxOutline.slash),
-                      onPressed: () => _removeTodoAt(index),
+                      onPressed: () => _removeTodo(taskName),
                     ),
                   ],
                 ),
