@@ -9,6 +9,8 @@ import 'api_key.dart';
 import 'bloc/directory/directory_bloc.dart';
 import 'bloc/directory/directory_events.dart';
 import 'bloc/sync/sync_bloc.dart';
+import 'bloc/theme/theme_bloc.dart';
+import 'bloc/theme/theme_states.dart';
 import 'presentation/screens/about/screen_about.dart';
 import 'presentation/screens/auth/screen_signin.dart';
 import 'presentation/screens/auth/screen_signup.dart';
@@ -17,7 +19,7 @@ import 'presentation/screens/hero/screen_hero.dart';
 import 'presentation/screens/home/screen_home.dart';
 import 'presentation/screens/settings/screen_settings.dart';
 import 'presentation/screens/todos/screen_todos.dart';
-import 'presentation/theme/endernote_theme.dart';
+import 'presentation/theme/app_themes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,22 +85,29 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => DirectoryBloc()..add(FetchDirectory(rootPath)),
         ),
+        BlocProvider(
+          create: (context) => ThemeBloc(),
+        ),
       ],
-      child: MaterialApp(
-        title: 'Endernote',
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        routes: {
-          '/canvas': (context) => ScreenCanvas(),
-          '/home': (context) => ScreenHome(rootPath: rootPath),
-          '/settings': (context) => const ScreenSettings(),
-          '/about': (context) => const ScreenAbout(),
-          '/sign_in': (context) => ScreenSignIn(),
-          '/sign_up': (context) => ScreenSignUp(),
-          '/todos': (context) => ScreenTodos(rootPath: rootPath),
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, themeState) {
+          return MaterialApp(
+            title: 'Endernote',
+            debugShowCheckedModeBanner: false,
+            initialRoute: '/',
+            routes: {
+              '/canvas': (context) => ScreenCanvas(),
+              '/home': (context) => ScreenHome(rootPath: rootPath),
+              '/settings': (context) => const ScreenSettings(),
+              '/about': (context) => const ScreenAbout(),
+              '/sign_in': (context) => ScreenSignIn(),
+              '/sign_up': (context) => ScreenSignUp(),
+              '/todos': (context) => ScreenTodos(rootPath: rootPath),
+            },
+            theme: appThemeData[themeState.theme],
+            home: ScreenHero(rootPath: rootPath),
+          );
         },
-        theme: enderNoteTheme,
-        home: ScreenHero(rootPath: rootPath),
       ),
     );
   }

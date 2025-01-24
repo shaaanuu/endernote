@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/directory/directory_bloc.dart';
 import '../../../bloc/directory/directory_events.dart';
 import '../../../bloc/directory/directory_states.dart';
-import '../../theme/endernote_theme.dart';
+import '../../theme/app_themes.dart';
 import '../../widgets/custom_fab.dart';
 
 class ScreenHome extends StatelessWidget {
@@ -154,7 +154,7 @@ class ScreenHome extends StatelessWidget {
     }
 
     showMenu(
-      color: clrBase,
+      color: Theme.of(context).extension<EndernoteColors>()?.clrBase,
       context: context,
       position: const RelativeRect.fromLTRB(100, 100, 100, 100),
       items: menuItems,
@@ -176,8 +176,14 @@ class ScreenHome extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: clrBase,
-        title: const Text('New Folder', style: TextStyle(color: clrText)),
+        backgroundColor:
+            Theme.of(context).extension<EndernoteColors>()?.clrBase,
+        title: Text(
+          'New Folder',
+          style: TextStyle(
+            color: Theme.of(context).extension<EndernoteColors>()?.clrText,
+          ),
+        ),
         content: TextField(
           controller: controller,
           decoration: const InputDecoration(
@@ -211,8 +217,14 @@ class ScreenHome extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: clrBase,
-        title: const Text('New File', style: TextStyle(color: clrText)),
+        backgroundColor:
+            Theme.of(context).extension<EndernoteColors>()?.clrBase,
+        title: Text(
+          'New File',
+          style: TextStyle(
+            color: Theme.of(context).extension<EndernoteColors>()?.clrText,
+          ),
+        ),
         content: TextField(
           controller: controller,
           decoration: const InputDecoration(
@@ -245,8 +257,14 @@ class ScreenHome extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: clrBase,
-        title: const Text('Rename', style: TextStyle(color: clrText)),
+        backgroundColor:
+            Theme.of(context).extension<EndernoteColors>()?.clrBase,
+        title: Text(
+          'Rename',
+          style: TextStyle(
+            color: Theme.of(context).extension<EndernoteColors>()?.clrText,
+          ),
+        ),
         content: TextField(
           controller: controller,
           decoration: InputDecoration(
@@ -283,8 +301,14 @@ class ScreenHome extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: clrBase,
-        title: const Text('Delete', style: TextStyle(color: clrText)),
+        backgroundColor:
+            Theme.of(context).extension<EndernoteColors>()?.clrBase,
+        title: Text(
+          'Delete',
+          style: TextStyle(
+            color: Theme.of(context).extension<EndernoteColors>()?.clrText,
+          ),
+        ),
         content: Text(
           'Are you sure you want to delete "${entityPath.split('/').last}"?',
           style: const TextStyle(fontSize: 16),

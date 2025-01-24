@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 
-import '../../theme/endernote_theme.dart';
+import '../../theme/app_themes.dart';
 
 class ScreenTodos extends StatelessWidget {
   ScreenTodos({super.key, required this.rootPath}) {
@@ -130,8 +130,17 @@ class ScreenTodos extends StatelessWidget {
                   height: 24,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: clrText, width: 1.5),
-                    color: isCompleted ? clrText : null,
+                    border: Border.all(
+                      color: Theme.of(context)
+                          .extension<EndernoteColors>()!
+                          .clrText,
+                      width: 1.5,
+                    ),
+                    color: isCompleted
+                        ? Theme.of(context)
+                            .extension<EndernoteColors>()
+                            ?.clrText
+                        : null,
                   ),
                   child: Checkbox(
                     value: isCompleted,
@@ -146,7 +155,8 @@ class ScreenTodos extends StatelessWidget {
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
                     decorationThickness: 3,
-                    decorationColor: clrText,
+                    decorationColor:
+                        Theme.of(context).extension<EndernoteColors>()?.clrText,
                   ),
                 ),
                 trailing: IconButton(

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../../theme/endernote_theme.dart';
+import '../../../theme/app_themes.dart';
 
 class EditMode extends StatelessWidget {
   const EditMode({super.key, required this.entityPath});
@@ -47,10 +47,16 @@ class EditMode extends StatelessWidget {
               padding: const EdgeInsets.all(5),
               color: Colors.black12,
               child: TextField(
-                decoration: const InputDecoration(
-                  floatingLabelStyle: TextStyle(color: clrText),
+                decoration: InputDecoration(
+                  floatingLabelStyle: TextStyle(
+                    color:
+                        Theme.of(context).extension<EndernoteColors>()?.clrText,
+                  ),
                   border: InputBorder.none,
-                  labelStyle: TextStyle(color: clrText),
+                  labelStyle: TextStyle(
+                    color:
+                        Theme.of(context).extension<EndernoteColors>()?.clrText,
+                  ),
                   enabledBorder: InputBorder.none,
                 ),
                 style: const TextStyle(fontFamily: 'FiraCode'),

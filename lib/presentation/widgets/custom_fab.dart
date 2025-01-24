@@ -7,7 +7,7 @@ import 'package:ficonsax/ficonsax.dart';
 
 import '../../bloc/directory/directory_bloc.dart';
 import '../../bloc/directory/directory_events.dart';
-import '../theme/endernote_theme.dart';
+import '../theme/app_themes.dart';
 
 class CustomFAB extends StatelessWidget {
   const CustomFAB({super.key, required this.rootPath});
@@ -78,7 +78,7 @@ class CustomFAB extends StatelessWidget {
           child: Container(
             height: 150,
             decoration: BoxDecoration(
-              color: clrBase,
+              color: Theme.of(context).extension<EndernoteColors>()?.clrBase,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
@@ -99,8 +99,10 @@ class CustomFAB extends StatelessWidget {
                     controller: controller,
                     decoration: InputDecoration(
                       hintText: hintText,
-                      hintStyle: const TextStyle(
-                        color: clrText,
+                      hintStyle: TextStyle(
+                        color: Theme.of(context)
+                            .extension<EndernoteColors>()
+                            ?.clrText,
                         fontWeight: FontWeight.w400,
                       ),
                     ),

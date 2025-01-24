@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ficonsax/ficonsax.dart';
 
-import '../../theme/endernote_theme.dart';
+import '../../theme/app_themes.dart';
 import '../../widgets/custom_fab.dart';
 import '../../widgets/drawer.dart';
 
@@ -46,7 +46,7 @@ class ScreenHero extends StatelessWidget {
               child: SvgPicture.asset(
                 "lib/assets/brain.svg",
                 height: 150,
-                color: clrText,
+                color: Theme.of(context).extension<EndernoteColors>()?.clrText,
               ),
             ),
           ),

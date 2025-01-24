@@ -1,7 +1,12 @@
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../../bloc/theme/theme_bloc.dart';
+import '../../../bloc/theme/theme_events.dart';
+import '../../../bloc/theme/theme_states.dart';
+import '../../theme/app_themes.dart';
 import '../../widgets/custom_list_tile.dart';
 
 class ScreenSettings extends StatelessWidget {
@@ -45,25 +50,25 @@ class ScreenSettings extends StatelessWidget {
               },
             ),
             const CustomListTile(
-              lead: IconsaxOutline.global_refresh,
-              title: 'Sync',
-              // subtitle: 'Sync to Cloud',
-              subtitle: 'Currently unavailable'
-              // onTap: () {
-              //   context.read<SyncBloc>().add(SyncDirectoryToFirebase());
-              //   context.read<SyncBloc>().add(SyncFirebaseToDirectory());
+                lead: IconsaxOutline.global_refresh,
+                title: 'Sync',
+                // subtitle: 'Sync to Cloud',
+                subtitle: 'Currently unavailable'
+                // onTap: () {
+                //   context.read<SyncBloc>().add(SyncDirectoryToFirebase());
+                //   context.read<SyncBloc>().add(SyncFirebaseToDirectory());
 
-              //   ScaffoldMessenger.of(context).showSnackBar(
-              //     const SnackBar(
-              //       backgroundColor: Color(0xFF181825),
-              //       content: Text(
-              //         'Please restart the app to see changes.',
-              //         style: TextStyle(color: Color(0xFFbac2de)),
-              //       ),
-              //     ),
-              //   );
-              // },
-            ),
+                //   ScaffoldMessenger.of(context).showSnackBar(
+                //     const SnackBar(
+                //       backgroundColor: Color(0xFF181825),
+                //       content: Text(
+                //         'Please restart the app to see changes.',
+                //         style: TextStyle(color: Color(0xFFbac2de)),
+                //       ),
+                //     ),
+                //   );
+                // },
+                ),
             CustomListTile(
               lead: IconsaxOutline.logout,
               title: 'Logout',
@@ -82,40 +87,58 @@ class ScreenSettings extends StatelessWidget {
                 );
               },
             ),
-            CustomListTile(
-              lead: IconsaxOutline.brush_3,
-              title: 'Theme',
-              subtitle: 'Catppuccin Mocha',
-              onTap: () => showModalBottomSheet(
-                context: context,
-                builder: (context) => Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  child: ListView(
-                    children: [
-                      const SizedBox(height: 20),
-                      ListTile(
-                        title: const Text('Catppuccin Mocha'),
-                        onTap: () {
-                          Navigator.pop(context);
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              backgroundColor: Color(0xFF181825),
-                              content: Text(
-                                'Selected theme: Catppuccin Mocha.',
-                                style: TextStyle(color: Color(0xFFbac2de)),
-                              ),
-                            ),
-                          );
-                        },
+            BlocBuilder<ThemeBloc, ThemeState>(
+              builder: (context, state) => CustomListTile(
+                lead: IconsaxOutline.brush_3,
+                title: 'Theme',
+                subtitle: state.theme.toString().split('.').last,
+                onTap: () => showModalBottomSheet(
+                  context: context,
+                  builder: (context) => Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
                       ),
-                    ],
+                    ),
+                    alignment: Alignment.center,
+                    child: ListView(
+                      children: [
+                        const SizedBox(height: 20),
+                        ...AppTheme.values.map(
+                          (theme) {
+                            return ListTile(
+                              title: Text(theme.toString().split('.').last),
+                              trailing:
+                                  context.read<ThemeBloc>().state.theme == theme
+                                      ? const Icon(IconsaxOutline.tick_circle)
+                                      : null,
+                              onTap: () {
+                                context
+                                    .read<ThemeBloc>()
+                                    .add(ChangeThemeEvent(theme));
+                                Navigator.pop(context);
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.surface,
+                                    content: Text(
+                                      'Selected theme: ${theme.toString().split('.').last}.',
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
