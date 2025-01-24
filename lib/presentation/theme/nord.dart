@@ -66,7 +66,7 @@ final ThemeData nordDarkTheme = ThemeData(
   ),
   checkboxTheme: const CheckboxThemeData(
     checkColor: WidgetStatePropertyAll(nordDarkBase),
-    fillColor: WidgetStatePropertyAll(nordDarkPrimary),
+    fillColor: WidgetStatePropertyAll(Colors.transparent),
     side: BorderSide.none,
   ),
   extensions: const <ThemeExtension<dynamic>>{
@@ -131,7 +131,7 @@ final ThemeData nordLightTheme = ThemeData(
   ),
   checkboxTheme: const CheckboxThemeData(
     checkColor: WidgetStatePropertyAll(nordLightBase),
-    fillColor: WidgetStatePropertyAll(nordLightPrimary),
+    fillColor: WidgetStatePropertyAll(Colors.transparent),
     side: BorderSide.none,
   ),
   extensions: const <ThemeExtension<dynamic>>{
