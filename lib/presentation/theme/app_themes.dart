@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'catppuccin_mocha.dart';
+import 'nord.dart';
 
 class EndernoteColors extends ThemeExtension<EndernoteColors> {
   final Color clrBase;
@@ -39,10 +40,14 @@ class EndernoteColors extends ThemeExtension<EndernoteColors> {
 
 enum AppTheme {
   catppuccinMocha,
+  nordDark,
+  nordLight,
   // Add new themes here...
 }
 
 final Map<AppTheme, ThemeData> appThemeData = {
   AppTheme.catppuccinMocha: catppuccinMochaTheme,
+  AppTheme.nordDark: nordDarkTheme,
+  AppTheme.nordLight: nordLightTheme,
   // Add other themes here...
 };
