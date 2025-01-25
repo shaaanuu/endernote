@@ -7,3 +7,9 @@ class ChangeThemeEvent extends ThemeEvent {
 
   ChangeThemeEvent(this.theme);
 }
+
+class LoadSavedThemeEvent extends ThemeEvent {
+  final AppTheme theme;
+
+  LoadSavedThemeEvent(this.theme);
+}
