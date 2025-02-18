@@ -16,6 +16,12 @@ class ScreenHero extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+    final TextEditingController searchController = TextEditingController();
+    final ValueNotifier<bool> hasText = ValueNotifier<bool>(false);
+
+    searchController.addListener(() {
+      hasText.value = searchController.text.isNotEmpty;
+    });
 
     return Scaffold(
       key: scaffoldKey,
@@ -37,6 +43,7 @@ class ScreenHero extends StatelessWidget {
               ),
               Expanded(
                 child: TextField(
+                  controller: searchController,
                   decoration: InputDecoration(
                     hintText: "Search your notes",
                     hintStyle: TextStyle(
@@ -49,9 +56,24 @@ class ScreenHero extends StatelessWidget {
                   ),
                 ),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(IconsaxOutline.search_normal_1),
+              ValueListenableBuilder<bool>(
+                valueListenable: hasText,
+                builder: (context, hasTextValue, child) {
+                  return IconButton(
+                    onPressed: () {
+                      if (hasTextValue) {
+                        searchController.clear();
+                      } else {
+                        Navigator.pushNamed(context, '/settings');
+                      }
+                    },
+                    icon: Icon(
+                      hasTextValue
+                          ? IconsaxOutline.search_normal_1
+                          : IconsaxOutline.setting_2,
+                    ),
+                  );
+                },
               ),
             ],
           ),
