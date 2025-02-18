@@ -18,7 +18,43 @@ class ScreenHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Endernote")),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: 80,
+        title: Container(
+          decoration: BoxDecoration(
+            color: Colors.black.withAlpha(80),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.all(3),
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(IconsaxOutline.arrow_left_2),
+              ),
+              Expanded(
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Search your notes",
+                    hintStyle: TextStyle(
+                      color: Colors.white.withAlpha(100),
+                      fontSize: 14,
+                      fontFamily: 'FiraCode',
+                    ),
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                  ),
+                ),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(IconsaxOutline.search_normal_1),
+              ),
+            ],
+          ),
+        ),
+      ),
       body: BlocBuilder<DirectoryBloc, DirectoryState>(
         builder: (context, state) {
           if (state.isLoading) {
