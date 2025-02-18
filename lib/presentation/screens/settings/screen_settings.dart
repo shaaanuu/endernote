@@ -49,26 +49,6 @@ class ScreenSettings extends StatelessWidget {
                 );
               },
             ),
-            const CustomListTile(
-                lead: IconsaxOutline.global_refresh,
-                title: 'Sync',
-                // subtitle: 'Sync to Cloud',
-                subtitle: 'Currently unavailable'
-                // onTap: () {
-                //   context.read<SyncBloc>().add(SyncDirectoryToFirebase());
-                //   context.read<SyncBloc>().add(SyncFirebaseToDirectory());
-
-                //   ScaffoldMessenger.of(context).showSnackBar(
-                //     const SnackBar(
-                //       backgroundColor: Color(0xFF181825),
-                //       content: Text(
-                //         'Please restart the app to see changes.',
-                //         style: TextStyle(color: Color(0xFFbac2de)),
-                //       ),
-                //     ),
-                //   );
-                // },
-                ),
             CustomListTile(
               lead: IconsaxOutline.logout,
               title: 'Logout',

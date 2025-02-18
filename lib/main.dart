@@ -5,10 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'api_key.dart';
 import 'bloc/directory/directory_bloc.dart';
 import 'bloc/directory/directory_events.dart';
-import 'bloc/sync/sync_bloc.dart';
 import 'bloc/theme/theme_bloc.dart';
 import 'bloc/theme/theme_states.dart';
 import 'presentation/screens/about/screen_about.dart';
@@ -74,14 +72,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => SyncBloc(
-            localNotesDirectory: rootPath,
-            firebaseUrl: "$databaseURL/$localId",
-            // apiKey: firebaseWebApi,
-            // idToken: idToken,
-          ),
-        ),
         BlocProvider(
           create: (context) => DirectoryBloc()..add(FetchDirectory(rootPath)),
         ),
