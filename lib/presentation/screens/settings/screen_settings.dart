@@ -81,6 +81,12 @@ class ScreenSettings extends StatelessWidget {
                 ),
               ),
             ),
+            CustomListTile(
+              lead: IconsaxOutline.book,
+              title: 'About',
+              subtitle: 'Crafted with care.',
+              onTap: () => Navigator.pushNamed(context, '/about'),
+            ),
           ],
         ),
       ),
