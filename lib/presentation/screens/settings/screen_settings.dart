@@ -1,7 +1,6 @@
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../bloc/theme/theme_bloc.dart';
 import '../../../bloc/theme/theme_events.dart';
@@ -14,13 +13,6 @@ class ScreenSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const FlutterSecureStorage secureStorage = FlutterSecureStorage();
-
-    Future fetchNameAndEmail() async => [
-          await secureStorage.read(key: "email"),
-          await secureStorage.read(key: "displayName"),
-        ];
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -33,40 +25,6 @@ class ScreenSettings extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: ListView(
           children: [
-            FutureBuilder(
-              future: fetchNameAndEmail(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                return CustomListTile(
-                  lead: IconsaxOutline.user,
-                  title: snapshot.data[1] ?? "Not logged in",
-                  subtitle: snapshot.data[0] ?? "Not logged in",
-                  onTap: () => Navigator.pushNamed(context, "/sign_in"),
-                );
-              },
-            ),
-            CustomListTile(
-              lead: IconsaxOutline.logout,
-              title: 'Logout',
-              subtitle: 'Logout from the account',
-              onTap: () {
-                secureStorage.deleteAll();
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    backgroundColor: Color(0xFF181825),
-                    content: Text(
-                      'Please restart the app to see changes.',
-                      style: TextStyle(color: Color(0xFFbac2de)),
-                    ),
-                  ),
-                );
-              },
-            ),
             BlocBuilder<ThemeBloc, ThemeState>(
               builder: (context, state) => CustomListTile(
                 lead: IconsaxOutline.brush_3,
