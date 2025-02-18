@@ -30,7 +30,7 @@ class ScreenAbout extends StatelessWidget {
           children: [
             const ListTile(
               title: Text(
-                "Build Your Brain's Backup",
+                "Organize your shitty brain",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -40,8 +40,8 @@ class ScreenAbout extends StatelessWidget {
               subtitle: Padding(
                 padding: EdgeInsets.only(top: 8),
                 child: Text(
-                  'Endernote is designed to help you organize your thoughts, ideas, and notes all in one place. '
-                  'From creating new notes to easily accessing your favorite ones, Endernote simplifies the process of building your personal knowledge base.',
+                  'Kinda feel messy or shitty when it comes to clear thinking? Don’t worry—Endernote’s got your back. '
+                  'Capture your chaos, organize your thoughts, and get back to what really matters.',
                   textAlign: TextAlign.center,
                 ),
               ),
