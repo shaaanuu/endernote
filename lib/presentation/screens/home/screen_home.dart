@@ -46,7 +46,10 @@ class ScreenHome extends StatelessWidget {
     String path,
     DirectoryState state,
   ) {
-    final contents = state.folderContents[path] ?? [];
+    // Filter out the 'todos.json' file from the contents
+    final contents = (state.folderContents[path] ?? [])
+        .where((entityPath) => !entityPath.endsWith('todos.json'))
+        .toList();
 
     if (path == rootPath && contents.isEmpty) {
       return const Center(
