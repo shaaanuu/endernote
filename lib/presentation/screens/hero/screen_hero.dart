@@ -6,7 +6,6 @@ import 'package:ficonsax/ficonsax.dart';
 
 import '../../theme/app_themes.dart';
 import '../../widgets/custom_fab.dart';
-import '../../widgets/drawer.dart';
 
 class ScreenHero extends StatelessWidget {
   const ScreenHero({super.key, required this.rootPath});
@@ -15,7 +14,6 @@ class ScreenHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final TextEditingController searchController = TextEditingController();
     final ValueNotifier<bool> hasText = ValueNotifier<bool>(false);
 
@@ -24,8 +22,6 @@ class ScreenHero extends StatelessWidget {
     });
 
     return Scaffold(
-      key: scaffoldKey,
-      drawer: showDrawer(context),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: 80,
@@ -37,22 +33,21 @@ class ScreenHero extends StatelessWidget {
           padding: const EdgeInsets.all(3),
           child: Row(
             children: [
-              IconButton(
-                onPressed: () => scaffoldKey.currentState!.openDrawer(),
-                icon: const Icon(IconsaxOutline.menu_1),
-              ),
               Expanded(
-                child: TextField(
-                  controller: searchController,
-                  decoration: InputDecoration(
-                    hintText: "Search your notes",
-                    hintStyle: TextStyle(
-                      color: Colors.white.withAlpha(100),
-                      fontSize: 14,
-                      fontFamily: 'FiraCode',
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: TextField(
+                    controller: searchController,
+                    decoration: InputDecoration(
+                      hintText: "Search your notes",
+                      hintStyle: TextStyle(
+                        color: Colors.white.withAlpha(100),
+                        fontSize: 14,
+                        fontFamily: 'FiraCode',
+                      ),
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
                     ),
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
                   ),
                 ),
               ),
