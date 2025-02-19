@@ -85,10 +85,16 @@ class ScreenHome extends StatelessWidget {
     final contents = state.folderContents[path] ?? [];
 
     if (path == rootPath && contents.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
           "This folder is feeling lonely.",
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(
+            fontSize: 16,
+            color: Theme.of(context)
+                .extension<EndernoteColors>()
+                ?.clrText
+                .withAlpha(100),
+          ),
         ),
       );
     }
