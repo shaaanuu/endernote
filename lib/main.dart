@@ -13,7 +13,6 @@ import 'presentation/screens/canvas/screen_canvas.dart';
 import 'presentation/screens/hero/screen_hero.dart';
 import 'presentation/screens/home/screen_home.dart';
 import 'presentation/screens/settings/screen_settings.dart';
-import 'presentation/screens/todos/screen_todos.dart';
 import 'presentation/theme/app_themes.dart';
 
 Future<void> main() async {
@@ -74,7 +73,6 @@ class MyApp extends StatelessWidget {
               '/home': (context) => ScreenHome(rootPath: rootPath),
               '/settings': (context) => const ScreenSettings(),
               '/about': (context) => const ScreenAbout(),
-              '/todos': (context) => ScreenTodos(rootPath: rootPath),
             },
             theme: appThemeData[themeState.theme],
             home: ScreenHero(rootPath: rootPath),

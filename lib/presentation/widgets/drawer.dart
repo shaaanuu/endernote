@@ -43,11 +43,6 @@ Widget showDrawer(BuildContext context) {
           onTap: () => Navigator.popAndPushNamed(context, '/home'),
         ),
         _tiles(
-          icn: IconsaxOutline.clipboard_text,
-          title: 'To-Dos',
-          onTap: () => Navigator.popAndPushNamed(context, '/todos'),
-        ),
-        _tiles(
           icn: IconsaxOutline.setting_2,
           title: 'Settings',
           onTap: () => Navigator.popAndPushNamed(context, '/settings'),
