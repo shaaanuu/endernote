@@ -100,7 +100,7 @@ class ScreenHero extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(right: 12.0, top: 10),
                           child: SvgPicture.asset(
-                            'lib/assets/2.svg',
+                            'lib/assets/brain.svg',
                             width: 70,
                             height: 70,
                             colorFilter: const ColorFilter.mode(
