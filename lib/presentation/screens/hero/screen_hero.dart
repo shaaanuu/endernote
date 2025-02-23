@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ficonsax/ficonsax.dart';
 
-import '../../theme/app_themes.dart';
 import '../../widgets/custom_fab.dart';
 
 class ScreenHero extends StatelessWidget {
@@ -74,72 +73,127 @@ class ScreenHero extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            'Craft your second brain',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: SvgPicture.asset(
-                "lib/assets/brain.svg",
-                height: 150,
-                color: Theme.of(context).extension<EndernoteColors>()?.clrText,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 300,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Untangle',
+                      style: TextStyle(
+                        fontFamily: 'Barriecito',
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFf2cdcd),
+                        height: 1.1,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12.0, top: 10),
+                          child: SvgPicture.asset(
+                            'lib/assets/2.svg',
+                            width: 70,
+                            height: 70,
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xFFf38ba8),
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        ),
+                        const Text(
+                          'Your',
+                          style: TextStyle(
+                            fontFamily: 'Barriecito',
+                            fontSize: 60,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFFb4befe),
+                            height: 1.1,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Text(
+                      'Thoughts',
+                      style: TextStyle(
+                        fontFamily: 'Barriecito',
+                        fontSize: 60,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFcba6f7),
+                        height: 1.1,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextButton(
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
+              const SizedBox(height: 60),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Text('Create new note'),
-                  ),
-                  Icon(IconsaxOutline.note_2, size: 22),
-                ],
-              ),
-              onPressed: () async {
-                final newFile = File(
-                  '$rootPath/new_note_${DateTime.now().millisecondsSinceEpoch}.md',
-                );
-                await newFile.create();
+                  ElevatedButton.icon(
+                    icon: const Icon(
+                      IconsaxOutline.note_2,
+                      size: 24,
+                      color: Color(0xFF1e1e2e),
+                    ),
+                    label: const Text(
+                      'Create new note',
+                      style: TextStyle(
+                        color: Color(0xFF1e1e2e),
+                        fontSize: 16,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF89b4fa),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 16,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                    onPressed: () async {
+                      final newFile = File(
+                        '$rootPath/new_note_${DateTime.now().millisecondsSinceEpoch}.md',
+                      );
+                      await newFile.create();
 
-                Navigator.pushNamed(
-                  context,
-                  '/canvas',
-                  arguments: newFile.path,
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextButton(
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Text('Open a note'),
+                      Navigator.pushNamed(
+                        context,
+                        '/canvas',
+                        arguments: newFile.path,
+                      );
+                    },
                   ),
-                  Icon(IconsaxOutline.folder, size: 21),
+                  const SizedBox(width: 16),
+                  OutlinedButton.icon(
+                    icon: const Icon(IconsaxOutline.folder),
+                    label: const Text('Open a note'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 16,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                    onPressed: () => Navigator.pushNamed(context, '/home'),
+                  ),
                 ],
               ),
-              onPressed: () => Navigator.pushNamed(context, '/home'),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
       floatingActionButton: CustomFAB(rootPath: rootPath),
     );

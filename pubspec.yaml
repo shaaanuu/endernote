@@ -48,3 +48,6 @@ flutter:
     - family: Roboto
       fonts:
         - asset: lib/assets/Roboto.ttf
+    - family: Barriecito
+      fonts:
+        - asset: lib/assets/Barriecito.ttf
