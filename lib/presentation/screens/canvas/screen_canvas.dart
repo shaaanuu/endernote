@@ -23,6 +23,22 @@ class ScreenCanvas extends StatelessWidget {
     return base.endsWith('.md') ? base.substring(0, base.length - 3) : base;
   }
 
+  void _renameFile(BuildContext context, String oldPath, String newName) {
+    final newPath = '${Directory(oldPath).parent.path}/$newName.md';
+    if (newPath != oldPath && newName.trim().isNotEmpty) {
+      try {
+        File(oldPath).renameSync(newPath);
+        filePathNotifier.value = newPath;
+
+        context
+            .read<DirectoryBloc>()
+            .add(FetchDirectory(Directory(oldPath).parent.path));
+      } catch (e) {
+        debugPrint("Error renaming file: $e");
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (filePathNotifier.value.isEmpty) {
@@ -34,51 +50,32 @@ class ScreenCanvas extends StatelessWidget {
     return ValueListenableBuilder<bool>(
       valueListenable: editOrPreview,
       builder: (context, isEditing, _) {
-        return ValueListenableBuilder<String>(
-          valueListenable: filePathNotifier,
-          builder: (context, filePath, _) {
-            return Scaffold(
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                toolbarHeight: 80,
-                title: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black.withAlpha(80),
-                    borderRadius: BorderRadius.circular(12),
+        return Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            toolbarHeight: 80,
+            title: Container(
+              decoration: BoxDecoration(
+                color: Colors.black.withAlpha(80),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.all(3),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(IconsaxOutline.arrow_left_2),
                   ),
-                  padding: const EdgeInsets.all(3),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: const Icon(IconsaxOutline.arrow_left_2),
-                      ),
-                      Expanded(
-                        child: TextField(
+                  Expanded(
+                    child: ValueListenableBuilder<String>(
+                      valueListenable: filePathNotifier,
+                      builder: (context, filePath, _) {
+                        return TextField(
                           controller: titleController,
                           focusNode: titleFocusNode,
-                          onChanged: (newName) {
-                            final trimmed = newName.trim();
-                            if (trimmed.isNotEmpty) {
-                              final newPath =
-                                  '${Directory(filePath).parent.path}/$trimmed.md';
-                              if (newPath != filePath) {
-                                try {
-                                  File(filePath).renameSync(newPath);
-                                  filePathNotifier.value = newPath;
-
-                                  context.read<DirectoryBloc>().add(
-                                        FetchDirectory(
-                                          Directory(filePath).parent.path,
-                                        ),
-                                      );
-                                } catch (e) {
-                                  debugPrint("Error renaming file: $e");
-                                }
-                              }
-                            }
-                          },
+                          onChanged: (newName) =>
+                              _renameFile(context, filePath, newName),
                           style: TextStyle(
                             fontFamily: 'FiraCode',
                             color: Theme.of(context)
@@ -98,26 +95,23 @@ class ScreenCanvas extends StatelessWidget {
                             border: InputBorder.none,
                             enabledBorder: InputBorder.none,
                           ),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          isEditing
-                              ? IconsaxOutline.edit_2
-                              : IconsaxOutline.book_1,
-                        ),
-                        onPressed: () =>
-                            editOrPreview.value = !editOrPreview.value,
-                      ),
-                    ],
+                        );
+                      },
+                    ),
                   ),
-                ),
+                  IconButton(
+                    icon: Icon(
+                      isEditing ? IconsaxOutline.edit_2 : IconsaxOutline.book_1,
+                    ),
+                    onPressed: () => editOrPreview.value = !editOrPreview.value,
+                  ),
+                ],
               ),
-              body: isEditing
-                  ? EditMode(entityPath: filePath)
-                  : PreviewMode(entityPath: filePath),
-            );
-          },
+            ),
+          ),
+          body: isEditing
+              ? EditMode(entityPath: filePathNotifier.value)
+              : PreviewMode(entityPath: filePathNotifier.value),
         );
       },
     );
