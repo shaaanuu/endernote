@@ -24,15 +24,21 @@ class ScreenCanvas extends StatelessWidget {
   }
 
   void _renameFile(BuildContext context, String oldPath, String newName) {
-    final newPath = '${Directory(oldPath).parent.path}/$newName.md';
+    final parentDir = Directory(oldPath).parent;
+    String newPath = '${parentDir.path}/$newName.md';
+
     if (newPath != oldPath && newName.trim().isNotEmpty) {
+      int counter = 1;
+      while (File(newPath).existsSync()) {
+        newPath = '${parentDir.path}/$newName ($counter).md';
+        counter++;
+      }
+
       try {
         File(oldPath).renameSync(newPath);
         filePathNotifier.value = newPath;
 
-        context
-            .read<DirectoryBloc>()
-            .add(FetchDirectory(Directory(oldPath).parent.path));
+        context.read<DirectoryBloc>().add(FetchDirectory(parentDir.path));
       } catch (e) {
         debugPrint("Error renaming file: $e");
       }
