@@ -54,7 +54,6 @@ class EditMode extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   padding: const EdgeInsets.all(5),
-                  color: Colors.black12,
                   child: TextField(
                     decoration: InputDecoration(
                       floatingLabelStyle: TextStyle(
