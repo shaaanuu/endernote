@@ -133,8 +133,10 @@ class ScreenHero extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 60),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 12,
+              runSpacing: 12,
               children: [
                 ElevatedButton.icon(
                   icon: const Icon(
@@ -155,7 +157,7 @@ class ScreenHero extends StatelessWidget {
                     backgroundColor: const Color(0xFF89b4fa),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
-                      vertical: 16,
+                      vertical: 14,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25),
@@ -166,7 +168,7 @@ class ScreenHero extends StatelessWidget {
                       '$rootPath/new_note_${DateTime.now().millisecondsSinceEpoch}.md',
                     );
                     await newFile.create();
-        
+
                     Navigator.pushNamed(
                       context,
                       '/canvas',
@@ -174,7 +176,6 @@ class ScreenHero extends StatelessWidget {
                     );
                   },
                 ),
-                const SizedBox(width: 16),
                 OutlinedButton.icon(
                   icon: const Icon(IconsaxOutline.folder),
                   label: const Text(
@@ -188,7 +189,7 @@ class ScreenHero extends StatelessWidget {
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
-                      vertical: 16,
+                      vertical: 14,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25),
