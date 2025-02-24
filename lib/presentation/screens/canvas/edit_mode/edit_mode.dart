@@ -48,12 +48,11 @@ class EditMode extends StatelessWidget {
             },
           );
 
-          return Stack(
+          return Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  padding: const EdgeInsets.all(5),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: TextField(
                     decoration: InputDecoration(
                       floatingLabelStyle: TextStyle(
@@ -80,7 +79,7 @@ class EditMode extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomRight,
                 child: Container(
-                  margin: const EdgeInsets.fromLTRB(12, 0, 0, 24),
+                  margin: const EdgeInsets.fromLTRB(12, 0, 0, 12),
                   decoration: BoxDecoration(
                     color: Colors.black54,
                     borderRadius: BorderRadius.only(
@@ -91,7 +90,6 @@ class EditMode extends StatelessWidget {
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
                       children: [
                         floatingToolbarButton(
                           Icons.format_bold,
