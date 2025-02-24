@@ -17,13 +17,6 @@ class EditMode extends StatelessWidget {
     }
   }
 
-  Widget floatingToolbarButton(IconData icon, VoidCallback onPressed) {
-    return IconButton(
-      onPressed: onPressed,
-      icon: Icon(icon, color: Colors.white),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
@@ -47,6 +40,16 @@ class EditMode extends StatelessWidget {
               }
             },
           );
+
+          Widget floatingToolbarButton(IconData icon, VoidCallback onPressed) =>
+              IconButton(
+                onPressed: onPressed,
+                icon: Icon(
+                  icon,
+                  color:
+                      Theme.of(context).extension<EndernoteColors>()?.clrText,
+                ),
+              );
 
           return Column(
             children: [
