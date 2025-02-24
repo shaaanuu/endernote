@@ -17,6 +17,13 @@ class EditMode extends StatelessWidget {
     }
   }
 
+  Widget floatingToolbarButton(IconData icon, VoidCallback onPressed) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: Icon(icon, color: Colors.white),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
@@ -87,82 +94,49 @@ class EditMode extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.format_bold,
-                            color: Colors.white,
-                          ),
+                        floatingToolbarButton(
+                          Icons.format_bold,
+                          () {},
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.format_italic,
-                            color: Colors.white,
-                          ),
+                        floatingToolbarButton(
+                          Icons.format_italic,
+                          () {},
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.format_underline,
-                            color: Colors.white,
-                          ),
+                        floatingToolbarButton(
+                          Icons.format_underline,
+                          () {},
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.strikethrough_s,
-                            color: Colors.white,
-                          ),
+                        floatingToolbarButton(
+                          Icons.strikethrough_s,
+                          () {},
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.format_list_bulleted,
-                            color: Colors.white,
-                          ),
+                        floatingToolbarButton(
+                          Icons.format_list_bulleted,
+                          () {},
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.format_list_numbered,
-                            color: Colors.white,
-                          ),
+                        floatingToolbarButton(
+                          Icons.format_list_numbered,
+                          () {},
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.code,
-                            color: Colors.white,
-                          ),
+                        floatingToolbarButton(
+                          Icons.code,
+                          () {},
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.link,
-                            color: Colors.white,
-                          ),
+                        floatingToolbarButton(
+                          Icons.link,
+                          () {},
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.image,
-                            color: Colors.white,
-                          ),
+                        floatingToolbarButton(
+                          Icons.image,
+                          () {},
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.format_quote,
-                            color: Colors.white,
-                          ),
+                        floatingToolbarButton(
+                          Icons.format_quote,
+                          () {},
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.horizontal_rule,
-                            color: Colors.white,
-                          ),
+                        floatingToolbarButton(
+                          Icons.horizontal_rule,
+                          () {},
                         ),
                       ],
                     ),
