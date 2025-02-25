@@ -26,25 +26,28 @@ class EditMode extends StatelessWidget {
 
     // If text is selected, wrap it with formatting
     if (selection.start != selection.end) {
-      final selectedText = text.substring(selection.start, selection.end);
-      final newText = text.replaceRange(
-          selection.start, selection.end, '$prefix$selectedText$suffix');
-
-      controller.text = newText;
+      controller.text = text.replaceRange(
+        selection.start,
+        selection.end,
+        '$prefix${text.substring(selection.start, selection.end)}$suffix',
+      );
 
       // Position cursor after the formatted text
-      final newPosition = selection.end + prefix.length + suffix.length;
-      controller.selection = TextSelection.collapsed(offset: newPosition);
+      controller.selection = TextSelection.collapsed(
+        offset: selection.end + prefix.length + suffix.length,
+      );
     } else {
       // If no text selected, insert the formatting and place cursor between prefix and suffix
-      final newText =
-          text.replaceRange(selection.start, selection.start, '$prefix$suffix');
-
-      controller.text = newText;
+      controller.text = text.replaceRange(
+        selection.start,
+        selection.start,
+        '$prefix$suffix',
+      );
 
       // Position cursor between prefix and suffix
-      final newPosition = selection.start + prefix.length;
-      controller.selection = TextSelection.collapsed(offset: newPosition);
+      controller.selection = TextSelection.collapsed(
+        offset: selection.start + prefix.length,
+      );
     }
 
     // Save changes to file
@@ -67,8 +70,7 @@ class EditMode extends StatelessWidget {
     if (event is RawKeyDownEvent &&
         event.logicalKey == LogicalKeyboardKey.enter) {
       final text = controller.text;
-      final selection = controller.selection;
-      final currentPosition = selection.baseOffset;
+      final currentPosition = controller.selection.baseOffset;
 
       // Find the start of the current line
       int lineStart = text.lastIndexOf('\n', currentPosition - 1) + 1;
@@ -85,34 +87,35 @@ class EditMode extends StatelessWidget {
       // If empty list item (just the marker with no content), remove the marker
       if (bulletMatch != null && bulletMatch.group(2)?.trim().isEmpty == true) {
         final whitespace = bulletMatch.group(1) ?? '';
-        final newText =
-            text.replaceRange(lineStart, currentPosition, whitespace);
-        controller.text = newText;
-        controller.selection =
-            TextSelection.collapsed(offset: lineStart + whitespace.length);
+        controller.text = text.replaceRange(
+          lineStart,
+          currentPosition,
+          whitespace,
+        );
+        controller.selection = TextSelection.collapsed(
+          offset: lineStart + whitespace.length,
+        );
         return true;
       } else if (numberedMatch != null &&
           numberedMatch.group(3)?.trim().isEmpty == true) {
         final whitespace = numberedMatch.group(1) ?? '';
-        final newText =
+        controller.text =
             text.replaceRange(lineStart, currentPosition, whitespace);
-        controller.text = newText;
-        controller.selection =
-            TextSelection.collapsed(offset: lineStart + whitespace.length);
+        controller.selection = TextSelection.collapsed(
+          offset: lineStart + whitespace.length,
+        );
         return true;
       }
 
       // Continue list if there's content
       if (bulletMatch != null) {
-        final whitespace = bulletMatch.group(1) ?? '';
-        final newItem = '\n$whitespace- ';
-        _insertText(controller, newItem);
+        _insertText(controller, '\n${bulletMatch.group(1) ?? ''}- ');
         return true;
       } else if (numberedMatch != null) {
-        final whitespace = numberedMatch.group(1) ?? '';
-        final number = int.parse(numberedMatch.group(2) ?? '1') + 1;
-        final newItem = '\n$whitespace$number. ';
-        _insertText(controller, newItem);
+        _insertText(
+          controller,
+          '\n${numberedMatch.group(1) ?? ''}${int.parse(numberedMatch.group(2) ?? '1') + 1}. ',
+        );
         return true;
       }
     }
@@ -120,14 +123,39 @@ class EditMode extends StatelessWidget {
   }
 
   void _insertText(TextEditingController controller, String text) {
-    final currentPosition = controller.selection.baseOffset;
-    final newText =
-        controller.text.replaceRange(currentPosition, currentPosition, text);
-    controller.text = newText;
-    controller.selection =
-        TextSelection.collapsed(offset: currentPosition + text.length);
+    controller.text = controller.text.replaceRange(
+      controller.selection.baseOffset,
+      controller.selection.baseOffset,
+      text,
+    );
+    controller.selection = TextSelection.collapsed(
+      offset: controller.selection.baseOffset + text.length,
+    );
     _saveChanges(controller.text, entityPath);
   }
+
+  Widget floatingToolbarButton(
+    BuildContext context,
+    IconData icon,
+    String tooltip,
+    TextEditingController textController,
+    FocusNode focusNode,
+    String prefix, [
+    String? suffix,
+  ]) =>
+      IconButton(
+        onPressed: () => _insertFormatting(
+          textController,
+          focusNode,
+          prefix,
+          suffix ?? '',
+        ),
+        icon: Icon(
+          icon,
+          color: Theme.of(context).extension<EndernoteColors>()?.clrText,
+        ),
+        tooltip: tooltip,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +186,7 @@ class EditMode extends StatelessWidget {
 
           return ValueListenableBuilder<TextEditingValue>(
             valueListenable: textController,
-            builder: (context, value, child) {
+            builder: (context, value, _) {
               return Column(
                 children: [
                   Expanded(
@@ -208,166 +236,100 @@ class EditMode extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            IconButton(
-                              onPressed: () => _insertFormatting(
-                                textController,
-                                focusNode,
-                                '**',
-                                '**',
-                              ),
-                              icon: Icon(
-                                Icons.format_bold,
-                                color: Theme.of(context)
-                                    .extension<EndernoteColors>()
-                                    ?.clrText,
-                              ),
-                              tooltip: 'Bold',
+                            floatingToolbarButton(
+                              context,
+                              Icons.format_bold,
+                              'Bold',
+                              textController,
+                              focusNode,
+                              '**',
+                              '**',
                             ),
-                            IconButton(
-                              onPressed: () => _insertFormatting(
-                                textController,
-                                focusNode,
-                                '*',
-                                '*',
-                              ),
-                              icon: Icon(
-                                Icons.format_italic,
-                                color: Theme.of(context)
-                                    .extension<EndernoteColors>()
-                                    ?.clrText,
-                              ),
-                              tooltip: 'Italic',
+                            floatingToolbarButton(
+                              context,
+                              Icons.format_italic,
+                              'Italic',
+                              textController,
+                              focusNode,
+                              '*',
+                              '*',
                             ),
-                            IconButton(
-                              onPressed: () => _insertFormatting(
-                                textController,
-                                focusNode,
-                                '__',
-                                '__',
-                              ),
-                              icon: Icon(
-                                Icons.format_underline,
-                                color: Theme.of(context)
-                                    .extension<EndernoteColors>()
-                                    ?.clrText,
-                              ),
-                              tooltip: 'Underline',
+                            floatingToolbarButton(
+                              context,
+                              Icons.format_underline,
+                              'Underline',
+                              textController,
+                              focusNode,
+                              '__',
+                              '__',
                             ),
-                            IconButton(
-                              onPressed: () => _insertFormatting(
-                                textController,
-                                focusNode,
-                                '~~',
-                                '~~',
-                              ),
-                              icon: Icon(
-                                Icons.strikethrough_s,
-                                color: Theme.of(context)
-                                    .extension<EndernoteColors>()
-                                    ?.clrText,
-                              ),
-                              tooltip: 'Strikethrough',
+                            floatingToolbarButton(
+                              context,
+                              Icons.strikethrough_s,
+                              'Strikethrough',
+                              textController,
+                              focusNode,
+                              '~~',
+                              '~~',
                             ),
-                            IconButton(
-                              onPressed: () => _insertFormatting(
-                                textController,
-                                focusNode,
-                                '- ',
-                              ),
-                              icon: Icon(
-                                Icons.format_list_bulleted,
-                                color: Theme.of(context)
-                                    .extension<EndernoteColors>()
-                                    ?.clrText,
-                              ),
-                              tooltip: 'Bullet List',
+                            floatingToolbarButton(
+                              context,
+                              Icons.format_list_bulleted,
+                              'Bullet List',
+                              textController,
+                              focusNode,
+                              '- ',
                             ),
-                            IconButton(
-                              onPressed: () => _insertFormatting(
-                                textController,
-                                focusNode,
-                                '1. ',
-                              ),
-                              icon: Icon(
-                                Icons.format_list_numbered,
-                                color: Theme.of(context)
-                                    .extension<EndernoteColors>()
-                                    ?.clrText,
-                              ),
-                              tooltip: 'Numbered List',
+                            floatingToolbarButton(
+                              context,
+                              Icons.format_list_numbered,
+                              'Numbered List',
+                              textController,
+                              focusNode,
+                              '1. ',
                             ),
-                            IconButton(
-                              onPressed: () => _insertFormatting(
-                                textController,
-                                focusNode,
-                                '```\n',
-                                '\n```',
-                              ),
-                              icon: Icon(
-                                Icons.code,
-                                color: Theme.of(context)
-                                    .extension<EndernoteColors>()
-                                    ?.clrText,
-                              ),
-                              tooltip: 'Code Block',
+                            floatingToolbarButton(
+                              context,
+                              Icons.code,
+                              'Code Block',
+                              textController,
+                              focusNode,
+                              '```\n',
+                              '\n```',
                             ),
-                            IconButton(
-                              onPressed: () => _insertFormatting(
-                                textController,
-                                focusNode,
-                                '[',
-                                '](url)',
-                              ),
-                              icon: Icon(
-                                Icons.link,
-                                color: Theme.of(context)
-                                    .extension<EndernoteColors>()
-                                    ?.clrText,
-                              ),
-                              tooltip: 'Link',
+                            floatingToolbarButton(
+                              context,
+                              Icons.link,
+                              'Link',
+                              textController,
+                              focusNode,
+                              '[',
+                              '](url)',
                             ),
-                            IconButton(
-                              onPressed: () => _insertFormatting(
-                                textController,
-                                focusNode,
-                                '![alt text](',
-                                ')',
-                              ),
-                              icon: Icon(
-                                Icons.image,
-                                color: Theme.of(context)
-                                    .extension<EndernoteColors>()
-                                    ?.clrText,
-                              ),
-                              tooltip: 'Image',
+                            floatingToolbarButton(
+                              context,
+                              Icons.image,
+                              'Image',
+                              textController,
+                              focusNode,
+                              '![alt text](',
+                              ')',
                             ),
-                            IconButton(
-                              onPressed: () => _insertFormatting(
-                                textController,
-                                focusNode,
-                                '> ',
-                              ),
-                              icon: Icon(
-                                Icons.format_quote,
-                                color: Theme.of(context)
-                                    .extension<EndernoteColors>()
-                                    ?.clrText,
-                              ),
-                              tooltip: 'Quote',
+                            floatingToolbarButton(
+                              context,
+                              Icons.format_quote,
+                              'Quote',
+                              textController,
+                              focusNode,
+                              '> ',
                             ),
-                            IconButton(
-                              onPressed: () => _insertFormatting(
-                                textController,
-                                focusNode,
-                                '\n---\n',
-                              ),
-                              icon: Icon(
-                                Icons.horizontal_rule,
-                                color: Theme.of(context)
-                                    .extension<EndernoteColors>()
-                                    ?.clrText,
-                              ),
-                              tooltip: 'Horizontal Rule',
+                            floatingToolbarButton(
+                              context,
+                              Icons.horizontal_rule,
+                              'Horizontal Rule',
+                              textController,
+                              focusNode,
+                              '\n---\n',
                             ),
                           ],
                         ),
