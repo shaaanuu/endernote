@@ -66,9 +66,8 @@ class EditMode extends StatelessWidget {
   }
 
   // Handle key events for auto-continuation of lists
-  bool _handleKeyEvent(RawKeyEvent event, TextEditingController controller) {
-    if (event is RawKeyDownEvent &&
-        event.logicalKey == LogicalKeyboardKey.enter) {
+  bool _handleKeyEvent(KeyEvent event, TextEditingController controller) {
+    if (event is KeyDownEvent && event.logicalKey == LogicalKeyboardKey.enter) {
       final text = controller.text;
       final currentPosition = controller.selection.baseOffset;
 
@@ -192,9 +191,9 @@ class EditMode extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: RawKeyboardListener(
+                      child: KeyboardListener(
                         focusNode: FocusNode(),
-                        onKey: (event) =>
+                        onKeyEvent: (event) =>
                             _handleKeyEvent(event, textController),
                         child: TextField(
                           decoration: InputDecoration(
