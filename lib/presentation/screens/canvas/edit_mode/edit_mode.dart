@@ -65,9 +65,11 @@ class EditMode extends StatelessWidget {
     }
   }
 
-  // Handle key events for auto-continuation of lists
-  bool _handleKeyEvent(KeyEvent event, TextEditingController controller) {
-    if (event is KeyDownEvent && event.logicalKey == LogicalKeyboardKey.enter) {
+  // Handle key events for auto-continuation of lists.
+  // Returns true if it handled the event.
+  bool _handleKeyEvent(RawKeyEvent event, TextEditingController controller) {
+    if (event is RawKeyDownEvent &&
+        event.logicalKey == LogicalKeyboardKey.enter) {
       final text = controller.text;
       final currentPosition = controller.selection.baseOffset;
 
@@ -83,7 +85,7 @@ class EditMode extends StatelessWidget {
       final numberedMatch =
           RegExp(r'^(\s*)(\d+)\. (.*)$').firstMatch(currentLine);
 
-      // If empty list item (just the marker with no content), remove the marker
+      // If empty list item, remove marker.
       if (bulletMatch != null && bulletMatch.group(2)?.trim().isEmpty == true) {
         final whitespace = bulletMatch.group(1) ?? '';
         controller.text = text.replaceRange(
@@ -98,8 +100,11 @@ class EditMode extends StatelessWidget {
       } else if (numberedMatch != null &&
           numberedMatch.group(3)?.trim().isEmpty == true) {
         final whitespace = numberedMatch.group(1) ?? '';
-        controller.text =
-            text.replaceRange(lineStart, currentPosition, whitespace);
+        controller.text = text.replaceRange(
+          lineStart,
+          currentPosition,
+          whitespace,
+        );
         controller.selection = TextSelection.collapsed(
           offset: lineStart + whitespace.length,
         );
@@ -169,9 +174,7 @@ class EditMode extends StatelessWidget {
       future: _loadFileContent(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         } else {
           final textController = TextEditingController(
             text: snapshot.data ?? "",
@@ -179,16 +182,13 @@ class EditMode extends StatelessWidget {
 
           final focusNode = FocusNode();
 
-          // Set up file save listener
-          textController.addListener(
-            () async {
-              try {
-                await File(entityPath).writeAsString(textController.text);
-              } catch (e) {
-                debugPrint("Error saving file: $e");
-              }
-            },
-          );
+          textController.addListener(() async {
+            try {
+              await File(entityPath).writeAsString(textController.text);
+            } catch (e) {
+              debugPrint("Error saving file: $e");
+            }
+          });
 
           return ValueListenableBuilder<TextEditingValue>(
             valueListenable: textController,
@@ -198,10 +198,18 @@ class EditMode extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: KeyboardListener(
-                        focusNode: FocusNode(),
-                        onKeyEvent: (event) =>
-                            _handleKeyEvent(event, textController),
+                      child: Focus(
+                        onKey: (node, event) {
+                          if (event is RawKeyDownEvent &&
+                              event.logicalKey == LogicalKeyboardKey.enter) {
+                            bool handled =
+                                _handleKeyEvent(event, textController);
+                            return handled
+                                ? KeyEventResult.handled
+                                : KeyEventResult.ignored;
+                          }
+                          return KeyEventResult.ignored;
+                        },
                         child: TextField(
                           decoration: InputDecoration(
                             floatingLabelStyle: TextStyle(
