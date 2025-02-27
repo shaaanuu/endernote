@@ -67,9 +67,8 @@ class EditMode extends StatelessWidget {
 
   // Handle key events for auto-continuation of lists.
   // Returns true if it handled the event.
-  bool _handleKeyEvent(RawKeyEvent event, TextEditingController controller) {
-    if (event is RawKeyDownEvent &&
-        event.logicalKey == LogicalKeyboardKey.enter) {
+  bool _handleKeyEvent(KeyEvent event, TextEditingController controller) {
+    if (event is KeyDownEvent && event.logicalKey == LogicalKeyboardKey.enter) {
       final text = controller.text;
       final currentPosition = controller.selection.baseOffset;
 
@@ -175,186 +174,173 @@ class EditMode extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
-        } else {
-          final textController = TextEditingController(
-            text: snapshot.data ?? "",
-          );
-
-          final focusNode = FocusNode();
-
-          textController.addListener(() async {
-            try {
-              await File(entityPath).writeAsString(textController.text);
-            } catch (e) {
-              debugPrint("Error saving file: $e");
-            }
-          });
-
-          return ValueListenableBuilder<TextEditingValue>(
-            valueListenable: textController,
-            builder: (context, value, _) {
-              return Column(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Focus(
-                        onKey: (node, event) {
-                          if (event is RawKeyDownEvent &&
-                              event.logicalKey == LogicalKeyboardKey.enter) {
-                            bool handled =
-                                _handleKeyEvent(event, textController);
-                            return handled
-                                ? KeyEventResult.handled
-                                : KeyEventResult.ignored;
-                          }
-                          return KeyEventResult.ignored;
-                        },
-                        child: TextField(
-                          decoration: InputDecoration(
-                            floatingLabelStyle: TextStyle(
-                              color: Theme.of(context)
-                                  .extension<EndernoteColors>()
-                                  ?.clrText,
-                            ),
-                            border: InputBorder.none,
-                            labelStyle: TextStyle(
-                              color: Theme.of(context)
-                                  .extension<EndernoteColors>()
-                                  ?.clrText,
-                            ),
-                            enabledBorder: InputBorder.none,
-                          ),
-                          style: const TextStyle(fontFamily: 'FiraCode'),
-                          controller: textController,
-                          focusNode: focusNode,
-                          expands: true,
-                          minLines: null,
-                          maxLines: null,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Container(
-                      margin: const EdgeInsets.fromLTRB(12, 0, 0, 12),
-                      decoration: BoxDecoration(
-                        color: Colors.black54,
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(20),
-                          topLeft: Radius.circular(20),
-                        ),
-                      ),
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            floatingToolbarButton(
-                              context,
-                              Icons.format_bold,
-                              'Bold',
-                              textController,
-                              focusNode,
-                              '**',
-                              '**',
-                            ),
-                            floatingToolbarButton(
-                              context,
-                              Icons.format_italic,
-                              'Italic',
-                              textController,
-                              focusNode,
-                              '*',
-                              '*',
-                            ),
-                            floatingToolbarButton(
-                              context,
-                              Icons.format_underline,
-                              'Underline',
-                              textController,
-                              focusNode,
-                              '__',
-                              '__',
-                            ),
-                            floatingToolbarButton(
-                              context,
-                              Icons.strikethrough_s,
-                              'Strikethrough',
-                              textController,
-                              focusNode,
-                              '~~',
-                              '~~',
-                            ),
-                            floatingToolbarButton(
-                              context,
-                              Icons.format_list_bulleted,
-                              'Bullet List',
-                              textController,
-                              focusNode,
-                              '- ',
-                            ),
-                            floatingToolbarButton(
-                              context,
-                              Icons.format_list_numbered,
-                              'Numbered List',
-                              textController,
-                              focusNode,
-                              '1. ',
-                            ),
-                            floatingToolbarButton(
-                              context,
-                              Icons.code,
-                              'Code Block',
-                              textController,
-                              focusNode,
-                              '```\n',
-                              '\n```',
-                            ),
-                            floatingToolbarButton(
-                              context,
-                              Icons.link,
-                              'Link',
-                              textController,
-                              focusNode,
-                              '[',
-                              '](url)',
-                            ),
-                            floatingToolbarButton(
-                              context,
-                              Icons.image,
-                              'Image',
-                              textController,
-                              focusNode,
-                              '![alt text](',
-                              ')',
-                            ),
-                            floatingToolbarButton(
-                              context,
-                              Icons.format_quote,
-                              'Quote',
-                              textController,
-                              focusNode,
-                              '> ',
-                            ),
-                            floatingToolbarButton(
-                              context,
-                              Icons.horizontal_rule,
-                              'Horizontal Rule',
-                              textController,
-                              focusNode,
-                              '\n---\n',
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
-          );
         }
+
+        final textController = TextEditingController(text: snapshot.data ?? "");
+        final focusNode = FocusNode();
+
+        textController.addListener(() async {
+          await _saveChanges(textController.text, entityPath);
+        });
+
+        return ValueListenableBuilder<TextEditingValue>(
+          valueListenable: textController,
+          builder: (context, value, _) {
+            return Column(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Focus(
+                      autofocus: true,
+                      onKeyEvent: (node, event) =>
+                          _handleKeyEvent(event, textController)
+                              ? KeyEventResult.handled
+                              : KeyEventResult.ignored,
+                      child: TextField(
+                        controller: textController,
+                        focusNode: focusNode,
+                        expands: true,
+                        minLines: null,
+                        maxLines: null,
+                        style: const TextStyle(fontFamily: 'FiraCode'),
+                        decoration: InputDecoration(
+                          floatingLabelStyle: TextStyle(
+                            color: Theme.of(context)
+                                .extension<EndernoteColors>()
+                                ?.clrText,
+                          ),
+                          border: InputBorder.none,
+                          labelStyle: TextStyle(
+                            color: Theme.of(context)
+                                .extension<EndernoteColors>()
+                                ?.clrText,
+                          ),
+                          enabledBorder: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    margin: const EdgeInsets.fromLTRB(12, 0, 0, 12),
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        topLeft: Radius.circular(20),
+                      ),
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          floatingToolbarButton(
+                            context,
+                            Icons.format_bold,
+                            'Bold',
+                            textController,
+                            focusNode,
+                            '**',
+                            '**',
+                          ),
+                          floatingToolbarButton(
+                            context,
+                            Icons.format_italic,
+                            'Italic',
+                            textController,
+                            focusNode,
+                            '*',
+                            '*',
+                          ),
+                          floatingToolbarButton(
+                            context,
+                            Icons.format_underline,
+                            'Underline',
+                            textController,
+                            focusNode,
+                            '__',
+                            '__',
+                          ),
+                          floatingToolbarButton(
+                            context,
+                            Icons.strikethrough_s,
+                            'Strikethrough',
+                            textController,
+                            focusNode,
+                            '~~',
+                            '~~',
+                          ),
+                          floatingToolbarButton(
+                            context,
+                            Icons.format_list_bulleted,
+                            'Bullet List',
+                            textController,
+                            focusNode,
+                            '- ',
+                          ),
+                          floatingToolbarButton(
+                            context,
+                            Icons.format_list_numbered,
+                            'Numbered List',
+                            textController,
+                            focusNode,
+                            '1. ',
+                          ),
+                          floatingToolbarButton(
+                            context,
+                            Icons.code,
+                            'Code Block',
+                            textController,
+                            focusNode,
+                            '```\n',
+                            '\n```',
+                          ),
+                          floatingToolbarButton(
+                            context,
+                            Icons.link,
+                            'Link',
+                            textController,
+                            focusNode,
+                            '[',
+                            '](url)',
+                          ),
+                          floatingToolbarButton(
+                            context,
+                            Icons.image,
+                            'Image',
+                            textController,
+                            focusNode,
+                            '![alt text](',
+                            ')',
+                          ),
+                          floatingToolbarButton(
+                            context,
+                            Icons.format_quote,
+                            'Quote',
+                            textController,
+                            focusNode,
+                            '> ',
+                          ),
+                          floatingToolbarButton(
+                            context,
+                            Icons.horizontal_rule,
+                            'Horizontal Rule',
+                            textController,
+                            focusNode,
+                            '\n---\n',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
       },
     );
   }
