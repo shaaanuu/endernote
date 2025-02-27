@@ -122,14 +122,21 @@ class EditMode extends StatelessWidget {
   }
 
   void _insertText(TextEditingController controller, String text) {
+    final currentPosition = controller.selection.baseOffset;
+
+    if (currentPosition == -1) return;
+
     controller.text = controller.text.replaceRange(
-      controller.selection.baseOffset,
-      controller.selection.baseOffset,
+      currentPosition,
+      currentPosition,
       text,
     );
+
+    // updated to new cursor position.
     controller.selection = TextSelection.collapsed(
-      offset: controller.selection.baseOffset + text.length,
+      offset: (currentPosition + text.length).clamp(0, controller.text.length),
     );
+
     _saveChanges(controller.text, entityPath);
   }
 
