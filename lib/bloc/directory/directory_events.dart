@@ -24,3 +24,13 @@ class ToggleFolder extends DirectoryEvent {
   @override
   List<Object?> get props => [path];
 }
+
+class SearchDirectory extends DirectoryEvent {
+  final String rootPath;
+  final String query;
+
+  const SearchDirectory(this.rootPath, this.query);
+
+  @override
+  List<Object?> get props => [rootPath, query];
+}

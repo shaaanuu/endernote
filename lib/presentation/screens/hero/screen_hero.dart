@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ficonsax/ficonsax.dart';
 
 import '../../widgets/custom_fab.dart';
+import '../search/screen_search.dart';
 
 class ScreenHero extends StatelessWidget {
   const ScreenHero({super.key, required this.rootPath});
@@ -52,11 +53,21 @@ class ScreenHero extends StatelessWidget {
               ),
               ValueListenableBuilder<bool>(
                 valueListenable: hasText,
-                builder: (context, hasTextValue, child) {
+                builder: (context, hasTextValue, _) {
                   return IconButton(
                     onPressed: () {
                       if (hasTextValue) {
-                        searchController.clear();
+                        if (searchController.text.trim().isNotEmpty) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ScreenSearch(
+                                searchQuery: searchController.text.trim(),
+                                rootPath: rootPath,
+                              ),
+                            ),
+                          );
+                        }
                       } else {
                         Navigator.pushNamed(context, '/settings');
                       }

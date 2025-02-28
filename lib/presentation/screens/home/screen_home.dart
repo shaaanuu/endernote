@@ -9,6 +9,7 @@ import '../../../bloc/directory/directory_events.dart';
 import '../../../bloc/directory/directory_states.dart';
 import '../../theme/app_themes.dart';
 import '../../widgets/custom_fab.dart';
+import '../search/screen_search.dart';
 
 class ScreenHome extends StatelessWidget {
   const ScreenHome({super.key, required this.rootPath});
@@ -17,6 +18,8 @@ class ScreenHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController searchController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -35,6 +38,7 @@ class ScreenHome extends StatelessWidget {
               ),
               Expanded(
                 child: TextField(
+                  controller: searchController,
                   decoration: InputDecoration(
                     hintText: "Search your notes",
                     hintStyle: TextStyle(
@@ -48,7 +52,19 @@ class ScreenHome extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (searchController.text.trim().isNotEmpty) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ScreenSearch(
+                          searchQuery: searchController.text.trim(),
+                          rootPath: rootPath,
+                        ),
+                      ),
+                    );
+                  }
+                },
                 icon: const Icon(IconsaxOutline.search_normal_1),
               ),
             ],

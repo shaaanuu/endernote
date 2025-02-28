@@ -9,6 +9,7 @@ class DirectoryBloc extends Bloc<DirectoryEvent, DirectoryState> {
   DirectoryBloc() : super(const DirectoryState()) {
     on<FetchDirectory>(_onFetchDirectory);
     on<ToggleFolder>(_onToggleFolder);
+    on<SearchDirectory>(_onSearchDirectory);
   }
 
   Future<void> _onFetchDirectory(
@@ -51,5 +52,59 @@ class DirectoryBloc extends Bloc<DirectoryEvent, DirectoryState> {
     }
 
     emit(state.copyWith(openFolders: updatedOpenFolders));
+  }
+
+  Future<void> _onSearchDirectory(
+    SearchDirectory event,
+    Emitter<DirectoryState> emit,
+  ) async {
+    emit(state.copyWith(isSearching: true, searchErrorMessage: null));
+
+    try {
+      final results = await _searchDirectory(event.rootPath, event.query);
+      emit(state.copyWith(
+        isSearching: false,
+        searchResults: results,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        isSearching: false,
+        searchErrorMessage: e.toString(),
+      ));
+    }
+  }
+
+  Future<List<String>> _searchDirectory(String rootPath, String query) async {
+    if (query.isEmpty) return [];
+
+    final results = <String>[];
+
+    try {
+      await for (final entity in Directory(rootPath).list(recursive: true)) {
+        final path = entity.path;
+
+        // Skip hidden files/directories
+        if (path.split('/').last.startsWith('.')) continue;
+
+        // Check if file name contains query
+        if (path.split('/').last.toLowerCase().contains(query.toLowerCase())) {
+          results.add(path);
+          continue;
+        }
+
+        // If it's a file, also check its content
+        if (entity is File && path.endsWith('.md')) {
+          try {
+            final content = await File(path).readAsString();
+            if (content.toLowerCase().contains(query.toLowerCase())) {
+              results.add(path);
+            }
+          } catch (_) {}
+        }
+      }
+      return results;
+    } catch (e) {
+      throw Exception('Failed to search directory: $e');
+    }
   }
 }
