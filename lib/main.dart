@@ -12,6 +12,7 @@ import 'presentation/screens/about/screen_about.dart';
 import 'presentation/screens/canvas/screen_canvas.dart';
 import 'presentation/screens/hero/screen_hero.dart';
 import 'presentation/screens/home/screen_home.dart';
+import 'presentation/screens/search/screen_search.dart';
 import 'presentation/screens/settings/screen_settings.dart';
 import 'presentation/theme/app_themes.dart';
 
@@ -73,6 +74,18 @@ class MyApp extends StatelessWidget {
               '/home': (context) => ScreenHome(rootPath: rootPath),
               '/settings': (context) => const ScreenSettings(),
               '/about': (context) => const ScreenAbout(),
+            },
+            onGenerateRoute: (settings) {
+              if (settings.name == '/search') {
+                final args = settings.arguments as Map<String, dynamic>;
+                return MaterialPageRoute(
+                  builder: (context) => ScreenSearch(
+                    searchQuery: args['query'],
+                    rootPath: args['rootPath'],
+                  ),
+                );
+              }
+              return null;
             },
             theme: appThemeData[themeState.theme],
             home: ScreenHero(rootPath: rootPath),

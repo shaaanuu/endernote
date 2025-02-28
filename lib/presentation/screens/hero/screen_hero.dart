@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ficonsax/ficonsax.dart';
 
+import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_fab.dart';
-import '../search/screen_search.dart';
 
 class ScreenHero extends StatelessWidget {
   const ScreenHero({super.key, required this.rootPath});
@@ -22,67 +22,10 @@ class ScreenHero extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        toolbarHeight: 80,
-        title: Container(
-          decoration: BoxDecoration(
-            color: Colors.black.withAlpha(80),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          padding: const EdgeInsets.all(3),
-          child: Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: TextField(
-                    controller: searchController,
-                    decoration: InputDecoration(
-                      hintText: "Search your notes",
-                      hintStyle: TextStyle(
-                        color: Colors.white.withAlpha(100),
-                        fontSize: 14,
-                        fontFamily: 'FiraCode',
-                      ),
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ),
-              ValueListenableBuilder<bool>(
-                valueListenable: hasText,
-                builder: (context, hasTextValue, _) {
-                  return IconButton(
-                    onPressed: () {
-                      if (hasTextValue) {
-                        if (searchController.text.trim().isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ScreenSearch(
-                                searchQuery: searchController.text.trim(),
-                                rootPath: rootPath,
-                              ),
-                            ),
-                          );
-                        }
-                      } else {
-                        Navigator.pushNamed(context, '/settings');
-                      }
-                    },
-                    icon: Icon(
-                      hasTextValue
-                          ? IconsaxOutline.search_normal_1
-                          : IconsaxOutline.setting_2,
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
+      appBar: CustomAppBar(
+        rootPath: rootPath,
+        controller: searchController,
+        hasText: hasText,
       ),
       body: Center(
         child: Column(

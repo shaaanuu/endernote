@@ -8,8 +8,8 @@ import '../../../bloc/directory/directory_bloc.dart';
 import '../../../bloc/directory/directory_events.dart';
 import '../../../bloc/directory/directory_states.dart';
 import '../../theme/app_themes.dart';
+import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_fab.dart';
-import '../search/screen_search.dart';
 
 class ScreenHome extends StatelessWidget {
   const ScreenHome({super.key, required this.rootPath});
@@ -19,57 +19,18 @@ class ScreenHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController searchController = TextEditingController();
+    final ValueNotifier<bool> hasText = ValueNotifier<bool>(false);
+
+    searchController.addListener(() {
+      hasText.value = searchController.text.isNotEmpty;
+    });
 
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        toolbarHeight: 80,
-        title: Container(
-          decoration: BoxDecoration(
-            color: Colors.black.withAlpha(80),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          padding: const EdgeInsets.all(3),
-          child: Row(
-            children: [
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(IconsaxOutline.arrow_left_2),
-              ),
-              Expanded(
-                child: TextField(
-                  controller: searchController,
-                  decoration: InputDecoration(
-                    hintText: "Search your notes",
-                    hintStyle: TextStyle(
-                      color: Colors.white.withAlpha(100),
-                      fontSize: 14,
-                      fontFamily: 'FiraCode',
-                    ),
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                  ),
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  if (searchController.text.trim().isNotEmpty) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ScreenSearch(
-                          searchQuery: searchController.text.trim(),
-                          rootPath: rootPath,
-                        ),
-                      ),
-                    );
-                  }
-                },
-                icon: const Icon(IconsaxOutline.search_normal_1),
-              ),
-            ],
-          ),
-        ),
+      appBar: CustomAppBar(
+        rootPath: rootPath,
+        controller: searchController,
+        showBackButton: true,
+        hasText: hasText,
       ),
       body: BlocBuilder<DirectoryBloc, DirectoryState>(
         builder: (context, state) {

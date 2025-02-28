@@ -8,6 +8,7 @@ import '../../../bloc/directory/directory_bloc.dart';
 import '../../../bloc/directory/directory_events.dart';
 import '../../../bloc/directory/directory_states.dart';
 import '../../theme/app_themes.dart';
+import '../../widgets/custom_app_bar.dart';
 
 class ScreenSearch extends StatelessWidget {
   const ScreenSearch({
@@ -26,27 +27,10 @@ class ScreenSearch extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        toolbarHeight: 80,
-        title: Container(
-          decoration: BoxDecoration(
-            color: Colors.black.withAlpha(80),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          padding: const EdgeInsets.all(3),
-          child: Row(
-            children: [
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(IconsaxOutline.arrow_left_2),
-              ),
-              Expanded(
-                child: Text('Results for "$searchQuery"'),
-              ),
-            ],
-          ),
-        ),
+      appBar: CustomAppBar(
+        rootPath: rootPath,
+        searchQuery: searchQuery,
+        showBackButton: true,
       ),
       body: BlocBuilder<DirectoryBloc, DirectoryState>(
         builder: (context, state) {
