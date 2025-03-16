@@ -28,8 +28,10 @@ Welcome to **EnderNote**—a minimal, fast, and open-source note-taking app desi
 ## **📸 Screenshots**
 
 <p align="center">
-  <img src="screenshots/screenshot1.png" alt="Screenshot 1" width="300px" />
-  <img src="screenshots/screenshot2.png" alt="Screenshot 2" width="300px" />
+  <img src="screenshots/1.JPG" alt="Screenshot 1" width="300px" />
+  <img src="screenshots/2.JPG" alt="Screenshot 2" width="300px" />
+  <img src="screenshots/4.JPG" alt="Screenshot 2" width="300px" />
+  <img src="screenshots/3.JPG" alt="Screenshot 2" width="300px" />
 </p>
 
 ---
