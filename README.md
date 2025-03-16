@@ -51,16 +51,6 @@ cd endernote
 flutter pub get
 ```
 
-### **Set Up Firebase**
-
-1. Create a Firebase project at [Firebase Console](https://console.firebase.google.com/).
-2. Create a new file in the `lib` folder called `api_key.dart` and add the following:
-
-```dart
-const firebaseWebApi = "blablablaa";
-const databaseURL = "https://blablalblaa.firebaseio.com";
-```
-
 ### **Run the App**
 
 ```bash

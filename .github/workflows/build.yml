@@ -24,10 +24,6 @@ jobs:
         id: extract_version
         run: |
           echo "VERSION=$(grep '^version: ' pubspec.yaml | sed 's/version: //')" >> $GITHUB_ENV
-      - name: Create api_key.dart
-        run: |
-          echo 'const firebaseWebApi = "\"${{ secrets.API_KEY }}\"";' > lib/api_key.dart
-          echo 'const databaseURL = "\"${{ secrets.DATABASE_URL }}\"";' >> lib/api_key.dart
       - run: flutter build apk --release
       - name: Upload APK to release
         uses: svenstaro/upload-release-action@v2
@@ -54,10 +50,6 @@ jobs:
         run: |
           $version = Get-Content pubspec.yaml | Select-String '^version:' | ForEach-Object { $_ -replace 'version: ', '' }
           echo "VERSION=$version" >> $env:GITHUB_ENV
-      - name: Create api_key.dart
-        run: |
-          echo 'const firebaseWebApi = "\"${{ secrets.API_KEY }}\"";' > lib/api_key.dart
-          echo 'const databaseURL = "\"${{ secrets.DATABASE_URL }}\"";' >> lib/api_key.dart
       - run: flutter build windows --release
       - name: Install zip utility
         run: choco install zip -y
@@ -90,10 +82,6 @@ jobs:
         id: extract_version
         run: |
           echo "VERSION=$(grep '^version: ' pubspec.yaml | sed 's/version: //')" >> $GITHUB_ENV
-      - name: Create api_key.dart
-        run: |
-          echo 'const firebaseWebApi = "\"${{ secrets.API_KEY }}\"";' > lib/api_key.dart
-          echo 'const databaseURL = "\"${{ secrets.DATABASE_URL }}\"";' >> lib/api_key.dart
       - run: flutter build linux --release
       - run: cd build/linux/x64/release/bundle/ && zip -r linux.zip *
       - name: Upload Linux App to release
