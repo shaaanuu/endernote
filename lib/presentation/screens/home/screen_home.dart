@@ -88,9 +88,10 @@ class ScreenHome extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GestureDetector(
-              onLongPress: () {
-                _showContextMenu(context, entityPath, isFolder);
-              },
+              onSecondaryTap: () =>
+                  _showContextMenu(context, entityPath, isFolder),
+              onLongPress: () =>
+                  _showContextMenu(context, entityPath, isFolder),
               child: ListTile(
                 leading: Icon(
                   isFolder
