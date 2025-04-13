@@ -60,6 +60,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             'rootPath': rootPath
                           });
                         }
+                        controller!.clear();
                       },
                     )
                   : Text('Results for "$searchQuery"'),
