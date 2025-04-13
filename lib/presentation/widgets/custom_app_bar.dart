@@ -52,6 +52,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             ? null
                             : const EdgeInsets.only(left: 15),
                       ),
+                      onSubmitted: (value) {
+                        final query = controller!.text.trim();
+                        if (query.isNotEmpty) {
+                          Navigator.pushNamed(context, '/search', arguments: {
+                            'query': query,
+                            'rootPath': rootPath
+                          });
+                        }
+                      },
                     )
                   : Text('Results for "$searchQuery"'),
             ),
