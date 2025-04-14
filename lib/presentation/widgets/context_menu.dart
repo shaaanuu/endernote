@@ -217,7 +217,7 @@ void _renameEntity(
 
             // refresh search screen
             context.read<DirectoryBloc>().add(SearchDirectory(
-                Directory(entityPath).parent.parent.path, searchQuery));
+                Directory(entityPath).parent.path, searchQuery));
           }
           Navigator.pop(context);
         },
@@ -247,7 +247,7 @@ void _renameEntity(
 
               // refresh search screen
               context.read<DirectoryBloc>().add(SearchDirectory(
-                  Directory(entityPath).parent.parent.path, searchQuery));
+                  Directory(entityPath).parent.path, searchQuery));
             }
             Navigator.pop(context);
           },
