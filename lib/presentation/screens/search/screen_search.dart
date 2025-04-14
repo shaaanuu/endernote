@@ -76,6 +76,8 @@ class ScreenSearch extends StatelessWidget {
               return Column(
                 children: [
                   GestureDetector(
+                    onSecondaryTap: () =>
+                        showContextMenu(context, entityPath, isFolder),
                     onLongPress: () =>
                         showContextMenu(context, entityPath, isFolder),
                     child: ListTile(
