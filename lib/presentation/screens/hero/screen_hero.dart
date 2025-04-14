@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ficonsax/ficonsax.dart';
 
+import '../../../bloc/directory/directory_bloc.dart';
+import '../../../bloc/directory/directory_events.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_fab.dart';
 
@@ -128,6 +131,10 @@ class ScreenHero extends StatelessWidget {
                       '/canvas',
                       arguments: newFile.path,
                     );
+
+                    context
+                        .read<DirectoryBloc>()
+                        .add(FetchDirectory(newFile.parent.path));
                   },
                 ),
                 OutlinedButton.icon(
