@@ -87,6 +87,15 @@ void _createNewFolder(BuildContext context, String entityPath) {
           hintText: 'Folder name',
           hintStyle: TextStyle(color: Colors.grey),
         ),
+        onSubmitted: (value) {
+          if (value.trim().isNotEmpty) {
+            Directory(
+              '$entityPath/${value.trim()}', // new folder path
+            ).createSync();
+            context.read<DirectoryBloc>().add(FetchDirectory(entityPath));
+          }
+          Navigator.pop(context);
+        },
       ),
       actions: [
         TextButton(
@@ -128,6 +137,15 @@ void _createNewFile(BuildContext context, String entityPath) {
           hintText: 'File name',
           hintStyle: TextStyle(color: Colors.grey),
         ),
+        onSubmitted: (value) {
+          if (value.trim().isNotEmpty) {
+            File(
+              '$entityPath/${value.trim()}.md', // new file name
+            ).createSync();
+            context.read<DirectoryBloc>().add(FetchDirectory(entityPath));
+          }
+          Navigator.pop(context);
+        },
       ),
       actions: [
         TextButton(
@@ -169,6 +187,17 @@ void _renameEntity(BuildContext context, String entityPath) {
           hintText: 'New name for ${entityPath.split('/').last}',
           hintStyle: const TextStyle(color: Colors.grey),
         ),
+        onSubmitted: (value) {
+          if (value.trim().isNotEmpty) {
+            File(entityPath).renameSync(
+              '${Directory(entityPath).parent.path}/${value.trim()}.md', // new file name
+            );
+            context
+                .read<DirectoryBloc>()
+                .add(FetchDirectory(Directory(entityPath).parent.path));
+          }
+          Navigator.pop(context);
+        },
       ),
       actions: [
         TextButton(
@@ -177,10 +206,9 @@ void _renameEntity(BuildContext context, String entityPath) {
         ),
         TextButton(
           onPressed: () {
-            final newName = controller.text.trim();
-            if (newName.isNotEmpty) {
+            if (controller.text.trim().isNotEmpty) {
               File(entityPath).renameSync(
-                '${Directory(entityPath).parent.path}/$newName.md', // new file name
+                '${Directory(entityPath).parent.path}/${controller.text.trim()}.md', // new file name
               );
               context
                   .read<DirectoryBloc>()
