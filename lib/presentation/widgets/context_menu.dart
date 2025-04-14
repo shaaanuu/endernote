@@ -96,8 +96,9 @@ void _createNewFolder(BuildContext context, String entityPath) {
         TextButton(
           onPressed: () {
             if (controller.text.trim().isNotEmpty) {
-              final newFolderPath = '$entityPath/${controller.text.trim()}';
-              Directory(newFolderPath).createSync();
+              Directory(
+                '$entityPath/${controller.text.trim()}', // new folder path
+              ).createSync();
               context.read<DirectoryBloc>().add(FetchDirectory(entityPath));
             }
             Navigator.pop(context);
@@ -136,7 +137,9 @@ void _createNewFile(BuildContext context, String entityPath) {
         TextButton(
           onPressed: () {
             if (controller.text.trim().isNotEmpty) {
-              File('$entityPath/${controller.text.trim()}.md').createSync();
+              File(
+                '$entityPath/${controller.text.trim()}.md', // new file name
+              ).createSync();
               context.read<DirectoryBloc>().add(FetchDirectory(entityPath));
             }
             Navigator.pop(context);
@@ -176,9 +179,9 @@ void _renameEntity(BuildContext context, String entityPath) {
           onPressed: () {
             final newName = controller.text.trim();
             if (newName.isNotEmpty) {
-              final newPath =
-                  '${Directory(entityPath).parent.path}/$newName.md';
-              File(entityPath).renameSync(newPath);
+              File(entityPath).renameSync(
+                '${Directory(entityPath).parent.path}/$newName.md', // new file name
+              );
               context
                   .read<DirectoryBloc>()
                   .add(FetchDirectory(Directory(entityPath).parent.path));
