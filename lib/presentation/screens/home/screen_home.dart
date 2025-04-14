@@ -90,8 +90,9 @@ class ScreenHome extends StatelessWidget {
           children: [
             GestureDetector(
               onSecondaryTap: () =>
-                  showContextMenu(context, entityPath, isFolder),
-              onLongPress: () => showContextMenu(context, entityPath, isFolder),
+                  showContextMenu(context, entityPath, isFolder, ''),
+              onLongPress: () =>
+                  showContextMenu(context, entityPath, isFolder, ''),
               child: ListTile(
                 leading: Icon(
                   isFolder

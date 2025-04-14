@@ -76,10 +76,22 @@ class ScreenSearch extends StatelessWidget {
               return Column(
                 children: [
                   GestureDetector(
-                    onSecondaryTap: () =>
-                        showContextMenu(context, entityPath, isFolder),
-                    onLongPress: () =>
-                        showContextMenu(context, entityPath, isFolder),
+                    onSecondaryTap: () {
+                      showContextMenu(
+                        context,
+                        entityPath,
+                        isFolder,
+                        searchQuery,
+                      );
+                    },
+                    onLongPress: () {
+                      showContextMenu(
+                        context,
+                        entityPath,
+                        isFolder,
+                        searchQuery,
+                      );
+                    },
                     child: ListTile(
                       leading: Icon(
                         isFolder
@@ -167,7 +179,12 @@ class ScreenSearch extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GestureDetector(
-              onLongPress: () => showContextMenu(context, entityPath, isFolder),
+              onLongPress: () => showContextMenu(
+                context,
+                entityPath,
+                isFolder,
+                searchQuery,
+              ),
               child: ListTile(
                 leading: Icon(
                   isFolder
