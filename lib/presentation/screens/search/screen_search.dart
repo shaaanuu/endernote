@@ -179,6 +179,14 @@ class ScreenSearch extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GestureDetector(
+              onSecondaryTap: () {
+                showContextMenu(
+                  context,
+                  entityPath,
+                  isFolder,
+                  searchQuery,
+                );
+              },
               onLongPress: () => showContextMenu(
                 context,
                 entityPath,
