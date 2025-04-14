@@ -12,6 +12,7 @@ void showContextMenu(
   BuildContext context,
   String entityPath,
   bool isFolder,
+  String searchQuery,
 ) {
   final menuItems = <PopupMenuEntry<String>>[
     const PopupMenuItem(
@@ -59,7 +60,7 @@ void showContextMenu(
   ).then((value) {
     switch (value) {
       case 'rename':
-        _renameEntity(context, entityPath);
+        _renameEntity(context, entityPath, searchQuery, isFolder);
         break;
       case 'delete':
         _deleteEntity(context, entityPath, isFolder);
@@ -174,7 +175,12 @@ void _createNewFile(BuildContext context, String entityPath) {
   );
 }
 
-void _renameEntity(BuildContext context, String entityPath) {
+void _renameEntity(
+  BuildContext context,
+  String entityPath,
+  String searchQuery,
+  bool isFolder,
+) {
   final controller = TextEditingController();
   showDialog(
     context: context,
@@ -194,12 +200,24 @@ void _renameEntity(BuildContext context, String entityPath) {
         ),
         onSubmitted: (value) {
           if (value.trim().isNotEmpty) {
-            File(entityPath).renameSync(
-              '${Directory(entityPath).parent.path}/${value.trim()}.md', // new file name
-            );
+            if (isFolder) {
+              Directory(entityPath).renameSync(
+                '${Directory(entityPath).parent.path}/${value.trim()}', // updated folder name
+              );
+            } else {
+              File(entityPath).renameSync(
+                '${Directory(entityPath).parent.path}/${value.trim()}.md', // updated file name
+              );
+            }
+
+            // refresh home screen
             context
                 .read<DirectoryBloc>()
                 .add(FetchDirectory(Directory(entityPath).parent.path));
+
+            // refresh search screen
+            context.read<DirectoryBloc>().add(SearchDirectory(
+                Directory(entityPath).parent.parent.path, searchQuery));
           }
           Navigator.pop(context);
         },
@@ -212,12 +230,24 @@ void _renameEntity(BuildContext context, String entityPath) {
         TextButton(
           onPressed: () {
             if (controller.text.trim().isNotEmpty) {
-              File(entityPath).renameSync(
-                '${Directory(entityPath).parent.path}/${controller.text.trim()}.md', // new file name
-              );
+              if (isFolder) {
+                Directory(entityPath).renameSync(
+                  '${Directory(entityPath).parent.path}/${controller.text.trim()}', // updated folder name
+                );
+              } else {
+                File(entityPath).renameSync(
+                  '${Directory(entityPath).parent.path}/${controller.text.trim()}.md', // updated file name
+                );
+              }
+
+              // refresh home screen
               context
                   .read<DirectoryBloc>()
                   .add(FetchDirectory(Directory(entityPath).parent.path));
+
+              // refresh search screen
+              context.read<DirectoryBloc>().add(SearchDirectory(
+                  Directory(entityPath).parent.parent.path, searchQuery));
             }
             Navigator.pop(context);
           },
