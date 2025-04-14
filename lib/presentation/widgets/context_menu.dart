@@ -57,14 +57,19 @@ void showContextMenu(
     position: const RelativeRect.fromLTRB(100, 100, 100, 100),
     items: menuItems,
   ).then((value) {
-    if (value == 'rename') {
-      _renameEntity(context, entityPath);
-    } else if (value == 'delete') {
-      _deleteEntity(context, entityPath, isFolder);
-    } else if (value == 'new_folder') {
-      _createNewFolder(context, entityPath);
-    } else if (value == 'new_file') {
-      _createNewFile(context, entityPath);
+    switch (value) {
+      case 'rename':
+        _renameEntity(context, entityPath);
+        break;
+      case 'delete':
+        _deleteEntity(context, entityPath, isFolder);
+        break;
+      case 'new_folder':
+        _createNewFolder(context, entityPath);
+        break;
+      case 'new_file':
+        _createNewFile(context, entityPath);
+        break;
     }
   });
 }
