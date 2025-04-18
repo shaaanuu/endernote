@@ -1,6 +1,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- For Android 6.0+ (API 23+) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- For Android 13+ (API 33+) media permissions -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+
+    <!-- For Android 10 (API 29) temporary opt-out of scoped storage -->
     <application
+        android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true"
+
         android:label="Endernote"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
