@@ -216,8 +216,9 @@ void _renameEntity(
                 .add(FetchDirectory(Directory(entityPath).parent.path));
 
             // refresh search screen
-            context.read<DirectoryBloc>().add(SearchDirectory(
-                Directory(entityPath).parent.path, searchQuery));
+            context
+                .read<DirectoryBloc>()
+                .add(FetchDirectory(Directory(entityPath).parent.path));
           }
           Navigator.pop(context);
         },
