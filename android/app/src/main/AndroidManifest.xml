@@ -14,6 +14,7 @@
     <application
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="false"
 
         android:label="Endernote"
         android:name="${applicationName}"
