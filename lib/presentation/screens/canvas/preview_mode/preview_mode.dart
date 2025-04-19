@@ -32,6 +32,7 @@ class PreviewMode extends StatelessWidget {
             );
           } else {
             return Markdown(
+              selectable: true,
               data: snapshot.data!,
               styleSheet: mdTheme(),
               physics: const BouncingScrollPhysics(),
