@@ -78,6 +78,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       Navigator.pushNamed(context, '/settings');
                     }
                   },
+                  tooltip: hasTextValue ? 'Search' : 'Settings',
                   icon: Icon(
                     hasTextValue
                         ? IconsaxOutline.search_normal_1

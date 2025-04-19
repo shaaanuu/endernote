@@ -114,8 +114,9 @@ class ScreenCanvas extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(
-                      isEditing ? IconsaxOutline.edit_2 : IconsaxOutline.book_1,
+                      isEditing ? IconsaxOutline.book_1 : IconsaxOutline.edit_2,
                     ),
+                    tooltip: isEditing ? 'Preview' : 'Edit',
                     onPressed: () => editOrPreview.value = !editOrPreview.value,
                   ),
                 ],
