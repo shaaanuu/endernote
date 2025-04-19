@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../theme/markdown_theme.dart';
 
@@ -36,6 +37,13 @@ class PreviewMode extends StatelessWidget {
               data: snapshot.data!,
               styleSheet: mdTheme(),
               physics: const BouncingScrollPhysics(),
+              onTapLink: (text, href, title) async {
+                if (Uri.parse(href!).hasScheme) {
+                  await launchUrl(Uri.parse(href));
+                } else if (href.isNotEmpty) {
+                  await launchUrl(Uri(scheme: 'https', path: href));
+                }
+              },
             );
           }
         },
