@@ -198,6 +198,7 @@ class EditMode extends StatelessWidget {
                               ? KeyEventResult.handled
                               : KeyEventResult.ignored,
                       child: TextField(
+                        scrollPhysics: const BouncingScrollPhysics(),
                         controller: textController,
                         focusNode: focusNode,
                         expands: true,

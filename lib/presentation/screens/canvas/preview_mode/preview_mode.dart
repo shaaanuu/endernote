@@ -22,7 +22,7 @@ class PreviewMode extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height -
-                (kToolbarHeight - MediaQuery.of(context).padding.top),
+          (kToolbarHeight - MediaQuery.of(context).padding.top),
       child: FutureBuilder(
         future: _loadFileContent(),
         builder: (context, snapshot) {
@@ -34,6 +34,7 @@ class PreviewMode extends StatelessWidget {
             return Markdown(
               data: snapshot.data!,
               styleSheet: mdTheme(),
+              physics: const BouncingScrollPhysics(),
             );
           }
         },
