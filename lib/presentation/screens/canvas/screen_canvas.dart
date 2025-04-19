@@ -53,6 +53,13 @@ class ScreenCanvas extends StatelessWidget {
       titleController.text = _getNameWithoutExtension(filePathNotifier.value);
     }
 
+    // Open the preview screen if the file is not empty.
+    // And Edit Screen if it is empty.
+    editOrPreview.value =
+        File(filePathNotifier.value).readAsStringSync().isNotEmpty
+            ? false
+            : true;
+
     return ValueListenableBuilder<bool>(
       valueListenable: editOrPreview,
       builder: (context, isEditing, _) {
