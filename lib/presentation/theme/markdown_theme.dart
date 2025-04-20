@@ -110,14 +110,12 @@ MarkdownStyleSheet mdTheme(context) => MarkdownStyleSheet(
         ),
       ),
       horizontalRuleDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
         border: Border(
           top: BorderSide(
-            width: 3.0,
             color: Theme.of(context)
                 .extension<EndernoteColors>()!
                 .clrText
-                .withAlpha(230),
+                .withAlpha(150),
           ),
         ),
       ),
