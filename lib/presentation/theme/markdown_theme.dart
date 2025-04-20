@@ -86,6 +86,7 @@ MarkdownStyleSheet mdTheme(context) => MarkdownStyleSheet(
               .withValues(alpha: 0.2),
         ),
       ),
+      blockquoteAlign: WrapAlignment.center,
       blockquoteDecoration: BoxDecoration(
         color: Theme.of(context)
             .extension<EndernoteColors>()
