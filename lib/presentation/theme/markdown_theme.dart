@@ -1,104 +1,131 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-const Color markdownHeadingColor = Color(0xFFcdd6f4);
-const Color markdownParagraphColor = Color(0xFFbac2de);
-const Color markdownCodeColor = Color(0xFF11111b);
-const Color markdownLinkColor = Color(0xFF89b4fa);
-const Color markdownListColor = Color(0xFFb4befe);
+import 'app_themes.dart';
 
-MarkdownStyleSheet mdTheme() => MarkdownStyleSheet(
-      h1: const TextStyle(
-        color: markdownHeadingColor,
+MarkdownStyleSheet mdTheme(context) => MarkdownStyleSheet(
+      h1: TextStyle(
+        color: Theme.of(context).extension<EndernoteColors>()?.clrText,
         fontWeight: FontWeight.bold,
         fontSize: 28,
         fontFamily: 'PlayfairDisplay',
       ),
-      h2: const TextStyle(
-        color: markdownHeadingColor,
+      h2: TextStyle(
+        color: Theme.of(context).extension<EndernoteColors>()?.clrText,
         fontWeight: FontWeight.bold,
         fontSize: 24,
         fontFamily: 'PlayfairDisplay',
       ),
-      h3: const TextStyle(
-        color: markdownHeadingColor,
+      h3: TextStyle(
+        color: Theme.of(context).extension<EndernoteColors>()?.clrText,
         fontWeight: FontWeight.bold,
         fontSize: 20,
         fontFamily: 'PlayfairDisplay',
       ),
-      h4: const TextStyle(
-        color: markdownHeadingColor,
+      h4: TextStyle(
+        color: Theme.of(context).extension<EndernoteColors>()?.clrText,
         fontWeight: FontWeight.bold,
         fontSize: 18,
         fontFamily: 'PlayfairDisplay',
       ),
-      h5: const TextStyle(
-        color: markdownHeadingColor,
+      h5: TextStyle(
+        color: Theme.of(context).extension<EndernoteColors>()?.clrText,
         fontWeight: FontWeight.w600,
         fontSize: 16,
         fontFamily: 'PlayfairDisplay',
       ),
-      h6: const TextStyle(
-        color: markdownHeadingColor,
+      h6: TextStyle(
+        color: Theme.of(context).extension<EndernoteColors>()?.clrText,
         fontWeight: FontWeight.w600,
         fontSize: 14,
         fontFamily: 'PlayfairDisplay',
       ),
-      p: const TextStyle(
-        color: markdownParagraphColor,
+      p: TextStyle(
+        color: Theme.of(context)
+            .extension<EndernoteColors>()
+            ?.clrText
+            .withAlpha(240),
         fontSize: 16,
         height: 1.6,
         fontFamily: 'Roboto',
       ),
-      em: const TextStyle(
+      em: TextStyle(
         fontStyle: FontStyle.italic,
-        color: markdownParagraphColor,
+        color: Theme.of(context)
+            .extension<EndernoteColors>()
+            ?.clrText
+            .withAlpha(240),
         fontFamily: 'Roboto',
       ),
-      strong: const TextStyle(
+      strong: TextStyle(
         fontWeight: FontWeight.bold,
-        color: markdownParagraphColor,
+        color: Theme.of(context)
+            .extension<EndernoteColors>()
+            ?.clrText
+            .withAlpha(240),
         fontFamily: 'Roboto',
       ),
-      code: const TextStyle(
-        color: markdownParagraphColor,
-        backgroundColor: markdownCodeColor,
+      code: TextStyle(
+        color: Theme.of(context)
+            .extension<EndernoteColors>()
+            ?.clrText
+            .withAlpha(240),
         fontFamily: 'FiraCode',
         fontSize: 14,
       ),
       codeblockDecoration: BoxDecoration(
-        color: markdownCodeColor,
+        color: Theme.of(context)
+            .extension<EndernoteColors>()
+            ?.clrBase
+            .withValues(blue: 255, green: 255, red: 255, alpha: 200),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: markdownParagraphColor.withValues(alpha: 0.2),
+          color: Theme.of(context)
+              .extension<EndernoteColors>()!
+              .clrText
+              .withValues(alpha: 0.2),
         ),
       ),
       blockquoteDecoration: BoxDecoration(
-        color: markdownCodeColor.withValues(alpha: 0.8),
+        color: Theme.of(context)
+            .extension<EndernoteColors>()
+            ?.clrBase
+            .withValues(blue: 255, green: 255, red: 255, alpha: 200),
         borderRadius: BorderRadius.circular(10),
-        border: const Border(
+        border: Border(
           left: BorderSide(
-            color: markdownHeadingColor,
+            color: Theme.of(context)
+                .extension<EndernoteColors>()!
+                .clrText
+                .withAlpha(230),
             width: 4,
           ),
         ),
       ),
       horizontalRuleDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
-        border: const Border(
+        border: Border(
           top: BorderSide(
             width: 3.0,
-            color: markdownListColor,
+            color: Theme.of(context)
+                .extension<EndernoteColors>()!
+                .clrText
+                .withAlpha(230),
           ),
         ),
       ),
-      a: const TextStyle(
-        color: markdownLinkColor,
+      a: TextStyle(
+        color: Color(0xFF80AFFC),
         decoration: TextDecoration.underline,
+        decorationColor:
+            Theme.of(context).extension<EndernoteColors>()!.clrText,
         fontFamily: 'Roboto',
       ),
-      listBullet: const TextStyle(
-        color: markdownListColor,
+      listBullet: TextStyle(
+        color: Theme.of(context)
+            .extension<EndernoteColors>()!
+            .clrText
+            .withAlpha(230),
         fontSize: 16,
         fontFamily: 'Roboto',
       ),

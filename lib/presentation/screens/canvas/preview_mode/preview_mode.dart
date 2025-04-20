@@ -35,7 +35,7 @@ class PreviewMode extends StatelessWidget {
             return Markdown(
               selectable: true,
               data: snapshot.data!,
-              styleSheet: mdTheme(),
+              styleSheet: mdTheme(context),
               physics: const BouncingScrollPhysics(),
               onTapLink: (text, href, title) async {
                 if (Uri.parse(href!).hasScheme) {
