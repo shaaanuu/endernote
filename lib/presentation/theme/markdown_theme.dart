@@ -117,6 +117,7 @@ MarkdownStyleSheet mdTheme(context) => MarkdownStyleSheet(
                 .clrText
                 .withAlpha(150),
           ),
+          bottom: BorderSide(width: 15, color: Colors.transparent),
         ),
       ),
       a: TextStyle(
