@@ -60,7 +60,7 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: |
           rm android/app/src/main/AndroidManifest.xml
-          mv android/app/src/main/AndroidManifest.xml.legacy android/app/src/main/AndroidManifest.xml
+          mv android/app/src/main/AndroidManifest.legacy.xml android/app/src/main/AndroidManifest.xml
           flutter clean
           flutter build apk --release
           mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/android-legacy.apk
