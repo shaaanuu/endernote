@@ -57,15 +57,12 @@ jobs:
           body: "Freshly brewed build, ready to shine!"
 
       - name: Build Legacy APK (Impeller Disabled)
+        working-directory: ${{ github.workspace }}
         run: |
-          cp android/app/src/main/AndroidManifest.xml android/app/src/main/AndroidManifest.xml.orig
-          sed -i '/<application/a \
-            <meta-data \
-                android:name="io.flutter.embedding.android.EnableImpeller" \
-                android:value="false" />' android/app/src/main/AndroidManifest.xml
+          rm android/app/src/main/AndroidManifest.xml
+          mv android/app/src/main/AndroidManifest.xml.legacy android/app/src/main/AndroidManifest.xml
           flutter build apk --release
           mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/android-legacy.apk
-          cp android/app/src/main/AndroidManifest.xml.orig android/app/src/main/AndroidManifest.xml
 
       - name: Upload Legacy APK to release
         uses: svenstaro/upload-release-action@v2
