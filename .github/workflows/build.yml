@@ -5,34 +5,76 @@ on:
 
 jobs:
   build_android:
-    name: 🤖 Build Android App
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone repository
-        uses: actions/checkout@v4
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          java-version: "17"
-          distribution: "temurin"
-      - run: flutter pub get
-      - name: Extract Version from pubspec.yaml
-        id: extract_version
-        run: |
-          echo "VERSION=$(grep '^version: ' pubspec.yaml | sed 's/version: //')" >> $GITHUB_ENV
-      - run: flutter build apk --release
-      - name: Upload APK to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/app/outputs/flutter-apk/app-release.apk
-          tag: ${{ env.VERSION }}
-          overwrite: true
-          body: "Freshly brewed build, ready to shine!"
+  name: 🤖 Build Android Apps
+  runs-on: ubuntu-latest
+  steps:
+    - name: Clone repository
+      uses: actions/checkout@v4
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: "17"
+        distribution: "temurin"
+    - run: flutter pub get
+    - name: Extract Version from pubspec.yaml
+      id: extract_version
+      run: |
+        echo "VERSION=$(grep '^version: ' pubspec.yaml | sed 's/version: //')" >> $GITHUB_ENV
+
+    - name: Build Split APKs per ABI
+      run: flutter build apk --release --split-per-abi
+    - name: Upload Split APKs to release
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-split-apks
+        path: build/app/outputs/apk/release
+
+    - name: Upload Split APKs to release (Individual)
+      run: |
+        cd build/app/outputs/apk/release
+        for apk in *.apk; do
+          echo "Uploading $apk"
+          gh release upload ${{ env.VERSION }} "$apk" --repo="${{ github.repository }}" --clobber
+        done
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build Universal APK
+      run: flutter build apk --release
+    - name: Rename Universal APK
+      run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/android-universal.apk
+    - name: Upload Universal APK to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: build/app/outputs/flutter-apk/android-universal.apk
+        tag: ${{ env.VERSION }}
+        overwrite: true
+        body: "Freshly brewed build, ready to shine!"
+
+    - name: Build Legacy APK (Impeller Disabled)
+      run: |
+        cp android/app/src/main/AndroidManifest.xml android/app/src/main/AndroidManifest.xml.orig
+        sed -i '/<application/a \
+          <meta-data \
+              android:name="io.flutter.embedding.android.EnableImpeller" \
+              android:value="false" />' android/app/src/main/AndroidManifest.xml
+        flutter build apk --release
+        mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/android-legacy.apk
+        cp android/app/src/main/AndroidManifest.xml.orig android/app/src/main/AndroidManifest.xml
+
+    - name: Upload Legacy APK to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: build/app/outputs/flutter-apk/android-legacy.apk
+        tag: ${{ env.VERSION }}
+        overwrite: true
+        body: "Freshly brewed build, ready to shine!"
 
   build_windows:
     name: 🪟 Build Windows App
