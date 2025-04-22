@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../theme/app_themes.dart';
 import '../../../theme/markdown_theme.dart';
 
 class PreviewMode extends StatelessWidget {
@@ -34,6 +35,21 @@ class PreviewMode extends StatelessWidget {
           } else {
             return Markdown(
               selectable: true,
+              checkboxBuilder: (val) {
+                return Checkbox(
+                  value: val,
+                  side: BorderSide(
+                    color:
+                        Theme.of(context).extension<EndernoteColors>()!.clrText,
+                    width: 1.5,
+                  ),
+                  activeColor:
+                      Theme.of(context).extension<EndernoteColors>()!.clrText,
+                  checkColor:
+                      Theme.of(context).extension<EndernoteColors>()!.clrBase,
+                  onChanged: (value) {},
+                );
+              },
               data: snapshot.data!,
               styleSheet: mdTheme(context),
               physics: const BouncingScrollPhysics(),

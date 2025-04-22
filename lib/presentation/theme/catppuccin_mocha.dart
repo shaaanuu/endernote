@@ -56,11 +56,6 @@ final ThemeData catppuccinMochaTheme = ThemeData(
       borderSide: BorderSide(color: _clrText),
     ),
   ),
-  checkboxTheme: const CheckboxThemeData(
-    checkColor: WidgetStatePropertyAll(_clrBase),
-    fillColor: WidgetStatePropertyAll(Colors.transparent),
-    side: BorderSide.none,
-  ),
   extensions: const <ThemeExtension<dynamic>>{
     EndernoteColors(
       clrBase: _clrBase,

@@ -83,9 +83,23 @@ class EditMode extends StatelessWidget {
       final bulletMatch = RegExp(r'^(\s*)- (.*)$').firstMatch(currentLine);
       final numberedMatch =
           RegExp(r'^(\s*)(\d+)\. (.*)$').firstMatch(currentLine);
+      final checkboxMatch =
+          RegExp(r'^(\s*)- \[ \] (.*)$').firstMatch(currentLine);
 
       // If empty list item, remove marker.
-      if (bulletMatch != null && bulletMatch.group(2)?.trim().isEmpty == true) {
+      if (checkboxMatch != null &&
+          checkboxMatch.group(2)?.trim().isEmpty == true) {
+        final whitespace = checkboxMatch.group(2) ?? '';
+        controller.text = text.replaceRange(
+          lineStart,
+          currentPosition,
+          whitespace,
+        );
+        controller.selection = TextSelection.collapsed(
+          offset: lineStart + whitespace.length,
+        );
+      } else if (bulletMatch != null &&
+          bulletMatch.group(2)?.trim().isEmpty == true) {
         final whitespace = bulletMatch.group(1) ?? '';
         controller.text = text.replaceRange(
           lineStart,
@@ -111,7 +125,10 @@ class EditMode extends StatelessWidget {
       }
 
       // Continue list if there's content
-      if (bulletMatch != null) {
+      if (checkboxMatch != null) {
+        _insertText(controller, '\n${checkboxMatch.group(1) ?? ''}- [ ] ');
+        return true;
+      } else if (bulletMatch != null) {
         _insertText(controller, '\n${bulletMatch.group(1) ?? ''}- ');
         return true;
       } else if (numberedMatch != null) {
@@ -289,6 +306,14 @@ class EditMode extends StatelessWidget {
                             textController,
                             focusNode,
                             '1. ',
+                          ),
+                          floatingToolbarButton(
+                            context,
+                            Icons.check_box_rounded,
+                            'Checkbox',
+                            textController,
+                            focusNode,
+                            '- [ ] ',
                           ),
                           floatingToolbarButton(
                             context,
