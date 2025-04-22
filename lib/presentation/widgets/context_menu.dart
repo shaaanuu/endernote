@@ -89,6 +89,7 @@ void _createNewFolder(BuildContext context, String entityPath) {
       ),
       content: TextField(
         controller: controller,
+        autofocus: true,
         decoration: const InputDecoration(
           hintText: 'Folder name',
           hintStyle: TextStyle(color: Colors.grey),
@@ -139,6 +140,7 @@ void _createNewFile(BuildContext context, String entityPath) {
       ),
       content: TextField(
         controller: controller,
+        autofocus: true,
         decoration: const InputDecoration(
           hintText: 'File name',
           hintStyle: TextStyle(color: Colors.grey),
@@ -194,6 +196,7 @@ void _renameEntity(
       ),
       content: TextField(
         controller: controller,
+        autofocus: true,
         decoration: InputDecoration(
           hintText: 'New name for ${entityPath.split('/').last}',
           hintStyle: const TextStyle(color: Colors.grey),

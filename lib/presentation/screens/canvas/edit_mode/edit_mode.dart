@@ -200,6 +200,11 @@ class EditMode extends StatelessWidget {
           await _saveChanges(textController.text, entityPath);
         });
 
+        // Auto focus on desktop
+        if (Platform.isLinux || Platform.isWindows) {
+          focusNode.requestFocus();
+        }
+
         return ValueListenableBuilder<TextEditingValue>(
           valueListenable: textController,
           builder: (context, value, _) {
