@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 
+import '../theme/app_themes.dart';
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     super.key,
@@ -42,7 +44,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       decoration: InputDecoration(
                         hintText: "Search your notes",
                         hintStyle: TextStyle(
-                          color: Colors.white.withAlpha(100),
+                          color: Theme.of(context)
+                              .extension<EndernoteColors>()
+                              ?.clrText
+                              .withAlpha(100),
                           fontSize: 14,
                           fontFamily: 'FiraCode',
                         ),

@@ -81,14 +81,14 @@ class CustomFAB extends StatelessWidget {
               color: Theme.of(context).extension<EndernoteColors>()?.clrText,
             ),
           ),
-          content: TextField(
-            controller: controller,
-            autofocus: true,
-            decoration: InputDecoration(
-              hintText: '$label name',
-              hintStyle: TextStyle(color: Colors.grey),
+          content: ColoredBox(
+            color: Colors.black.withAlpha(80),
+            child: TextField(
+              controller: controller,
+              autofocus: true,
+              decoration: InputDecoration(hintText: '$label name'),
+              onSubmitted: (value) => onCreate(),
             ),
-            onSubmitted: (value) => onCreate(),
           ),
           actions: [
             TextButton(

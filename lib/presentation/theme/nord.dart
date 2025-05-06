@@ -56,11 +56,15 @@ final ThemeData nordDarkTheme = ThemeData(
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: nordDarkBase,
   ),
-  inputDecorationTheme: const InputDecorationTheme(
-    floatingLabelStyle: TextStyle(color: nordDarkText),
-    border: OutlineInputBorder(),
-    labelStyle: TextStyle(color: nordDarkText),
-    enabledBorder: OutlineInputBorder(
+  inputDecorationTheme: InputDecorationTheme(
+    floatingLabelStyle: const TextStyle(color: nordDarkText),
+    border: const OutlineInputBorder(),
+    labelStyle: const TextStyle(color: nordDarkText),
+    hintStyle: TextStyle(
+      color: nordDarkText.withAlpha(100),
+      fontWeight: FontWeight.w100,
+    ),
+    enabledBorder: const OutlineInputBorder(
       borderSide: BorderSide(color: nordDarkText),
     ),
   ),
@@ -121,11 +125,15 @@ final ThemeData nordLightTheme = ThemeData(
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: nordLightBase,
   ),
-  inputDecorationTheme: const InputDecorationTheme(
-    floatingLabelStyle: TextStyle(color: nordLightText),
-    border: OutlineInputBorder(),
-    labelStyle: TextStyle(color: nordLightText),
-    enabledBorder: OutlineInputBorder(
+  inputDecorationTheme: InputDecorationTheme(
+    floatingLabelStyle: const TextStyle(color: nordLightText),
+    border: const OutlineInputBorder(),
+    labelStyle: const TextStyle(color: nordLightText),
+    hintStyle: TextStyle(
+      color: nordLightText.withAlpha(100),
+      fontWeight: FontWeight.w100,
+    ),
+    enabledBorder: const OutlineInputBorder(
       borderSide: BorderSide(color: nordLightText),
     ),
   ),

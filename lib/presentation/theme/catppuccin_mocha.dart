@@ -48,11 +48,15 @@ final ThemeData catppuccinMochaTheme = ThemeData(
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: _clrBase,
   ),
-  inputDecorationTheme: const InputDecorationTheme(
-    floatingLabelStyle: TextStyle(color: _clrText),
-    border: OutlineInputBorder(),
-    labelStyle: TextStyle(color: _clrText),
-    enabledBorder: OutlineInputBorder(
+  inputDecorationTheme: InputDecorationTheme(
+    floatingLabelStyle: const TextStyle(color: _clrText),
+    border: const OutlineInputBorder(),
+    labelStyle: const TextStyle(color: _clrText),
+    hintStyle: TextStyle(
+      color: _clrText.withAlpha(100),
+      fontWeight: FontWeight.w100,
+    ),
+    enabledBorder: const OutlineInputBorder(
       borderSide: BorderSide(color: _clrText),
     ),
   ),
