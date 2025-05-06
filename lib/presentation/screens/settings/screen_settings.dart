@@ -1,6 +1,6 @@
-import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 
 import '../../../bloc/theme/theme_bloc.dart';
 import '../../../bloc/theme/theme_events.dart';
@@ -17,7 +17,7 @@ class ScreenSettings extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(IconsaxOutline.arrow_left_2),
+          icon: const Icon(IconsaxPlusLinear.arrow_left_1),
         ),
         title: const Text('Settings'),
       ),
@@ -27,7 +27,7 @@ class ScreenSettings extends StatelessWidget {
           children: [
             BlocBuilder<ThemeBloc, ThemeState>(
               builder: (context, state) => CustomListTile(
-                lead: IconsaxOutline.brush_3,
+                lead: IconsaxPlusLinear.brush_3,
                 title: 'Theme',
                 subtitle: state.theme.toString().split('.').last,
                 onTap: () => showModalBottomSheet(
@@ -47,10 +47,10 @@ class ScreenSettings extends StatelessWidget {
                           (theme) {
                             return ListTile(
                               title: Text(theme.toString().split('.').last),
-                              trailing:
-                                  context.read<ThemeBloc>().state.theme == theme
-                                      ? const Icon(IconsaxOutline.tick_circle)
-                                      : null,
+                              trailing: context.read<ThemeBloc>().state.theme ==
+                                      theme
+                                  ? const Icon(IconsaxPlusLinear.tick_circle)
+                                  : null,
                               onTap: () {
                                 context
                                     .read<ThemeBloc>()
@@ -82,7 +82,7 @@ class ScreenSettings extends StatelessWidget {
               ),
             ),
             CustomListTile(
-              lead: IconsaxOutline.book,
+              lead: IconsaxPlusLinear.book,
               title: 'About',
               subtitle: 'Crafted with care.',
               onTap: () => Navigator.pushNamed(context, '/about'),

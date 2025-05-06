@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 
 import '../../bloc/directory/directory_bloc.dart';
 import '../../bloc/directory/directory_events.dart';
@@ -18,14 +18,14 @@ void showContextMenu(
     const PopupMenuItem(
       value: 'rename',
       child: ListTile(
-        leading: Icon(IconsaxOutline.edit_2),
+        leading: Icon(IconsaxPlusLinear.edit_2),
         title: Text('Rename'),
       ),
     ),
     const PopupMenuItem(
       value: 'delete',
       child: ListTile(
-        leading: Icon(IconsaxOutline.folder_cross),
+        leading: Icon(IconsaxPlusLinear.folder_cross),
         title: Text('Delete'),
       ),
     ),
@@ -37,14 +37,14 @@ void showContextMenu(
         const PopupMenuItem(
           value: 'new_folder',
           child: ListTile(
-            leading: Icon(IconsaxOutline.folder_open),
+            leading: Icon(IconsaxPlusLinear.folder_open),
             title: Text('New Folder'),
           ),
         ),
         const PopupMenuItem(
           value: 'new_file',
           child: ListTile(
-            leading: Icon(IconsaxOutline.add_square),
+            leading: Icon(IconsaxPlusLinear.add_square),
             title: Text('New File'),
           ),
         ),

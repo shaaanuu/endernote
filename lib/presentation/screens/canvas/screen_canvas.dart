@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 
 import '../../../bloc/directory/directory_bloc.dart';
 import '../../../bloc/directory/directory_events.dart';
@@ -78,7 +78,7 @@ class ScreenCanvas extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(IconsaxOutline.arrow_left_2),
+                    icon: const Icon(IconsaxPlusLinear.arrow_left_1),
                   ),
                   Expanded(
                     child: ValueListenableBuilder<String>(
@@ -114,7 +114,9 @@ class ScreenCanvas extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(
-                      isEditing ? IconsaxOutline.book_1 : IconsaxOutline.edit_2,
+                      isEditing
+                          ? IconsaxPlusLinear.book_1
+                          : IconsaxPlusLinear.edit_2,
                     ),
                     tooltip: isEditing ? 'Preview' : 'Edit',
                     onPressed: () => editOrPreview.value = !editOrPreview.value,

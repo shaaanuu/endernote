@@ -1,5 +1,5 @@
-import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,7 +20,7 @@ class ScreenAbout extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(IconsaxOutline.arrow_left_2),
+          icon: const Icon(IconsaxPlusLinear.arrow_left_1),
         ),
         title: const Text('About'),
       ),
@@ -50,32 +50,32 @@ class ScreenAbout extends StatelessWidget {
             FutureBuilder(
               future: getAppVersion(),
               builder: (context, snapshot) => CustomListTile(
-                lead: IconsaxOutline.info_circle,
+                lead: IconsaxPlusLinear.info_circle,
                 title: 'Version',
                 subtitle: snapshot.data,
               ),
             ),
             const CustomListTile(
-              lead: IconsaxOutline.award,
+              lead: IconsaxPlusLinear.award,
               title: 'Acknowledgments',
               subtitle:
                   'Built by Endernote crafters with Flutter, using amazing tools like flutter_bloc and more.',
             ),
             CustomListTile(
-              lead: IconsaxOutline.star,
+              lead: IconsaxPlusLinear.star,
               title: 'Star us on Github',
               subtitle:
                   'It will motivate us to work on cool projects like this.',
-              trail: IconsaxOutline.link,
+              trail: IconsaxPlusLinear.link,
               onTap: () async => await launchUrl(
                 Uri.parse('https://www.github.com/shaaanuu/endernote'),
               ),
             ),
             CustomListTile(
-              lead: IconsaxOutline.message,
+              lead: IconsaxPlusLinear.message,
               title: 'Support',
               subtitle: 'Found an issue? Need help? Create an issue here.',
-              trail: IconsaxOutline.link,
+              trail: IconsaxPlusLinear.link,
               onTap: () async => await launchUrl(
                 Uri.parse('https://www.github.com/shaaanuu/endernote/issues'),
               ),
