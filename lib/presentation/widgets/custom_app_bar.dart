@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:iconsax_linear/iconsax_linear.dart';
 
 import '../theme/app_themes.dart';
 
@@ -35,7 +35,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             if (showBackButton)
               IconButton(
                 onPressed: () => Navigator.pop(context),
-                icon: const Icon(IconsaxPlusLinear.arrow_left_1),
+                icon: const Icon(IconsaxLinear.arrow_left_1),
               ),
             Expanded(
               child: controller != null
@@ -86,8 +86,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   tooltip: hasTextValue ? 'Search' : 'Settings',
                   icon: Icon(
                     hasTextValue
-                        ? IconsaxPlusLinear.search_normal_1
-                        : IconsaxPlusLinear.setting_2,
+                        ? IconsaxLinear.search_normal_1
+                        : IconsaxLinear.setting_2,
                   ),
                 ),
               ),

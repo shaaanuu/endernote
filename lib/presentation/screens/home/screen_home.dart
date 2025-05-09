@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:iconsax_linear/iconsax_linear.dart';
 
 import '../../../bloc/directory/directory_bloc.dart';
 import '../../../bloc/directory/directory_events.dart';
@@ -97,9 +97,9 @@ class ScreenHome extends StatelessWidget {
                 leading: Icon(
                   isFolder
                       ? (state.openFolders.contains(entityPath)
-                          ? IconsaxPlusLinear.folder_open
-                          : IconsaxPlusLinear.folder)
-                      : IconsaxPlusLinear.task_square,
+                          ? IconsaxLinear.folder_open
+                          : IconsaxLinear.folder)
+                      : IconsaxLinear.task_square,
                 ),
                 title: Text(entityPath.split('/').last),
                 onTap: () {

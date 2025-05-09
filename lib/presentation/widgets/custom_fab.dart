@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:iconsax_linear/iconsax_linear.dart';
 
 import '../../bloc/directory/directory_bloc.dart';
 import '../../bloc/directory/directory_events.dart';
@@ -26,7 +26,7 @@ class CustomFAB extends StatelessWidget {
         _buildDialChild(
           context,
           controller: folderController,
-          icon: IconsaxPlusLinear.folder,
+          icon: IconsaxLinear.folder,
           label: "Folder",
           onCreate: () async {
             if (folderController.text.isNotEmpty) {
@@ -42,7 +42,7 @@ class CustomFAB extends StatelessWidget {
         _buildDialChild(
           context,
           controller: fileController,
-          icon: IconsaxPlusLinear.task_square,
+          icon: IconsaxLinear.task_square,
           label: "Note",
           onCreate: () async {
             if (fileController.text.isNotEmpty) {
@@ -56,7 +56,7 @@ class CustomFAB extends StatelessWidget {
           },
         ),
       ],
-      child: const Icon(IconsaxPlusLinear.add),
+      child: const Icon(IconsaxLinear.add),
     );
   }
 

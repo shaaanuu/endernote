@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:iconsax_linear/iconsax_linear.dart';
 
 import '../../../bloc/directory/directory_bloc.dart';
 import '../../../bloc/directory/directory_events.dart';
@@ -97,7 +97,7 @@ class ScreenHero extends StatelessWidget {
               children: [
                 ElevatedButton.icon(
                   icon: const Icon(
-                    IconsaxPlusLinear.note_2,
+                    IconsaxLinear.note_2,
                     size: 24,
                     color: Color(0xFF1e1e2e),
                   ),
@@ -138,7 +138,7 @@ class ScreenHero extends StatelessWidget {
                   },
                 ),
                 OutlinedButton.icon(
-                  icon: const Icon(IconsaxPlusLinear.folder),
+                  icon: const Icon(IconsaxLinear.folder),
                   label: const Text(
                     'Open a note',
                     style: TextStyle(

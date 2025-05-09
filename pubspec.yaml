@@ -13,7 +13,6 @@ dependencies:
 
   flutter_svg: ^2.0.10+1
   flutter_markdown: ^0.7.3
-  ficonsax: ^0.0.3
   equatable: ^2.0.5
   flutter_bloc: ^9.0.0
   path_provider: ^2.1.4
@@ -23,7 +22,7 @@ dependencies:
   bloc: ^9.0.0
   path: ^1.9.0
   flutter_speed_dial: ^7.0.0
-  iconsax_plus: ^1.0.0
+  iconsax_linear: ^1.1.0
 
 dev_dependencies:
   flutter_test:
