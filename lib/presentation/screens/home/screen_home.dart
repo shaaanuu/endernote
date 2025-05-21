@@ -77,6 +77,17 @@ class ScreenHome extends StatelessWidget {
       );
     }
 
+    contents.sort(
+      (a, b) =>
+          // Checks either both are files or both are folders
+          ((a.endsWith('.md') && b.endsWith('.md')) ||
+                  (!a.endsWith('.md') && !b.endsWith('.md')))
+              // If true, sort that 2 elements.
+              ? (a.compareTo(b))
+              // else, (one folder and one file) move the folder to top.
+              : (b.endsWith('.md') ? -1 : 1),
+    );
+
     return ListView.builder(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
