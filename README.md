@@ -1,8 +1,8 @@
 # **EnderNote**
 
-_"Notes, Redefined. Markdown-powered productivity."_
+No clouds, no nonsense. Just fast, clean note-taking for people who actually write things down. Whether it's grocery lists or genius ideas at 3 AM, EnderNote’s got your back.
 
-Welcome to **EnderNote**—a minimal, fast, and open-source note-taking app designed for those who demand simplicity and power in one. Built with Flutter and Firebase, EnderNote delivers seamless note-taking for writers, organizers, and power users alike.
+(It's Markdown syntax, btw).
 
 ---
 
@@ -10,18 +10,17 @@ Welcome to **EnderNote**—a minimal, fast, and open-source note-taking app desi
 
 ### **Built for Productivity**
 
-- 📝 **Markdown Support**: Write with Markdown, see live previews.
-- ☁️ **Cloud Sync**: Access your notes anywhere, anytime _(currently unavailable)_.
-- 🔍 **Full-Text Search**: Quickly find your notes.
-- 📁 **Organized Folders**: Keep your workspace tidy and intuitive.
+* 📝 **Markdown Support**: Write with Markdown, see live previews.
+* 🔍 **Full-Text Search**: Quickly find your notes.
+* 📁 **Organized Folders**: Keep your workspace tidy and intuitive.
 
 ---
 
 ## **🚀 Why EnderNote?**
 
-- **Open Source**: Free and customizable for your needs.
-- **Cross-Platform**: Runs on Android, Linux, Windows. _(macOS and iOS builds currently unavailable.)_
-- **Lightning-Fast**: Powered by Flutter, ensuring smooth performance on every device.
+* **Open Source**: Free and customizable for your needs.
+* **Cross-Platform**: Runs on Android, Linux, Windows. *(macOS and iOS builds currently unavailable.)*
+* **Lightning-Fast**: Powered by Flutter, ensuring smooth performance on every device.
 
 ---
 
@@ -63,9 +62,8 @@ flutter run
 
 EnderNote exists thanks to:
 
-- 🌿 **[Flutter](https://flutter.dev)**: The engine behind smooth, cross-platform magic.
-- ☁️ **[Firebase](https://firebase.google.com)**: Our cloud-based brain, keeping your notes safe and synced.
-- 💡 **[Obsidian](https://obsidian.md)**: The spark of inspiration that led us here.
+* 🌿 **[Flutter](https://flutter.dev)**: The engine behind smooth, cross-platform magic.
+* 💡 **[Obsidian](https://obsidian.md)**: The spark of inspiration that led us here.
 
 Special thanks to the open-source community—building the future, one commit at a time. 🚀
 
