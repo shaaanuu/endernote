@@ -16,13 +16,13 @@ dependencies:
   equatable: ^2.0.5
   flutter_bloc: ^9.0.0
   path_provider: ^2.1.4
-  flutter_secure_storage: ^9.2.2
   url_launcher: ^6.3.1
   package_info_plus: ^8.1.2
   bloc: ^9.0.0
   path: ^1.9.0
   flutter_speed_dial: ^7.0.0
   iconsax_linear: ^1.1.0
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
