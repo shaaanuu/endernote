@@ -4,36 +4,27 @@ No clouds, no nonsense. Just fast, clean note-taking for people who actually wri
 
 (It's Markdown syntax, btw).
 
----
-
 ## **✨ Features**
 
 ### **Built for Productivity**
 
-* 📝 **Markdown Support**: Write with Markdown, see live previews.
-* 🔍 **Full-Text Search**: Quickly find your notes.
-* 📁 **Organized Folders**: Keep your workspace tidy and intuitive.
-
----
+- 📝 **Markdown Support**: Write with Markdown, see live previews.
+- 🔍 **Full-Text Search**: Quickly find your notes.
+- 📁 **Organized Folders**: Keep your workspace tidy and intuitive.
 
 ## **🚀 Why EnderNote?**
 
-* **Open Source**: Free and customizable for your needs.
-* **Cross-Platform**: Runs on Android, Linux, Windows. *(macOS and iOS builds currently unavailable.)*
-* **Lightning-Fast**: Powered by Flutter, ensuring smooth performance on every device.
-
----
+- **Open Source**: Free and customizable for your needs.
+- **Cross-Platform**: Runs on Android, Linux, Windows. _(macOS and iOS builds currently unavailable.)_
+- **Lightning-Fast**: Powered by Flutter, ensuring smooth performance on every device.
 
 ## **📸 Screenshots**
 
 <p align="center">
-  <img src="screenshots/1.JPG" alt="Screenshot 1" width="300px" />
   <img src="screenshots/2.JPG" alt="Screenshot 2" width="300px" />
   <img src="screenshots/4.JPG" alt="Screenshot 2" width="300px" />
   <img src="screenshots/3.JPG" alt="Screenshot 2" width="300px" />
 </p>
-
----
 
 ## **🚦 Quick Start**
 
@@ -56,18 +47,14 @@ flutter pub get
 flutter run
 ```
 
----
-
 ## **🙌 Acknowledgements**
 
 EnderNote exists thanks to:
 
-* 🌿 **[Flutter](https://flutter.dev)**: The engine behind smooth, cross-platform magic.
-* 💡 **[Obsidian](https://obsidian.md)**: The spark of inspiration that led us here.
+- 🌿 **[Flutter](https://flutter.dev)**: The engine behind smooth, cross-platform magic.
+- 💡 **[Obsidian](https://obsidian.md)**: The spark of inspiration that led us here.
 
 Special thanks to the open-source community—building the future, one commit at a time. 🚀
-
----
 
 ## **📜 License**
 

@@ -16,3 +16,4 @@ All notable changes to this project are documented here.
 
 ### Removed
 - Hero page and assets related to it. Now it directly shows the Home page.
+- Hero page screenshot from README.md
