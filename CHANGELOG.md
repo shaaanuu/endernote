@@ -7,7 +7,6 @@ All notable changes to this project are documented here.
 ### Added
 
 - CHANGELOG.md to keep track of changes.
-- GH Action pulls in CHANGELOG.md for release body.
 
 ### Changed
 
