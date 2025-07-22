@@ -25,6 +25,14 @@ jobs:
         run: |
           echo "VERSION=$(grep '^version: ' pubspec.yaml | sed 's/version: //')" >> $GITHUB_ENV
 
+      - name: Extract Changelog Entry
+        id: changelog
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          path: CHANGELOG.md
+          version: "${{ env.VERSION }}"
+          validation_level: none
+
       - name: Build Split APKs per ABI
         run: flutter build apk --release --split-per-abi
       - name: Upload Split APKs to release
@@ -54,7 +62,7 @@ jobs:
           file: build/app/outputs/flutter-apk/android-universal.apk
           tag: ${{ env.VERSION }}
           overwrite: true
-          body: "Freshly brewed build, ready to shine!"
+          body: ${{ steps.changelog.outputs.changelog }}
 
       - name: Build Legacy APK (Impeller Disabled)
         working-directory: ${{ github.workspace }}
@@ -72,7 +80,6 @@ jobs:
           file: build/app/outputs/flutter-apk/android-legacy.apk
           tag: ${{ env.VERSION }}
           overwrite: true
-          body: "Freshly brewed build, ready to shine!"
 
   build_windows:
     name: 🪟 Build Windows App
@@ -103,7 +110,6 @@ jobs:
           file: build/windows/x64/runner/Release/windows.zip
           tag: ${{ env.VERSION }}
           overwrite: true
-          body: "Freshly brewed build, ready to shine!"
 
   build_linux:
     name: 🐧 Build Linux App
@@ -131,4 +137,3 @@ jobs:
           file: build/linux/x64/release/bundle/linux.zip
           tag: ${{ env.VERSION }}
           overwrite: true
-          body: "Freshly brewed build, ready to shine!"

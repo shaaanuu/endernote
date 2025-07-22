@@ -7,15 +7,18 @@ All notable changes to this project are documented here.
 ### Added
 
 - CHANGELOG.md to keep track of changes.
+- GH Action pulls in CHANGELOG.md for release body.
 
 ### Changed
 
 - ThemeBloc now caches SharedPreferences instead of flutterSecureStorage.
 - Replaced static placeholder text with randomized messages.
+- GH release body to use from the CHANGELOG.md.
 
 ### Fixed
 
 - Enum theme load fix: switch to `.name` instead of `.toString()` for `byName()` compatibility.
+- No longer double inject body on each job in GH workflow.
 
 ### Removed
 
