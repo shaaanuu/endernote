@@ -9,11 +9,10 @@ All notable changes to this project are documented here.
 ### Changed
 - ThemeBloc now caches SharedPreferences instead of flutterSecureStorage.
 - Replaced static placeholder text with randomized messages.
-- GH release body to use from the CHANGELOG.md.
+- GH release body to use the CHANGELOG.md.
 
 ### Fixed
 - Enum theme load fix: switch to `.name` instead of `.toString()` for `byName()` compatibility.
-- No longer double inject body on each job in GH workflow.
 
 ### Removed
 - Hero page and assets related to it. Now it directly shows the Home page.

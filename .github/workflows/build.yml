@@ -4,33 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  create_release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
-      - name: Extract Version
-        id: extract_version
-        run: |
-          echo "VERSION=$(grep '^version: ' pubspec.yaml | sed 's/version: //')" >> $GITHUB_ENV
-      - name: Extract Changelog
-        id: changelog
-        uses: mindsers/changelog-reader-action@v2
-        with:
-          path: CHANGELOG.md
-          version: "${{ env.VERSION }}"
-          validation_level: none
-      - run: echo "${{ steps.changelog.outputs.changelog }}"
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ env.VERSION }}
-          name: Release ${{ env.VERSION }}
-          body: ${{ steps.changelog.outputs.changelog }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-
   build_android:
-    needs: create_release
     name: 🤖 Build Android Apps
     runs-on: ubuntu-latest
     steps:
@@ -80,6 +54,7 @@ jobs:
           file: build/app/outputs/flutter-apk/android-universal.apk
           tag: ${{ env.VERSION }}
           overwrite: true
+          body: "[View full changelog](https://github.com/shaaanuu/endernote/blob/main/CHANGELOG.md)"
 
       - name: Build Legacy APK (Impeller Disabled)
         working-directory: ${{ github.workspace }}
@@ -97,9 +72,9 @@ jobs:
           file: build/app/outputs/flutter-apk/android-legacy.apk
           tag: ${{ env.VERSION }}
           overwrite: true
+          body: "[View full changelog](https://github.com/shaaanuu/endernote/blob/main/CHANGELOG.md)"
 
   build_windows:
-    needs: create_release
     name: 🪟 Build Windows App
     runs-on: windows-latest
     steps:
@@ -128,9 +103,9 @@ jobs:
           file: build/windows/x64/runner/Release/windows.zip
           tag: ${{ env.VERSION }}
           overwrite: true
+          body: "[View full changelog](https://github.com/shaaanuu/endernote/blob/main/CHANGELOG.md)"
 
   build_linux:
-    needs: create_release
     name: 🐧 Build Linux App
     runs-on: ubuntu-latest
     steps:
@@ -156,3 +131,4 @@ jobs:
           file: build/linux/x64/release/bundle/linux.zip
           tag: ${{ env.VERSION }}
           overwrite: true
+          body: "[View full changelog](https://github.com/shaaanuu/endernote/blob/main/CHANGELOG.md)"
