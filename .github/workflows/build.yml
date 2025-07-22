@@ -20,6 +20,7 @@ jobs:
           path: CHANGELOG.md
           version: "${{ env.VERSION }}"
           validation_level: none
+      - run: echo "${{ steps.changelog.outputs.changelog }}"
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
