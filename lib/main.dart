@@ -10,7 +10,6 @@ import 'bloc/theme/theme_bloc.dart';
 import 'bloc/theme/theme_states.dart';
 import 'presentation/screens/about/screen_about.dart';
 import 'presentation/screens/canvas/screen_canvas.dart';
-import 'presentation/screens/hero/screen_hero.dart';
 import 'presentation/screens/home/screen_home.dart';
 import 'presentation/screens/search/screen_search.dart';
 import 'presentation/screens/settings/screen_settings.dart';
@@ -71,7 +70,6 @@ class MyApp extends StatelessWidget {
             initialRoute: '/',
             routes: {
               '/canvas': (context) => ScreenCanvas(),
-              '/home': (context) => ScreenHome(rootPath: rootPath),
               '/settings': (context) => const ScreenSettings(),
               '/about': (context) => const ScreenAbout(),
             },
@@ -88,7 +86,7 @@ class MyApp extends StatelessWidget {
               return null;
             },
             theme: appThemeData[themeState.theme],
-            home: ScreenHero(rootPath: rootPath),
+            home: ScreenHome(rootPath: rootPath),
           );
         },
       ),

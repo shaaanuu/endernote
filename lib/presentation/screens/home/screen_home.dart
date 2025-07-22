@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -30,7 +31,6 @@ class ScreenHome extends StatelessWidget {
       appBar: CustomAppBar(
         rootPath: rootPath,
         controller: searchController,
-        showBackButton: true,
         hasText: hasText,
       ),
       body: BlocBuilder<DirectoryBloc, DirectoryState>(
@@ -62,16 +62,43 @@ class ScreenHome extends StatelessWidget {
   ) {
     final contents = state.folderContents[path] ?? [];
 
+    final msg = [
+      "New here? Start with a tap!",
+      "This page is waiting for your genius.",
+      "Looks a bit empty... for now.",
+      "Don't be shy. Hit that + button.",
+      "Nothing here. Yet.",
+      "Every masterpiece starts with one note.",
+      "Tap + and break the silence.",
+      "Fresh page, fresh start!",
+      "Let's make something magical.",
+      "Go on. Tap it. You know you want to.",
+      "Quiet, isn't it? Too quiet.",
+      "Notes? Zero. Potential? Infinite.",
+      "Still blank. For now.",
+      "Room for thoughts. Just add one.",
+      "Not much to see here. Yet.",
+      "Tap + before I start singing.",
+      "Feels lonely in here...",
+      "Trust me, this won't write itself.",
+      "You bring the idea, I'll hold the pen.",
+      "One small tap for you, one giant leap for your notes.",
+    ];
+
     if (path == rootPath && contents.isEmpty) {
       return Center(
-        child: Text(
-          "This folder is feeling lonely.",
-          style: TextStyle(
-            fontSize: 16,
-            color: Theme.of(context)
-                .extension<EndernoteColors>()
-                ?.clrText
-                .withAlpha(100),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Text(
+            msg[Random().nextInt(msg.length)],
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              color: Theme.of(context)
+                  .extension<EndernoteColors>()
+                  ?.clrText
+                  .withAlpha(200),
+            ),
           ),
         ),
       );

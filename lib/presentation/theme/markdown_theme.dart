@@ -53,7 +53,6 @@ MarkdownStyleSheet mdTheme(context) => MarkdownStyleSheet(
             .withAlpha(240),
         fontSize: 16,
         height: 1.6,
-        fontFamily: 'Roboto',
       ),
       em: TextStyle(
         fontStyle: FontStyle.italic,
@@ -61,7 +60,6 @@ MarkdownStyleSheet mdTheme(context) => MarkdownStyleSheet(
             .extension<EndernoteColors>()
             ?.clrText
             .withAlpha(240),
-        fontFamily: 'Roboto',
       ),
       strong: TextStyle(
         fontWeight: FontWeight.bold,
@@ -69,7 +67,6 @@ MarkdownStyleSheet mdTheme(context) => MarkdownStyleSheet(
             .extension<EndernoteColors>()
             ?.clrText
             .withAlpha(240),
-        fontFamily: 'Roboto',
       ),
       code: TextStyle(
         color: Theme.of(context)
@@ -125,7 +122,6 @@ MarkdownStyleSheet mdTheme(context) => MarkdownStyleSheet(
         decoration: TextDecoration.underline,
         decorationColor:
             Theme.of(context).extension<EndernoteColors>()!.clrText,
-        fontFamily: 'Roboto',
       ),
       listBullet: TextStyle(
         color: Theme.of(context)
@@ -133,6 +129,5 @@ MarkdownStyleSheet mdTheme(context) => MarkdownStyleSheet(
             .clrText
             .withAlpha(230),
         fontSize: 16,
-        fontFamily: 'Roboto',
       ),
     );
