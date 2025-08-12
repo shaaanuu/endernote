@@ -4,7 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 ### changed
-- replaced the folder icons into arrows in home screen.
+- Replaced the folder icons into arrows in home screen.
+- Prettified the paragraph and heading tags.
 
 ### Added
 - Theme for tables in MD preview.
