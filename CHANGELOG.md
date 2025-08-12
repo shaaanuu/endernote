@@ -2,6 +2,10 @@
 
 All notable changes to this project are documented here.
 
+## [Unreleased]
+### changed
+- replaced the folder icons into arrows in home screen.
+
 ## [3.3.0]
 ### Added
 - CHANGELOG.md to keep track of changes.

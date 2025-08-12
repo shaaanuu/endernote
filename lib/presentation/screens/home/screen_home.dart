@@ -135,11 +135,15 @@ class ScreenHome extends StatelessWidget {
                 leading: Icon(
                   isFolder
                       ? (state.openFolders.contains(entityPath)
-                          ? IconsaxLinear.folder_open
-                          : IconsaxLinear.folder)
+                          ? IconsaxLinear.arrow_down
+                          : IconsaxLinear.arrow_right_3)
                       : IconsaxLinear.task_square,
+                  size: 20,
                 ),
-                title: Text(entityPath.split('/').last),
+                title: Transform.translate(
+                  offset: Offset(-8, 0),
+                  child: Text(entityPath.split('/').last),
+                ),
                 onTap: () {
                   if (isFolder) {
                     context.read<DirectoryBloc>().add(ToggleFolder(entityPath));
