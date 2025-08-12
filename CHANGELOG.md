@@ -6,6 +6,9 @@ All notable changes to this project are documented here.
 ### changed
 - replaced the folder icons into arrows in home screen.
 
+### Added
+- Theme for tables in MD preview.
+
 ## [3.3.0]
 ### Added
 - CHANGELOG.md to keep track of changes.

@@ -130,4 +130,12 @@ MarkdownStyleSheet mdTheme(context) => MarkdownStyleSheet(
             .withAlpha(230),
         fontSize: 16,
       ),
+      tableBorder: TableBorder.all(
+        color: Theme.of(context)
+            .extension<EndernoteColors>()!
+            .clrText
+            .withAlpha(120),
+        borderRadius: BorderRadius.circular(10),
+        width: 1.5,
+      ),
     );
