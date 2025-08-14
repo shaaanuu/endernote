@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented here.
 
-## [Unreleased]
+## [3.3.1]
 ### changed
 - Replaced the folder icons into arrows in home screen.
 - Prettified the paragraph and heading tags.
