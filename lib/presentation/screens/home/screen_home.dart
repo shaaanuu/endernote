@@ -29,9 +29,12 @@ class ScreenHome extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(
-        rootPath: rootPath,
-        controller: searchController,
-        hasText: hasText,
+        // rootPath: rootPath,
+        // controller: searchController,
+        // hasText: hasText,
+        leadingIcon: IconsaxLinear.activity,
+        title: 'lol',
+        trailingIcon: IconsaxLinear.activity,
       ),
       body: BlocBuilder<DirectoryBloc, DirectoryState>(
         builder: (context, state) {

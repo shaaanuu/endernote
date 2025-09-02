@@ -29,9 +29,12 @@ class ScreenSearch extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(
-        rootPath: rootPath,
-        searchQuery: searchQuery,
-        showBackButton: true,
+        // rootPath: rootPath,
+        // searchQuery: searchQuery,
+        // showBackButton: true,
+        leadingIcon: IconsaxLinear.activity,
+        title: 'lol',
+        trailingIcon: IconsaxLinear.activity,
       ),
       body: BlocBuilder<DirectoryBloc, DirectoryState>(
         builder: (context, state) {
