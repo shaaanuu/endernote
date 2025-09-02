@@ -37,7 +37,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 onPressed: onLeading ?? () {},
                 icon: Icon(leadingIcon),
               ),
-              Text(title),
+              Expanded(child: Text(title)),
               IconButton(
                 onPressed: onTrailing ?? () {},
                 icon: Icon(trailingIcon),
