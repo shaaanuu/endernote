@@ -6,9 +6,6 @@ import '../../theme/app_themes.dart';
 class ScreenWelcome extends StatelessWidget {
   const ScreenWelcome({super.key});
 
-// TODO: The spacing is shit and also it's hardcoded.
-// TODO: Also needs to fix the colors and sizes.
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,21 +34,20 @@ class ScreenWelcome extends StatelessWidget {
                     letterSpacing: 0.57,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 32, bottom: 56),
-                  child: Text(
-                    'Chests keep your notes\norganized and safe.',
-                    style: TextStyle(
-                      height: 1.1,
-                      color: Theme.of(context)
-                          .extension<EndernoteColors>()
-                          ?.clrTextSecondary,
-                      fontFamily: 'SourceSans3Light',
-                      fontSize: 20,
-                      letterSpacing: 1,
-                    ),
+                SizedBox(height: 32),
+                Text(
+                  'Chests keep your notes\norganized and safe.',
+                  style: TextStyle(
+                    height: 1.1,
+                    color: Theme.of(context)
+                        .extension<EndernoteColors>()
+                        ?.clrTextSecondary,
+                    fontFamily: 'SourceSans3Light',
+                    fontSize: 20,
+                    letterSpacing: 1,
                   ),
                 ),
+                SizedBox(height: 56),
                 Center(
                   child: TextButton.icon(
                     icon: Icon(
@@ -68,47 +64,44 @@ class ScreenWelcome extends StatelessWidget {
                     onPressed: () {},
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 64),
-                  child: Center(
-                    child: TextButton.icon(
-                      onPressed: () {},
-                      icon: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: Icon(
-                          IconsaxLinear.folder_2,
-                          size: 16,
-                        ),
+                SizedBox(height: 16),
+                Center(
+                  child: TextButton.icon(
+                    onPressed: () {},
+                    icon: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Icon(
+                        IconsaxLinear.folder_2,
+                        size: 16,
                       ),
-                      label: Text(
-                        'Open existing folder as chest',
-                        style: TextStyle(
-                          fontFamily: 'SourceSans3Regular',
-                          fontSize: 14,
-                        ),
+                    ),
+                    label: Text(
+                      'Open existing folder as chest',
+                      style: TextStyle(
+                        fontFamily: 'SourceSans3Regular',
+                        fontSize: 14,
                       ),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Recent chests:',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
+                SizedBox(height: 64),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Recent chests:',
+                      style: TextStyle(
+                        fontSize: 16,
                       ),
-                      InkResponse(
-                        radius: 20,
-                        child: Icon(IconsaxLinear.more),
-                        onTap: () {},
-                      )
-                    ],
-                  ),
+                    ),
+                    InkResponse(
+                      radius: 20,
+                      child: Icon(IconsaxLinear.more),
+                      onTap: () {},
+                    ),
+                  ],
                 ),
+                SizedBox(height: 16),
                 Material(
                   color: Theme.of(context)
                       .extension<EndernoteColors>()
@@ -160,8 +153,6 @@ class ScreenWelcome extends StatelessWidget {
           ),
         ),
       ),
-      // TODO: Change the primary color to the dark so all the stuffs will inherit it.
-      // Currently it's just hardcoded in the theme file.
       floatingActionButton: FloatingActionButton(
         child: Icon(IconsaxLinear.add),
         onPressed: () {},
