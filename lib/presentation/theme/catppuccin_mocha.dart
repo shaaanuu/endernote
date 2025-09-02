@@ -38,9 +38,7 @@ final ThemeData catppuccinMochaTheme = ThemeData(
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      backgroundColor: WidgetStatePropertyAll(
-        _clrSecondary.withAlpha(200),
-      ),
+      backgroundColor: WidgetStatePropertyAll(_clrSecondary),
     ),
   ),
   elevatedButtonTheme: const ElevatedButtonThemeData(

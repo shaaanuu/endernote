@@ -54,15 +54,6 @@ class ScreenWelcome extends StatelessWidget {
                 ),
                 Center(
                   child: TextButton.icon(
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(
-                        Theme.of(context)
-                            .extension<EndernoteColors>()
-                            ?.clrSecondary
-                            .withAlpha(200),
-                      ),
-                    ),
-                    onPressed: () {},
                     icon: Icon(
                       IconsaxLinear.add,
                       size: 24,
@@ -74,6 +65,7 @@ class ScreenWelcome extends StatelessWidget {
                         fontSize: 14,
                       ),
                     ),
+                    onPressed: () {},
                   ),
                 ),
                 Padding(
