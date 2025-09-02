@@ -13,6 +13,7 @@ const Color nordLightText = Color(0xFF2E3440);
 const Color nordLightPrimary = Color(0xFF5E81AC);
 
 final ThemeData nordDarkTheme = ThemeData(
+  fontFamily: 'SourceSans3Regular',
   colorScheme: const ColorScheme.dark(primary: nordDarkPrimary),
   useMaterial3: true,
   scaffoldBackgroundColor: nordDarkBase,
@@ -77,11 +78,14 @@ final ThemeData nordDarkTheme = ThemeData(
     EndernoteColors(
       clrBase: nordDarkBase,
       clrText: nordDarkText,
+      clrSecondary: nordDarkBase,
+      clrTextSecondary: nordDarkText,
     ),
   },
 );
 
 final ThemeData nordLightTheme = ThemeData(
+  fontFamily: 'SourceSans3Regular',
   colorScheme: const ColorScheme.light(primary: nordLightPrimary),
   useMaterial3: true,
   scaffoldBackgroundColor: nordLightBase,
@@ -146,6 +150,8 @@ final ThemeData nordLightTheme = ThemeData(
     EndernoteColors(
       clrBase: nordLightBase,
       clrText: nordLightText,
+      clrSecondary: nordLightBase,
+      clrTextSecondary: nordLightText,
     ),
   },
 );

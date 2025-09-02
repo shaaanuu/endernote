@@ -6,20 +6,28 @@ import 'nord.dart';
 class EndernoteColors extends ThemeExtension<EndernoteColors> {
   final Color clrBase;
   final Color clrText;
+  final Color clrSecondary;
+  final Color clrTextSecondary;
 
   const EndernoteColors({
     required this.clrBase,
     required this.clrText,
+    required this.clrSecondary,
+    required this.clrTextSecondary,
   });
 
   @override
   ThemeExtension<EndernoteColors> copyWith({
     Color? clrBase,
     Color? clrText,
+    Color? clrSecondary,
+    Color? clrTextSecondary,
   }) {
     return EndernoteColors(
       clrBase: clrBase ?? this.clrBase,
       clrText: clrText ?? this.clrText,
+      clrSecondary: clrSecondary ?? this.clrSecondary,
+      clrTextSecondary: clrTextSecondary ?? this.clrTextSecondary,
     );
   }
 
@@ -34,6 +42,9 @@ class EndernoteColors extends ThemeExtension<EndernoteColors> {
     return EndernoteColors(
       clrBase: Color.lerp(clrBase, other.clrBase, t)!,
       clrText: Color.lerp(clrText, other.clrText, t)!,
+      clrSecondary: Color.lerp(clrSecondary, other.clrSecondary, t)!,
+      clrTextSecondary:
+          Color.lerp(clrTextSecondary, other.clrTextSecondary, t)!,
     );
   }
 }

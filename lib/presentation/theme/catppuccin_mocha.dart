@@ -3,8 +3,11 @@ import 'app_themes.dart';
 
 const Color _clrBase = Color(0xFF1e1e2e);
 const Color _clrText = Color(0xFFcdd6f4);
+const Color _clrSecondary = Color(0xFF11111B);
+const Color _clrTextSecondary = Color(0xFFBAC2DE);
 
 final ThemeData catppuccinMochaTheme = ThemeData(
+  fontFamily: 'SourceSans3Regular',
   colorScheme: const ColorScheme.dark(primary: _clrText),
   useMaterial3: true,
   scaffoldBackgroundColor: _clrBase,
@@ -27,9 +30,17 @@ final ThemeData catppuccinMochaTheme = ThemeData(
       fixedSize: WidgetStatePropertyAll(Size(50, 50)),
     ),
   ),
-  textButtonTheme: const TextButtonThemeData(
+  textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
-      foregroundColor: WidgetStatePropertyAll(_clrText),
+      foregroundColor: const WidgetStatePropertyAll(_clrText),
+      shape: WidgetStatePropertyAll(
+        RoundedSuperellipseBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      backgroundColor: WidgetStatePropertyAll(
+        _clrSecondary.withAlpha(200),
+      ),
     ),
   ),
   elevatedButtonTheme: const ElevatedButtonThemeData(
@@ -60,10 +71,19 @@ final ThemeData catppuccinMochaTheme = ThemeData(
       borderSide: BorderSide(color: _clrText),
     ),
   ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: _clrSecondary,
+    foregroundColor: _clrText,
+  ),
+  iconTheme: IconThemeData(
+    color: _clrText,
+  ),
   extensions: const <ThemeExtension<dynamic>>{
     EndernoteColors(
       clrBase: _clrBase,
       clrText: _clrText,
+      clrSecondary: _clrSecondary,
+      clrTextSecondary: _clrTextSecondary,
     ),
   },
 );
