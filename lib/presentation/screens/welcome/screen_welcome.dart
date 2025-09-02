@@ -131,6 +131,7 @@ class ScreenWelcome extends StatelessWidget {
                           '2h ago',
                           style: TextStyle(
                             fontFamily: 'SourceSans3Light',
+                            fontSize: 12,
                             fontStyle: FontStyle.italic,
                             color: Theme.of(context)
                                 .extension<EndernoteColors>()
