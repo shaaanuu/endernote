@@ -116,12 +116,7 @@ class ScreenWelcome extends StatelessWidget {
                       return ListTile(
                         title: Text(
                           'Ender Research',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context)
-                                .extension<EndernoteColors>()
-                                ?.clrText,
-                          ),
+                          style: TextStyle(fontSize: 18),
                         ),
                         subtitle: Text(
                           '../Documents/EnderResearch',
