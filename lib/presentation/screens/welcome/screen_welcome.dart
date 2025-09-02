@@ -77,6 +77,7 @@ class ScreenWelcome extends StatelessWidget {
                     ),
                     label: Text(
                       'Open existing folder as chest',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: 'SourceSans3Regular',
                         fontSize: 14,
@@ -116,10 +117,14 @@ class ScreenWelcome extends StatelessWidget {
                       return ListTile(
                         title: Text(
                           'Ender Research',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 18),
                         ),
                         subtitle: Text(
                           '../Documents/EnderResearch',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: Theme.of(context)
                                 .extension<EndernoteColors>()
