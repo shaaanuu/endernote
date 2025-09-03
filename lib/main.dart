@@ -11,7 +11,7 @@ import 'bloc/theme/theme_states.dart';
 import 'presentation/screens/about/screen_about.dart';
 import 'presentation/screens/canvas/screen_canvas.dart';
 import 'presentation/screens/chest_room/screen_chest_room.dart';
-import 'presentation/screens/home/screen_home.dart';
+import 'presentation/screens/chest_view/screen_chest_view.dart';
 import 'presentation/screens/welcome/screen_welcome.dart';
 import 'presentation/screens/search/screen_search.dart';
 import 'presentation/screens/settings/screen_settings.dart';
@@ -74,8 +74,8 @@ class MyApp extends StatelessWidget {
               '/canvas': (context) => ScreenCanvas(),
               '/settings': (context) => const ScreenSettings(),
               '/about': (context) => const ScreenAbout(),
-              '/chestRoom': (context) => ScreenChestRoom(),
-              '/home': (context) => ScreenHome(rootPath: rootPath),
+              '/chest-room': (context) => ScreenChestRoom(),
+              '/chest-view': (context) => ScreenChestView(rootPath: rootPath),
             },
             onGenerateRoute: (settings) {
               if (settings.name == '/search') {

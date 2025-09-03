@@ -61,7 +61,8 @@ class ScreenWelcome extends StatelessWidget {
                         fontSize: 14,
                       ),
                     ),
-                    onPressed: () => Navigator.pushNamed(context, '/chestRoom'),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, '/chest-room'),
                   ),
                 ),
                 SizedBox(height: 16),
@@ -82,7 +83,8 @@ class ScreenWelcome extends StatelessWidget {
                         fontSize: 14,
                       ),
                     ),
-                    onPressed: () => Navigator.pushNamed(context, '/chestRoom'),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, '/chest-room'),
                   ),
                 ),
                 SizedBox(height: 64),
@@ -98,7 +100,7 @@ class ScreenWelcome extends StatelessWidget {
                     InkResponse(
                       radius: 20,
                       child: Icon(IconsaxLinear.more),
-                      onTap: () => Navigator.pushNamed(context, '/chestRoom'),
+                      onTap: () => Navigator.pushNamed(context, '/chest-room'),
                     ),
                   ],
                 ),

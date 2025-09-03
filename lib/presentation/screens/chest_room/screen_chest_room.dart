@@ -65,7 +65,10 @@ class ScreenChestRoom extends StatelessWidget {
                       .withAlpha(179),
                 ),
               ),
-              onTap: () {},
+              onTap: () => Navigator.of(context).pushNamedAndRemoveUntil(
+                '/chest-view',
+                (route) => false,
+              ),
             ),
           );
         },

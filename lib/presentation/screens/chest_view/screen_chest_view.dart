@@ -13,8 +13,8 @@ import '../../widgets/context_menu.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_fab.dart';
 
-class ScreenHome extends StatelessWidget {
-  const ScreenHome({super.key, required this.rootPath});
+class ScreenChestView extends StatelessWidget {
+  const ScreenChestView({super.key, required this.rootPath});
 
   final String rootPath;
 
