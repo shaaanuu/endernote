@@ -5,6 +5,7 @@ const Color _clrBase = Color(0xFF1e1e2e);
 const Color _clrText = Color(0xFFcdd6f4);
 const Color _clrSecondary = Color(0xFF11111B);
 const Color _clrTextSecondary = Color(0xFFBAC2DE);
+const Color _clrOverlay = Color(0xFF6C7086);
 
 final ThemeData catppuccinMochaTheme = ThemeData(
   fontFamily: 'SourceSans3Regular',
@@ -75,6 +76,12 @@ final ThemeData catppuccinMochaTheme = ThemeData(
   ),
   iconTheme: IconThemeData(
     color: _clrText,
+  ),
+  dividerTheme: DividerThemeData(
+    color: _clrOverlay,
+    thickness: 0.15,
+    indent: 16,
+    endIndent: 16,
   ),
   extensions: const <ThemeExtension<dynamic>>{
     EndernoteColors(
