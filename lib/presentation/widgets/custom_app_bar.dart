@@ -23,31 +23,44 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return SafeArea(
       child: AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: 80,
-        title: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          padding: const EdgeInsets.all(3),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: onLeading ?? () {},
-                icon: Icon(leadingIcon),
-              ),
-              Expanded(
-                child: Text(
-                  title,
-                  textAlign: TextAlign.center,
+        toolbarHeight: 70,
+        titleSpacing: 0,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color:
+                  Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                  onPressed: onLeading,
+                  icon: Icon(leadingIcon, size: 24),
                 ),
-              ),
-              IconButton(
-                onPressed: onTrailing ?? () {},
-                icon: Icon(trailingIcon),
-              ),
-            ],
+                Expanded(
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<EndernoteColors>()
+                          ?.clrText,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                  onPressed: onTrailing,
+                  icon: Icon(trailingIcon, size: 24),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -55,5 +68,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(80);
+  Size get preferredSize => const Size.fromHeight(70);
 }

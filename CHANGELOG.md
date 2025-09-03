@@ -2,6 +2,10 @@
 
 All notable changes to this project are documented here.
 
+## [unknown]
+### changed
+- Whole UI design.
+
 ## [3.3.1]
 ### changed
 - Replaced the folder icons into arrows in home screen.

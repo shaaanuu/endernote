@@ -18,26 +18,35 @@ class ScreenChestRoom extends StatelessWidget {
       ),
       body: ListView.builder(
         itemCount: 30,
+        padding: const EdgeInsets.only(bottom: 80),
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
             child: ListTile(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadiusGeometry.circular(10),
               ),
-              tileColor:
-                  Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
+              tileColor: Theme.of(context)
+                  .extension<EndernoteColors>()
+                  ?.clrSecondary
+                  .withAlpha(179),
               title: Text(
                 'Ender Research',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(
+                  color: Theme.of(context)
+                      .extension<EndernoteColors>()
+                      ?.clrTextSecondary,
+                  fontSize: 18,
+                ),
               ),
               subtitle: Text(
                 '../Documents/EnderResearch',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
+                  fontSize: 13,
                   color: Theme.of(context)
                       .extension<EndernoteColors>()
                       ?.clrTextSecondary
