@@ -54,6 +54,19 @@ class ScreenChestView extends StatelessWidget {
             // else, return empty list
             [];
 
+    // sorting, folders -> md -> others
+    files.sort((a, b) {
+      if (a is Directory && b is! Directory) return -1;
+      if (a is! Directory && b is Directory) return 1;
+
+      final aMd = a.path.toLowerCase().endsWith('.md');
+      final bMd = b.path.toLowerCase().endsWith('.md');
+      if (aMd && !bMd) return -1;
+      if (!aMd && bMd) return 1;
+
+      return a.path.toLowerCase().compareTo(b.path.toLowerCase());
+    });
+
     return Scaffold(
       appBar: CustomAppBar(
         leadingIcon: IconsaxLinear.menu,
