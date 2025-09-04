@@ -11,35 +11,49 @@ class ScreenChestView extends StatelessWidget {
 
   final String rootPath;
 
-  static const _iconMap = {
-    'png': IconsaxLinear.gallery,
-    'jpg': IconsaxLinear.gallery,
-    'jpeg': IconsaxLinear.gallery,
-    'gif': IconsaxLinear.gallery,
-    'bmp': IconsaxLinear.gallery,
-    'webp': IconsaxLinear.gallery,
-    'mp4': IconsaxLinear.video_play,
-    'mkv': IconsaxLinear.video_play,
-    'mov': IconsaxLinear.video_play,
-    'avi': IconsaxLinear.video_play,
-    'webm': IconsaxLinear.video_play,
-    'mp3': IconsaxLinear.audio_square,
-    'wav': IconsaxLinear.audio_square,
-    'flac': IconsaxLinear.audio_square,
-    'aac': IconsaxLinear.audio_square,
-    'ogg': IconsaxLinear.audio_square,
-    'pdf': IconsaxLinear.document_text_1,
-    'txt': IconsaxLinear.document_text_1,
-    'md': IconsaxLinear.document_text_1,
-    'doc': IconsaxLinear.document_text_1,
-    'docx': IconsaxLinear.document_text_1,
-    'rtf': IconsaxLinear.document_text_1,
+  static const _fileConfig = {
+    // images
+    'png': {'icon': IconsaxLinear.gallery, 'route': '/image-view'},
+    'jpg': {'icon': IconsaxLinear.gallery, 'route': '/image-view'},
+    'jpeg': {'icon': IconsaxLinear.gallery, 'route': '/image-view'},
+    'gif': {'icon': IconsaxLinear.gallery, 'route': '/image-view'},
+    'bmp': {'icon': IconsaxLinear.gallery, 'route': '/image-view'},
+    'webp': {'icon': IconsaxLinear.gallery, 'route': '/image-view'},
+
+    // videos
+    'mp4': {'icon': IconsaxLinear.video_play, 'route': '/video-view'},
+    'mkv': {'icon': IconsaxLinear.video_play, 'route': '/video-view'},
+    'mov': {'icon': IconsaxLinear.video_play, 'route': '/video-view'},
+    'avi': {'icon': IconsaxLinear.video_play, 'route': '/video-view'},
+    'webm': {'icon': IconsaxLinear.video_play, 'route': '/video-view'},
+
+    // audios
+    'mp3': {'icon': IconsaxLinear.audio_square, 'route': '/audio-view'},
+    'wav': {'icon': IconsaxLinear.audio_square, 'route': '/audio-view'},
+    'flac': {'icon': IconsaxLinear.audio_square, 'route': '/audio-view'},
+    'aac': {'icon': IconsaxLinear.audio_square, 'route': '/audio-view'},
+    'ogg': {'icon': IconsaxLinear.audio_square, 'route': '/audio-view'},
+
+    // docs
+    'pdf': {'icon': IconsaxLinear.document_text_1, 'route': '/pdf-view'},
+    'txt': {'icon': IconsaxLinear.document_text_1, 'route': '/canvas'},
+    'md': {'icon': IconsaxLinear.document_text_1, 'route': '/canvas'},
+    'doc': {'icon': IconsaxLinear.document_text_1, 'route': '/doc-view'},
+    'docx': {'icon': IconsaxLinear.document_text_1, 'route': '/doc-view'},
+    'rtf': {'icon': IconsaxLinear.document_text_1, 'route': '/doc-view'},
   };
 
   IconData _getIcon(FileSystemEntity entity) {
     if (entity is Directory) return IconsaxLinear.folder;
-    return _iconMap[entity.path.split('.').last.toLowerCase()] ??
+    return (_fileConfig[entity.path.split('.').last.toLowerCase()]?['icon']
+            as IconData?) ??
         IconsaxLinear.document;
+  }
+
+  String? _getRoute(FileSystemEntity entity) {
+    if (entity is Directory) return '/chest-view';
+    return _fileConfig[entity.path.split('.').last.toLowerCase()]?['route']
+        as String?;
   }
 
   @override
@@ -109,12 +123,29 @@ class ScreenChestView extends StatelessWidget {
                         ? const Icon(IconsaxLinear.arrow_right_3, size: 18)
                         : null,
                     onTap: () {
+                      // Folder -> go into chestView
                       if (files[index] is Directory) {
-                        // Navigate into folder
-                        print(files[index].path);
-                      } else if (files[index] is File) {
-                        // Open or preview the file
-                        print(files[index].path);
+                        // TODO: currently it loops, need to change that by implementing the breadcrumbs.
+                        Navigator.pushNamed(
+                          context,
+                          '/chest-view',
+                          arguments: files[index].path,
+                        );
+                      }
+
+                      // File -> pick route by extension
+                      if (files[index] is File) {
+                        final route = _getRoute(files[index]);
+                        if (route != null) {
+                          Navigator.pushNamed(
+                            context,
+                            route,
+                            arguments: files[index].path,
+                          );
+                        } else {
+                          print('Unsupported file: ${files[index].path}');
+                          // TODO: implement an error msg or something.
+                        }
                       }
                     },
                   ),
