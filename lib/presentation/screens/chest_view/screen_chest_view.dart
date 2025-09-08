@@ -35,7 +35,7 @@ class ScreenChestView extends StatelessWidget {
     'ogg': {'icon': IconsaxLinear.audio_square, 'route': '/audio-view'},
 
     // docs
-    'pdf': {'icon': IconsaxLinear.document_text_1, 'route': '/pdf-view'},
+    'pdf': {'icon': IconsaxLinear.image, 'route': '/pdf-view'},
     'txt': {'icon': IconsaxLinear.document_text_1, 'route': '/canvas'},
     'md': {'icon': IconsaxLinear.document_text_1, 'route': '/canvas'},
     'doc': {'icon': IconsaxLinear.document_text_1, 'route': '/doc-view'},
