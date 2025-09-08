@@ -92,6 +92,7 @@ class ScreenChestView extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildBreadcrumbs(context),
               const SizedBox(height: 8),
@@ -166,33 +167,38 @@ class ScreenChestView extends StatelessWidget {
     );
   }
 
-  Widget _buildBreadcrumbs(BuildContext context) {
+  Widget _buildBreadcrumbs(
+    BuildContext context, {
+    // Only shows after this folder
+    String startFrom = 'Endernote',
+  }) {
     final parts = rootPath
         .split(Platform.pathSeparator)
         .where((e) => e.isNotEmpty)
         .toList();
+    final startIndex = parts.indexOf(startFrom);
+    final visibleParts = parts.sublist(startIndex);
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         children: List.generate(
-          parts.length,
+          visibleParts.length,
           (i) {
             final path = Platform.isWindows
-                ? parts.sublist(0, i + 1).join('\\')
-                : '/${parts.sublist(0, i + 1).join('/')}';
+                ? parts.sublist(0, startIndex + i + 1).join('\\')
+                : '/${parts.sublist(0, startIndex + i + 1).join('/')}';
             return Row(
               children: [
                 GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ScreenChestView(rootPath: path),
-                      ),
-                    );
-                  },
+                  onTap: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ScreenChestView(rootPath: path),
+                    ),
+                  ),
                   child: Text(
-                    parts[i],
+                    visibleParts[i],
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -203,7 +209,7 @@ class ScreenChestView extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (i != parts.length - 1)
+                if (i != visibleParts.length - 1)
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: Icon(
