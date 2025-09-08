@@ -125,16 +125,17 @@ class ScreenChestView extends StatelessWidget {
                     onTap: () {
                       // Folder -> go into chestView
                       if (files[index] is Directory) {
-                        // TODO: currently it loops, need to change that by implementing the breadcrumbs.
-                        Navigator.pushNamed(
+                        Navigator.pushReplacement(
                           context,
-                          '/chest-view',
-                          arguments: files[index].path,
+                          MaterialPageRoute(
+                            builder: (context) => ScreenChestView(
+                              rootPath: files[index].path,
+                            ),
+                          ),
                         );
                       }
-
-                      // File -> pick route by extension
-                      if (files[index] is File) {
+                      // File -> pick route by it's extension
+                      else if (files[index] is File) {
                         final route = _getRoute(files[index]);
                         if (route != null) {
                           Navigator.pushNamed(
