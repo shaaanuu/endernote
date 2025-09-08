@@ -93,6 +93,8 @@ class ScreenChestView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
+              _buildBreadcrumbs(context),
+              const SizedBox(height: 8),
               Material(
                 color: Theme.of(context)
                     .extension<EndernoteColors>()
@@ -160,6 +162,63 @@ class ScreenChestView extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(IconsaxLinear.add),
         onPressed: () {},
+      ),
+    );
+  }
+
+  Widget _buildBreadcrumbs(BuildContext context) {
+    final parts = rootPath
+        .split(Platform.pathSeparator)
+        .where((e) => e.isNotEmpty)
+        .toList();
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: List.generate(
+          parts.length,
+          (i) {
+            final path = Platform.isWindows
+                ? parts.sublist(0, i + 1).join('\\')
+                : '/${parts.sublist(0, i + 1).join('/')}';
+            return Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ScreenChestView(rootPath: path),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    parts[i],
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context)
+                          .extension<EndernoteColors>()
+                          ?.clrText
+                          .withAlpha(179),
+                    ),
+                  ),
+                ),
+                if (i != parts.length - 1)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Icon(
+                      IconsaxLinear.arrow_right_3,
+                      size: 12,
+                      color: Theme.of(context)
+                          .extension<EndernoteColors>()
+                          ?.clrTextSecondary
+                          .withAlpha(179),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
