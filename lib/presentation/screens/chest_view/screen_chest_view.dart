@@ -5,6 +5,7 @@ import 'package:iconsax_linear/iconsax_linear.dart';
 
 import '../../theme/app_themes.dart';
 import '../../widgets/custom_app_bar.dart';
+import '../../widgets/custom_fab.dart';
 
 class ScreenChestView extends StatelessWidget {
   const ScreenChestView({super.key, required this.rootPath});
@@ -180,10 +181,7 @@ class ScreenChestView extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(IconsaxLinear.add),
-        onPressed: () {},
-      ),
+      floatingActionButton: CustomFAB(rootPath: rootPath),
     );
   }
 
