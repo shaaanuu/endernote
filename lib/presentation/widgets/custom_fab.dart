@@ -44,7 +44,7 @@ class CustomFAB extends StatelessWidget {
         _buildDialChild(
           context,
           controller: fileController,
-          icon: IconsaxLinear.task_square,
+          icon: IconsaxLinear.document_text_1,
           label: "Note",
           onCreate: () async {
             if (fileController.text.isNotEmpty) {
