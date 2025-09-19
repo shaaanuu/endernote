@@ -1,11 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
 
-import '../../bloc/directory/directory_bloc.dart';
-import '../../bloc/directory/directory_events.dart';
 import '../theme/app_themes.dart';
 
 void showContextMenu(
@@ -99,7 +96,7 @@ void _createNewFolder(BuildContext context, String entityPath) {
             Directory(
               '$entityPath/${value.trim()}', // new folder path
             ).createSync();
-            context.read<DirectoryBloc>().add(FetchDirectory(entityPath));
+            // context.read<DirectoryBloc>().add(FetchDirectory(entityPath));
           }
           Navigator.pop(context);
         },
@@ -115,7 +112,7 @@ void _createNewFolder(BuildContext context, String entityPath) {
               Directory(
                 '$entityPath/${controller.text.trim()}', // new folder path
               ).createSync();
-              context.read<DirectoryBloc>().add(FetchDirectory(entityPath));
+              // context.read<DirectoryBloc>().add(FetchDirectory(entityPath));
             }
             Navigator.pop(context);
           },
@@ -150,7 +147,7 @@ void _createNewFile(BuildContext context, String entityPath) {
             File(
               '$entityPath/${value.trim()}.md', // new file name
             ).createSync();
-            context.read<DirectoryBloc>().add(FetchDirectory(entityPath));
+            // context.read<DirectoryBloc>().add(FetchDirectory(entityPath));
           }
           Navigator.pop(context);
         },
@@ -166,7 +163,7 @@ void _createNewFile(BuildContext context, String entityPath) {
               File(
                 '$entityPath/${controller.text.trim()}.md', // new file name
               ).createSync();
-              context.read<DirectoryBloc>().add(FetchDirectory(entityPath));
+              // context.read<DirectoryBloc>().add(FetchDirectory(entityPath));
             }
             Navigator.pop(context);
           },
@@ -214,14 +211,14 @@ void _renameEntity(
             }
 
             // refresh home screen
-            context
-                .read<DirectoryBloc>()
-                .add(FetchDirectory(Directory(entityPath).parent.path));
+            // context
+            //     .read<DirectoryBloc>()
+            //     .add(FetchDirectory(Directory(entityPath).parent.path));
 
             // refresh search screen
-            context
-                .read<DirectoryBloc>()
-                .add(FetchDirectory(Directory(entityPath).parent.path));
+            // context
+            //     .read<DirectoryBloc>()
+            //     .add(FetchDirectory(Directory(entityPath).parent.path));
           }
           Navigator.pop(context);
         },
@@ -245,13 +242,13 @@ void _renameEntity(
               }
 
               // refresh home screen
-              context
-                  .read<DirectoryBloc>()
-                  .add(FetchDirectory(Directory(entityPath).parent.path));
+              // context
+              //     .read<DirectoryBloc>()
+              //     .add(FetchDirectory(Directory(entityPath).parent.path));
 
               // refresh search screen
-              context.read<DirectoryBloc>().add(SearchDirectory(
-                  Directory(entityPath).parent.path, searchQuery));
+              // context.read<DirectoryBloc>().add(SearchDirectory(
+              //     Directory(entityPath).parent.path, searchQuery));
             }
             Navigator.pop(context);
           },
@@ -289,9 +286,9 @@ void _deleteEntity(BuildContext context, String entityPath, bool isFolder) {
             } else {
               File(entityPath).deleteSync();
             }
-            context
-                .read<DirectoryBloc>()
-                .add(FetchDirectory(Directory(entityPath).parent.path));
+            // context
+            //     .read<DirectoryBloc>()
+            //     .add(FetchDirectory(Directory(entityPath).parent.path));
             Navigator.pop(context);
           },
           child: const Text('Delete'),

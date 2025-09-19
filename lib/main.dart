@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'bloc/directory/directory_bloc.dart';
-import 'bloc/directory/directory_events.dart';
 import 'bloc/theme/theme_bloc.dart';
 import 'bloc/theme/theme_states.dart';
 import 'presentation/screens/about/screen_about.dart';
@@ -13,7 +11,6 @@ import 'presentation/screens/canvas/screen_canvas.dart';
 import 'presentation/screens/chest_room/screen_chest_room.dart';
 import 'presentation/screens/chest_view/screen_chest_view.dart';
 import 'presentation/screens/welcome/screen_welcome.dart';
-import 'presentation/screens/search/screen_search.dart';
 import 'presentation/screens/settings/screen_settings.dart';
 import 'presentation/theme/app_themes.dart';
 
@@ -58,9 +55,6 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => DirectoryBloc()..add(FetchDirectory(rootPath)),
-        ),
-        BlocProvider(
           create: (context) => ThemeBloc(),
         ),
       ],
@@ -77,20 +71,7 @@ class MyApp extends StatelessWidget {
               '/chest-room': (context) => ScreenChestRoom(),
               '/chest-view': (context) => ScreenChestView(rootPath: rootPath),
             },
-            onGenerateRoute: (settings) {
-              if (settings.name == '/search') {
-                final args = settings.arguments as Map<String, dynamic>;
-                return MaterialPageRoute(
-                  builder: (context) => ScreenSearch(
-                    searchQuery: args['query'],
-                    rootPath: args['rootPath'],
-                  ),
-                );
-              }
-              return null;
-            },
             theme: appThemeData[themeState.theme],
-            // home: ScreenHome(rootPath: rootPath),
             home: ScreenWelcome(),
           );
         },

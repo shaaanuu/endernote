@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
 
+import '../../../bloc/file/file_bloc.dart';
+import '../../../bloc/file/file_events.dart';
+import '../../../bloc/file/file_states.dart';
 import '../../theme/app_themes.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_fab.dart';
@@ -59,29 +63,6 @@ class ScreenChestView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final files =
-        // check if path exists
-        Directory(rootPath).existsSync()
-            ?
-            // if yes, list its contents
-            Directory(rootPath).listSync()
-            :
-            // else, return empty list
-            [];
-
-    // sorting, folders -> md -> others
-    files.sort((a, b) {
-      if (a is Directory && b is! Directory) return -1;
-      if (a is! Directory && b is Directory) return 1;
-
-      final aMd = a.path.toLowerCase().endsWith('.md');
-      final bMd = b.path.toLowerCase().endsWith('.md');
-      if (aMd && !bMd) return -1;
-      if (!aMd && bMd) return 1;
-
-      return a.path.toLowerCase().compareTo(b.path.toLowerCase());
-    });
-
     final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -94,90 +75,129 @@ class ScreenChestView extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildBreadcrumbs(context),
-              const SizedBox(height: 8),
-              if (files.isEmpty)
-                Padding(
-                  padding: EdgeInsets.only(top: (height / 2) - 75),
-                  child: Center(
-                    child: Text(
-                      'This folder is empty…',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Theme.of(context)
-                            .extension<EndernoteColors>()
-                            ?.clrText
-                            .withAlpha(157),
-                      ),
+          child: BlocProvider(
+            create: (context) => FileBloc()..add(LoadFiles(rootPath)),
+            child: BlocBuilder<FileBloc, FileStates>(
+              builder: (ctx, state) {
+                if (state is FileLoading) {
+                  return SizedBox(
+                    height: height - 70,
+                    child: Center(
+                      child: CircularProgressIndicator(),
                     ),
-                  ),
-                )
-              else
-                Material(
-                  color: Theme.of(context)
-                      .extension<EndernoteColors>()
-                      ?.clrSecondary
-                      .withAlpha(179),
-                  borderRadius: BorderRadius.circular(10),
-                  clipBehavior: Clip.antiAlias,
-                  child: ListView.separated(
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    shrinkWrap: true,
-                    itemCount: files.length,
-                    separatorBuilder: (context, index) =>
-                        const Divider(height: 1),
-                    itemBuilder: (context, index) => ListTile(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 16),
-                      leading: Icon(
-                        _getIcon(files[index]),
-                        size: 18,
-                      ),
-                      title: Text(
-                        files[index].path.split('/').last,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      trailing: (files[index] is Directory)
-                          ? const Icon(IconsaxLinear.arrow_right_3, size: 18)
-                          : null,
-                      onTap: () {
-                        // Folder -> go into chestView
-                        if (files[index] is Directory) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ScreenChestView(
-                                rootPath: files[index].path,
+                  );
+                }
+
+                if (state is FileLoaded) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildBreadcrumbs(context),
+                      const SizedBox(height: 8),
+                      if (state.files.isEmpty)
+                        Padding(
+                          padding: EdgeInsets.only(top: (height / 2) - 75),
+                          child: Center(
+                            child: Text(
+                              'This folder is empty…',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Theme.of(context)
+                                    .extension<EndernoteColors>()
+                                    ?.clrText
+                                    .withAlpha(157),
                               ),
                             ),
-                          );
-                        }
-                        // File -> pick route by it's extension
-                        else if (files[index] is File) {
-                          final route = _getRoute(files[index]);
-                          if (route != null) {
-                            Navigator.pushNamed(
-                              context,
-                              route,
-                              arguments: files[index].path,
-                            );
-                          } else {
-                            print('Unsupported file: ${files[index].path}');
-                            // TODO: implement an error msg or something.
-                          }
-                        }
-                      },
+                          ),
+                        )
+                      else
+                        Material(
+                          color: Theme.of(context)
+                              .extension<EndernoteColors>()
+                              ?.clrSecondary
+                              .withAlpha(179),
+                          borderRadius: BorderRadius.circular(10),
+                          clipBehavior: Clip.antiAlias,
+                          child: ListView.separated(
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            shrinkWrap: true,
+                            itemCount: state.files.length,
+                            separatorBuilder: (context, index) =>
+                                const Divider(height: 1),
+                            itemBuilder: (context, index) => ListTile(
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              leading: Icon(
+                                _getIcon(state.files[index]),
+                                size: 18,
+                              ),
+                              title: Text(
+                                state.files[index].path.split('/').last,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                              trailing: (state.files[index] is Directory)
+                                  ? const Icon(IconsaxLinear.arrow_right_3,
+                                      size: 18)
+                                  : null,
+                              onTap: () {
+                                // Folder -> go into chestView
+                                if (state.files[index] is Directory) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ScreenChestView(
+                                        rootPath: state.files[index].path,
+                                      ),
+                                    ),
+                                  );
+                                }
+                                // File -> pick route by it's extension
+                                else if (state.files[index] is File) {
+                                  final route = _getRoute(state.files[index]);
+                                  if (route != null) {
+                                    Navigator.pushNamed(
+                                      context,
+                                      route,
+                                      arguments: state.files[index].path,
+                                    );
+                                  } else {
+                                    print(
+                                        'Unsupported file: ${state.files[index].path}');
+                                    // TODO: implement an error msg or something.
+                                  }
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: 100),
+                    ],
+                  );
+                }
+
+                if (state is FileError) {
+                  return SizedBox(
+                    height: height - 70,
+                    child: Center(
+                      child: Text("Error"),
+                    ),
+                  );
+                }
+
+                return SizedBox(
+                  height: height - 70,
+                  child: Center(
+                    child: Text(
+                      'Hmmm... Something went wrong and I don\'t know what it is..',
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                ),
-              const SizedBox(height: 100),
-            ],
+                );
+              },
+            ),
           ),
         ),
       ),

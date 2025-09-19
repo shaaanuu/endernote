@@ -35,7 +35,7 @@ class CustomFAB extends StatelessWidget {
                 '$rootPath/${folderController.text}',
               ).create(recursive: true);
               // TODO: rebuild/fix bloc
-              // context.read<DirectoryBloc>().add(FetchDirectory(rootPath));
+              // context.read<DirectoryBloc>().add(FetchDirectory(path: rootPath));
             }
             Navigator.pop(context);
             folderController.clear();
