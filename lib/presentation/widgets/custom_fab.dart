@@ -1,9 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
 
+import '../../bloc/file/file_bloc.dart';
+import '../../bloc/file/file_events.dart';
+import '../../bloc/file/file_states.dart';
 import '../theme/app_themes.dart';
 
 class CustomFAB extends StatelessWidget {
@@ -17,49 +21,51 @@ class CustomFAB extends StatelessWidget {
     final TextEditingController folderController = TextEditingController();
     final TextEditingController fileController = TextEditingController();
 
-    return SpeedDial(
-      shape: RoundedSuperellipseBorder(
-        borderRadius: BorderRadiusGeometry.circular(16),
+    return BlocBuilder<FileBloc, FileStates>(
+      builder: (context, state) => SpeedDial(
+        shape: RoundedSuperellipseBorder(
+          borderRadius: BorderRadiusGeometry.circular(16),
+        ),
+        overlayColor: Theme.of(context).extension<EndernoteColors>()?.clrBase,
+        openCloseDial: isDialOpen,
+        children: [
+          _buildDialChild(
+            context,
+            controller: folderController,
+            icon: IconsaxLinear.folder,
+            label: "Folder",
+            onCreate: () async {
+              if (folderController.text.isNotEmpty) {
+                await Directory(
+                  '$rootPath/${folderController.text}',
+                ).create(recursive: true);
+
+                context.read<FileBloc>().add(LoadFiles(rootPath));
+              }
+              Navigator.pop(context);
+              folderController.clear();
+            },
+          ),
+          _buildDialChild(
+            context,
+            controller: fileController,
+            icon: IconsaxLinear.document_text_1,
+            label: "Note",
+            onCreate: () async {
+              if (fileController.text.isNotEmpty) {
+                await File(
+                  '$rootPath/${fileController.text}.md',
+                ).create(recursive: true);
+
+                context.read<FileBloc>().add(LoadFiles(rootPath));
+              }
+              Navigator.pop(context);
+              fileController.clear();
+            },
+          ),
+        ],
+        child: const Icon(IconsaxLinear.add),
       ),
-      overlayColor: Theme.of(context).extension<EndernoteColors>()?.clrBase,
-      openCloseDial: isDialOpen,
-      children: [
-        _buildDialChild(
-          context,
-          controller: folderController,
-          icon: IconsaxLinear.folder,
-          label: "Folder",
-          onCreate: () async {
-            if (folderController.text.isNotEmpty) {
-              await Directory(
-                '$rootPath/${folderController.text}',
-              ).create(recursive: true);
-              // TODO: rebuild/fix bloc
-              // context.read<DirectoryBloc>().add(FetchDirectory(path: rootPath));
-            }
-            Navigator.pop(context);
-            folderController.clear();
-          },
-        ),
-        _buildDialChild(
-          context,
-          controller: fileController,
-          icon: IconsaxLinear.document_text_1,
-          label: "Note",
-          onCreate: () async {
-            if (fileController.text.isNotEmpty) {
-              await File(
-                '$rootPath/${fileController.text}.md',
-              ).create(recursive: true);
-              // TODO: rebuild/fix bloc
-              // context.read<DirectoryBloc>().add(FetchDirectory(rootPath));
-            }
-            Navigator.pop(context);
-            fileController.clear();
-          },
-        ),
-      ],
-      child: const Icon(IconsaxLinear.add),
     );
   }
 

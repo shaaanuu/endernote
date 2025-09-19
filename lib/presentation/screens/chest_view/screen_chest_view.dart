@@ -65,18 +65,18 @@ class ScreenChestView extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      appBar: CustomAppBar(
-        leadingIcon: IconsaxLinear.menu,
-        title: 'Ender Research',
-        trailingIcon: IconsaxLinear.search_normal_1,
-        onLeading: () => Navigator.popAndPushNamed(context, '/'),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: BlocProvider(
-            create: (context) => FileBloc()..add(LoadFiles(rootPath)),
+    return BlocProvider(
+      create: (context) => FileBloc()..add(LoadFiles(rootPath)),
+      child: Scaffold(
+        appBar: CustomAppBar(
+          leadingIcon: IconsaxLinear.menu,
+          title: 'Ender Research',
+          trailingIcon: IconsaxLinear.search_normal_1,
+          onLeading: () => Navigator.popAndPushNamed(context, '/'),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: BlocBuilder<FileBloc, FileStates>(
               builder: (ctx, state) {
                 if (state is FileLoading) {
@@ -200,8 +200,8 @@ class ScreenChestView extends StatelessWidget {
             ),
           ),
         ),
+        floatingActionButton: CustomFAB(rootPath: rootPath),
       ),
-      floatingActionButton: CustomFAB(rootPath: rootPath),
     );
   }
 
