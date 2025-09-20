@@ -177,10 +177,7 @@ class EditMode extends StatelessWidget {
           prefix,
           suffix ?? '',
         ),
-        icon: Icon(
-          icon,
-          color: Theme.of(context).extension<EndernoteColors>()?.clrText,
-        ),
+        icon: Icon(icon),
         tooltip: tooltip,
       );
 

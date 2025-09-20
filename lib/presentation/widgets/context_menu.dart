@@ -78,12 +78,7 @@ void _createNewFolder(BuildContext context, String entityPath) {
     context: context,
     builder: (context) => AlertDialog(
       backgroundColor: Theme.of(context).extension<EndernoteColors>()?.clrBase,
-      title: Text(
-        'New Folder',
-        style: TextStyle(
-          color: Theme.of(context).extension<EndernoteColors>()?.clrText,
-        ),
-      ),
+      title: Text('New Folder'),
       content: TextField(
         controller: controller,
         autofocus: true,
@@ -129,12 +124,7 @@ void _createNewFile(BuildContext context, String entityPath) {
     context: context,
     builder: (context) => AlertDialog(
       backgroundColor: Theme.of(context).extension<EndernoteColors>()?.clrBase,
-      title: Text(
-        'New File',
-        style: TextStyle(
-          color: Theme.of(context).extension<EndernoteColors>()?.clrText,
-        ),
-      ),
+      title: Text('New File'),
       content: TextField(
         controller: controller,
         autofocus: true,
@@ -185,12 +175,7 @@ void _renameEntity(
     context: context,
     builder: (context) => AlertDialog(
       backgroundColor: Theme.of(context).extension<EndernoteColors>()?.clrBase,
-      title: Text(
-        'Rename',
-        style: TextStyle(
-          color: Theme.of(context).extension<EndernoteColors>()?.clrText,
-        ),
-      ),
+      title: Text('Rename'),
       content: TextField(
         controller: controller,
         autofocus: true,
@@ -264,12 +249,7 @@ void _deleteEntity(BuildContext context, String entityPath, bool isFolder) {
     context: context,
     builder: (context) => AlertDialog(
       backgroundColor: Theme.of(context).extension<EndernoteColors>()?.clrBase,
-      title: Text(
-        'Delete',
-        style: TextStyle(
-          color: Theme.of(context).extension<EndernoteColors>()?.clrText,
-        ),
-      ),
+      title: Text('Delete'),
       content: Text(
         'Are you sure you want to delete "${entityPath.split('/').last}"?',
         style: const TextStyle(fontSize: 16),
