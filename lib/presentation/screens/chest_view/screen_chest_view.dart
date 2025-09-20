@@ -9,12 +9,14 @@ import '../../../bloc/file/file_events.dart';
 import '../../../bloc/file/file_states.dart';
 import '../../theme/app_themes.dart';
 import '../../widgets/custom_app_bar.dart';
+import '../../widgets/custom_drawer.dart';
 import '../../widgets/custom_fab.dart';
 
 class ScreenChestView extends StatelessWidget {
-  const ScreenChestView({super.key, required this.rootPath});
+  ScreenChestView({super.key, required this.rootPath});
 
   final String rootPath;
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   static const _fileConfig = {
     // images
@@ -68,12 +70,14 @@ class ScreenChestView extends StatelessWidget {
     return BlocProvider(
       create: (context) => FileBloc()..add(LoadFiles(rootPath)),
       child: Scaffold(
+        key: _key,
         appBar: CustomAppBar(
           leadingIcon: IconsaxLinear.menu,
           title: 'Ender Research',
           trailingIcon: IconsaxLinear.search_normal_1,
-          onLeading: () => Navigator.popAndPushNamed(context, '/'),
+          onLeading: () => _key.currentState!.openDrawer(),
         ),
+        drawer: CustomDrawer(),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
