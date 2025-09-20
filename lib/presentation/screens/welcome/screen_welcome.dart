@@ -56,10 +56,7 @@ class ScreenWelcome extends StatelessWidget {
                     ),
                     label: Text(
                       'Create new chest',
-                      style: TextStyle(
-                        fontFamily: 'SourceSans3Regular',
-                        fontSize: 14,
-                      ),
+                      style: TextStyle(fontSize: 14),
                     ),
                     onPressed: () =>
                         Navigator.pushNamed(context, '/chest-room'),
@@ -78,10 +75,7 @@ class ScreenWelcome extends StatelessWidget {
                     label: Text(
                       'Open existing folder as chest',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'SourceSans3Regular',
-                        fontSize: 14,
-                      ),
+                      style: TextStyle(fontSize: 14),
                     ),
                     onPressed: () =>
                         Navigator.pushNamed(context, '/chest-room'),
