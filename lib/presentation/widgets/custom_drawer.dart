@@ -40,6 +40,12 @@ class CustomDrawer extends StatelessWidget {
             // Items
             _drawerItem(
               context,
+              icon: IconsaxLinear.box,
+              label: "Chest Room",
+              onTap: () => Navigator.pushNamed(context, '/chest-room'),
+            ),
+            _drawerItem(
+              context,
               icon: IconsaxLinear.setting,
               label: "Settings",
               onTap: () => Navigator.pushNamed(context, '/settings'),
