@@ -29,8 +29,6 @@ class CustomDrawer extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'SourceSans3Bold',
                   fontSize: 20,
-                  color:
-                      Theme.of(context).extension<EndernoteColors>()?.clrText,
                 ),
               ),
             ),
@@ -95,10 +93,7 @@ class CustomDrawer extends StatelessWidget {
     required void Function()? onTap,
   }) {
     return ListTile(
-      leading: Icon(
-        icon,
-        color: Theme.of(context).extension<EndernoteColors>()?.clrTextSecondary,
-      ),
+      leading: Icon(icon),
       title: Text(
         label,
         style: TextStyle(

@@ -6,6 +6,7 @@ import '../../../bloc/theme/theme_bloc.dart';
 import '../../../bloc/theme/theme_events.dart';
 import '../../../bloc/theme/theme_states.dart';
 import '../../theme/app_themes.dart';
+import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_list_tile.dart';
 
 class ScreenSettings extends StatelessWidget {
@@ -14,12 +15,10 @@ class ScreenSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(IconsaxLinear.arrow_left_1),
-        ),
-        title: const Text('Settings'),
+      appBar: CustomAppBar(
+        leadingIcon: IconsaxLinear.arrow_left_1,
+        title: 'Settings',
+        onLeading: () => Navigator.pop(context),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),

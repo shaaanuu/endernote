@@ -8,14 +8,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.leadingIcon,
     this.onLeading,
     required this.title,
-    required this.trailingIcon,
+    this.trailingIcon,
     this.onTrailing,
   });
 
   final IconData leadingIcon;
   final void Function()? onLeading;
   final String title;
-  final IconData trailingIcon;
+  final IconData? trailingIcon;
   final void Function()? onTrailing;
 
   @override
