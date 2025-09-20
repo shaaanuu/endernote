@@ -40,6 +40,7 @@ class CustomFAB extends StatelessWidget {
                   '$rootPath/${folderController.text}',
                 ).create(recursive: true);
 
+                if (!context.mounted) return;
                 context.read<FileBloc>().add(LoadFiles(rootPath));
               }
               Navigator.pop(context);
@@ -57,6 +58,7 @@ class CustomFAB extends StatelessWidget {
                   '$rootPath/${fileController.text}.md',
                 ).create(recursive: true);
 
+                if (!context.mounted) return;
                 context.read<FileBloc>().add(LoadFiles(rootPath));
               }
               Navigator.pop(context);
