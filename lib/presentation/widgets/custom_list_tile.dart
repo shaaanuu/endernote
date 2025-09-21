@@ -38,7 +38,6 @@ class CustomListTile extends StatelessWidget {
           trailing: Icon(trail),
           onTap: onTap,
         ),
-        const Divider(),
       ],
     );
   }

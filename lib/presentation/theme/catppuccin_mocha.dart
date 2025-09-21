@@ -83,6 +83,14 @@ final ThemeData catppuccinMochaTheme = ThemeData(
     indent: 16,
     endIndent: 16,
   ),
+  snackBarTheme: SnackBarThemeData(
+    contentTextStyle: TextStyle(color: _clrText),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadiusGeometry.circular(10),
+    ),
+    behavior: SnackBarBehavior.floating,
+    backgroundColor: _clrSecondary,
+  ),
   extensions: const <ThemeExtension<dynamic>>{
     EndernoteColors(
       clrBase: _clrBase,

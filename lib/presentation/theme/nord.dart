@@ -74,6 +74,14 @@ final ThemeData nordDarkTheme = ThemeData(
     fillColor: WidgetStatePropertyAll(Colors.transparent),
     side: BorderSide.none,
   ),
+  snackBarTheme: SnackBarThemeData(
+    contentTextStyle: TextStyle(color: nordDarkText),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadiusGeometry.circular(10),
+    ),
+    behavior: SnackBarBehavior.floating,
+    backgroundColor: nordDarkPrimary,
+  ),
   extensions: const <ThemeExtension<dynamic>>{
     EndernoteColors(
       clrBase: nordDarkBase,
@@ -145,6 +153,14 @@ final ThemeData nordLightTheme = ThemeData(
     checkColor: WidgetStatePropertyAll(nordLightBase),
     fillColor: WidgetStatePropertyAll(Colors.transparent),
     side: BorderSide.none,
+  ),
+  snackBarTheme: SnackBarThemeData(
+    contentTextStyle: TextStyle(color: nordLightText),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadiusGeometry.circular(10),
+    ),
+    behavior: SnackBarBehavior.floating,
+    backgroundColor: nordLightPrimary,
   ),
   extensions: const <ThemeExtension<dynamic>>{
     EndernoteColors(
