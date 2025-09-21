@@ -49,7 +49,8 @@ final ThemeData catppuccinMochaTheme = ThemeData(
     ),
   ),
   drawerTheme: const DrawerThemeData(
-    backgroundColor: _clrBase,
+    backgroundColor: _clrSecondary,
+    width: 250,
   ),
   listTileTheme: const ListTileThemeData(
     iconColor: _clrText,

@@ -16,7 +16,6 @@ class CustomDrawer extends StatelessWidget {
     }
 
     return Drawer(
-      backgroundColor: Theme.of(context).extension<EndernoteColors>()?.clrBase,
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
