@@ -14,14 +14,8 @@ import '../../widgets/custom_drawer.dart';
 import '../../widgets/custom_fab.dart';
 
 class ScreenChestView extends StatelessWidget {
-  ScreenChestView({
-    super.key,
-    required this.currentPath,
-    required this.rootPath,
-  });
+  ScreenChestView({super.key});
 
-  final String currentPath;
-  final String rootPath;
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   static const _fileConfig = {
@@ -73,6 +67,11 @@ class ScreenChestView extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
 
+    final args = ModalRoute.of(context)?.settings.arguments as Map;
+
+    String currentPath = args['currentPath'];
+    String rootPath = args['rootPath'];
+
     return BlocProvider(
       create: (context) => FileBloc()..add(LoadFiles(currentPath)),
       child: Scaffold(
@@ -105,6 +104,8 @@ class ScreenChestView extends StatelessWidget {
                       _buildBreadcrumbs(
                         context,
                         startFrom: basename(rootPath),
+                        currentPath: currentPath,
+                        rootPath: rootPath,
                       ),
                       const SizedBox(height: 8),
                       if (state.files.isEmpty)
@@ -158,14 +159,13 @@ class ScreenChestView extends StatelessWidget {
                               onTap: () {
                                 // Folder -> go into chestView
                                 if (state.files[index] is Directory) {
-                                  Navigator.pushReplacement(
+                                  Navigator.pushReplacementNamed(
                                     context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ScreenChestView(
-                                        currentPath: state.files[index].path,
-                                        rootPath: rootPath,
-                                      ),
-                                    ),
+                                    '/chest-view',
+                                    arguments: {
+                                      'currentPath': state.files[index].path,
+                                      'rootPath': rootPath,
+                                    },
                                   );
                                 }
                                 // File -> pick route by it's extension
@@ -224,6 +224,8 @@ class ScreenChestView extends StatelessWidget {
     // Only shows after this folder
     // String startFrom = 'Endernote',
     required String startFrom,
+    required String currentPath,
+    required String rootPath,
   }) {
     final parts = currentPath
         .split(Platform.pathSeparator)
@@ -244,14 +246,13 @@ class ScreenChestView extends StatelessWidget {
             return Row(
               children: [
                 GestureDetector(
-                  onTap: () => Navigator.pushReplacement(
+                  onTap: () => Navigator.pushReplacementNamed(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => ScreenChestView(
-                        currentPath: path,
-                        rootPath: rootPath,
-                      ),
-                    ),
+                    '/chest-view',
+                    arguments: {
+                      'currentPath': path,
+                      'rootPath': rootPath,
+                    },
                   ),
                   child: Text(
                     visibleParts[i],

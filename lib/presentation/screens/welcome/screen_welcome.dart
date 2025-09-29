@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
 
 import '../../theme/app_themes.dart';
-import '../chest_view/screen_chest_view.dart';
 
 class ScreenWelcome extends StatelessWidget {
   const ScreenWelcome({super.key});
@@ -89,14 +88,13 @@ class ScreenWelcome extends StatelessWidget {
                             await FilePicker.platform.getDirectoryPath();
 
                         if (pickedDirectoryPath != null && context.mounted) {
-                          Navigator.push(
+                          Navigator.pushNamed(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => ScreenChestView(
-                                currentPath: pickedDirectoryPath!,
-                                rootPath: pickedDirectoryPath,
-                              ),
-                            ),
+                            '/chest-view',
+                            arguments: {
+                              'currentPath': pickedDirectoryPath,
+                              'rootPath': pickedDirectoryPath,
+                            },
                           );
                         } else {
                           // TODO: add a error msg

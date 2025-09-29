@@ -69,8 +69,7 @@ class MyApp extends StatelessWidget {
               '/settings': (context) => const ScreenSettings(),
               '/about': (context) => const ScreenAbout(),
               '/chest-room': (context) => ScreenChestRoom(),
-              '/chest-view': (context) =>
-                  ScreenChestView(currentPath: rootPath, rootPath: rootPath),
+              '/chest-view': (context) => ScreenChestView(),
             },
             theme: appThemeData[themeState.theme],
             home: ScreenWelcome(),
