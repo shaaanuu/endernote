@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
+import 'package:path/path.dart';
 
 import '../../../bloc/file/file_bloc.dart';
 import '../../../bloc/file/file_events.dart';
@@ -13,8 +14,13 @@ import '../../widgets/custom_drawer.dart';
 import '../../widgets/custom_fab.dart';
 
 class ScreenChestView extends StatelessWidget {
-  ScreenChestView({super.key, required this.rootPath});
+  ScreenChestView({
+    super.key,
+    required this.currentPath,
+    required this.rootPath,
+  });
 
+  final String currentPath;
   final String rootPath;
   final GlobalKey<ScaffoldState> _key = GlobalKey();
 
@@ -68,7 +74,7 @@ class ScreenChestView extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
 
     return BlocProvider(
-      create: (context) => FileBloc()..add(LoadFiles(rootPath)),
+      create: (context) => FileBloc()..add(LoadFiles(currentPath)),
       child: Scaffold(
         key: _key,
         appBar: CustomAppBar(
@@ -96,7 +102,10 @@ class ScreenChestView extends StatelessWidget {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildBreadcrumbs(context),
+                      _buildBreadcrumbs(
+                        context,
+                        startFrom: basename(rootPath),
+                      ),
                       const SizedBox(height: 8),
                       if (state.files.isEmpty)
                         Padding(
@@ -153,7 +162,8 @@ class ScreenChestView extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ScreenChestView(
-                                        rootPath: state.files[index].path,
+                                        currentPath: state.files[index].path,
+                                        rootPath: rootPath,
                                       ),
                                     ),
                                   );
@@ -204,7 +214,7 @@ class ScreenChestView extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: CustomFAB(rootPath: rootPath),
+        floatingActionButton: CustomFAB(rootPath: currentPath),
       ),
     );
   }
@@ -212,9 +222,10 @@ class ScreenChestView extends StatelessWidget {
   Widget _buildBreadcrumbs(
     BuildContext context, {
     // Only shows after this folder
-    String startFrom = 'Endernote',
+    // String startFrom = 'Endernote',
+    required String startFrom,
   }) {
-    final parts = rootPath
+    final parts = currentPath
         .split(Platform.pathSeparator)
         .where((e) => e.isNotEmpty)
         .toList();
@@ -236,7 +247,10 @@ class ScreenChestView extends StatelessWidget {
                   onTap: () => Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => ScreenChestView(rootPath: path),
+                      builder: (_) => ScreenChestView(
+                        currentPath: path,
+                        rootPath: rootPath,
+                      ),
                     ),
                   ),
                   child: Text(

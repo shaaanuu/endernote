@@ -1,7 +1,9 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
 
 import '../../theme/app_themes.dart';
+import '../chest_view/screen_chest_view.dart';
 
 class ScreenWelcome extends StatelessWidget {
   const ScreenWelcome({super.key});
@@ -77,8 +79,34 @@ class ScreenWelcome extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 14),
                     ),
-                    onPressed: () =>
-                        Navigator.pushNamed(context, '/chest-room'),
+                    onPressed: () async {
+                      // Navigator.pushNamed(context, '/chest-room'),
+
+                      String? pickedDirectoryPath;
+
+                      try {
+                        pickedDirectoryPath =
+                            await FilePicker.platform.getDirectoryPath();
+
+                        if (pickedDirectoryPath != null && context.mounted) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ScreenChestView(
+                                currentPath: pickedDirectoryPath!,
+                                rootPath: pickedDirectoryPath,
+                              ),
+                            ),
+                          );
+                        } else {
+                          // TODO: add a error msg
+                          print("Error, pick something you idiot...");
+                        }
+                      } catch (e) {
+                        // TODO: show a error msg
+                        print(e.toString());
+                      }
+                    },
                   ),
                 ),
                 SizedBox(height: 64),
