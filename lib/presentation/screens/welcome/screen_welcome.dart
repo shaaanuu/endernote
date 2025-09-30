@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../theme/app_themes.dart';
 
@@ -79,12 +80,8 @@ class ScreenWelcome extends StatelessWidget {
                       style: TextStyle(fontSize: 14),
                     ),
                     onPressed: () async {
-                      // Navigator.pushNamed(context, '/chest-room'),
-
-                      String? pickedDirectoryPath;
-
                       try {
-                        pickedDirectoryPath =
+                        final pickedDirectoryPath =
                             await FilePicker.platform.getDirectoryPath();
 
                         if (pickedDirectoryPath != null && context.mounted) {
@@ -96,6 +93,12 @@ class ScreenWelcome extends StatelessWidget {
                               'rootPath': pickedDirectoryPath,
                             },
                           );
+
+                          final prefs = await SharedPreferences.getInstance();
+                          final paths = prefs.getStringList('paths') ?? [];
+
+                          paths.add(pickedDirectoryPath);
+                          prefs.setStringList('paths', paths);
                         } else {
                           // TODO: add a error msg
                           print("Error, pick something you idiot...");
