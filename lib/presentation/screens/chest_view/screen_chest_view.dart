@@ -221,8 +221,6 @@ class ScreenChestView extends StatelessWidget {
 
   Widget _buildBreadcrumbs(
     BuildContext context, {
-    // Only shows after this folder
-    // String startFrom = 'Endernote',
     required String startFrom,
     required String currentPath,
     required String rootPath,

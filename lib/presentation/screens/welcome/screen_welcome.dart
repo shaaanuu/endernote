@@ -1,16 +1,26 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
+import 'package:path/path.dart';
 
 import '../../../data/models/chest_record.dart';
 import '../../theme/app_themes.dart';
 
 class ScreenWelcome extends StatelessWidget {
-  const ScreenWelcome({super.key});
+  ScreenWelcome({super.key});
+
+  final box = Hive.box<ChestRecord>('recentChests');
 
   @override
   Widget build(BuildContext context) {
+    final width = (MediaQuery.of(context).size.width / 16).floor();
+
+    String shortPath(String text) {
+      if (text.length <= width) return text;
+      return '...${text.substring(text.length - width)}';
+    }
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -95,7 +105,6 @@ class ScreenWelcome extends StatelessWidget {
                             },
                           );
 
-                          final box = Hive.box<ChestRecord>('recentChests');
                           if (!box.values.any(
                             (element) => element.path == pickedDirectoryPath,
                           )) {
@@ -158,19 +167,21 @@ class ScreenWelcome extends StatelessWidget {
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: 3,
+                    itemCount: box.length,
                     itemBuilder: (context, index) {
+                      final values = box.values.toList();
+
                       return ListTile(
                         title: Text(
-                          'Ender Research',
+                          basename(values[index].path),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 18),
                         ),
                         subtitle: Text(
-                          '../Documents/EnderResearch',
-                          maxLines: 1,
+                          shortPath(values[index].path),
                           overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                           style: TextStyle(
                             color: Theme.of(context)
                                 .extension<EndernoteColors>()
@@ -179,7 +190,7 @@ class ScreenWelcome extends StatelessWidget {
                           ),
                         ),
                         trailing: Text(
-                          '2h ago',
+                          shortTimeAgo(values[index].ts),
                           style: TextStyle(
                             fontFamily: 'SourceSans3Light',
                             fontSize: 12,
@@ -190,7 +201,15 @@ class ScreenWelcome extends StatelessWidget {
                                 .withAlpha(179),
                           ),
                         ),
-                        onTap: () {},
+                        onTap: () => Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/chest-view',
+                          (route) => false,
+                          arguments: {
+                            'currentPath': values[index].path,
+                            'rootPath': values[index].path,
+                          },
+                        ),
                       );
                     },
                   ),
@@ -205,5 +224,17 @@ class ScreenWelcome extends StatelessWidget {
         onPressed: () {},
       ),
     );
+  }
+
+  String shortTimeAgo(int ts) {
+    final diff = DateTime.now().difference(
+      DateTime.fromMillisecondsSinceEpoch(ts),
+    );
+
+    if (diff.inDays > 0) return '${diff.inDays}d ago';
+    if (diff.inHours > 0) return '${diff.inHours}h ago';
+    if (diff.inMinutes > 0) return '${diff.inMinutes}m ago';
+
+    return '${diff.inSeconds}s ago';
   }
 }
