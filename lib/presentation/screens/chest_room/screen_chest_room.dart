@@ -32,7 +32,9 @@ class ScreenChestRoom extends StatelessWidget {
         itemCount: box.length,
         padding: const EdgeInsets.only(bottom: 80),
         itemBuilder: (context, index) {
-          final values = box.values.toList();
+          // sorted by ts
+          final values = box.values.toList()
+            ..sort((a, b) => b.ts.compareTo(a.ts));
 
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),

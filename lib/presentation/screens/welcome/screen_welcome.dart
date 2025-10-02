@@ -123,7 +123,9 @@ class ScreenWelcome extends StatelessWidget {
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: 3,
                     itemBuilder: (context, index) {
-                      final values = box.values.toList();
+                      // sorted by ts
+                      final values = box.values.toList()
+                        ..sort((a, b) => b.ts.compareTo(a.ts));
 
                       return ListTile(
                         title: Text(
