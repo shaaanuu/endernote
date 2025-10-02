@@ -1,8 +1,9 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../data/models/chest_record.dart';
 import '../../theme/app_themes.dart';
 
 class ScreenWelcome extends StatelessWidget {
@@ -94,11 +95,31 @@ class ScreenWelcome extends StatelessWidget {
                             },
                           );
 
-                          final prefs = await SharedPreferences.getInstance();
-                          final paths = prefs.getStringList('paths') ?? [];
+                          final box = Hive.box<ChestRecord>('recentChests');
+                          if (!box.values.any(
+                            (element) => element.path == pickedDirectoryPath,
+                          )) {
+                            // If it's not already exists, add it
+                            box.add(
+                              ChestRecord(
+                                path: pickedDirectoryPath,
+                                ts: DateTime.now().millisecondsSinceEpoch,
+                              ),
+                            );
+                          } else {
+                            // if it's already exists, update it
+                            final a = box.values.firstWhere(
+                              (element) => element.path == pickedDirectoryPath,
+                            );
 
-                          paths.add(pickedDirectoryPath);
-                          prefs.setStringList('paths', paths);
+                            box.putAt(
+                              a.key,
+                              ChestRecord(
+                                path: pickedDirectoryPath,
+                                ts: DateTime.now().millisecondsSinceEpoch,
+                              ),
+                            );
+                          }
                         } else {
                           // TODO: add a error msg
                           print("Error, pick something you idiot...");

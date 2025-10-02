@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'bloc/theme/theme_bloc.dart';
 import 'bloc/theme/theme_states.dart';
+import 'data/models/chest_record.dart';
 import 'presentation/screens/about/screen_about.dart';
 import 'presentation/screens/canvas/screen_canvas.dart';
 import 'presentation/screens/chest_room/screen_chest_room.dart';
@@ -16,6 +18,10 @@ import 'presentation/theme/app_themes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+  Hive.registerAdapter(ChestRecordAdapter());
+  await Hive.openBox<ChestRecord>('recentChests');
 
   Future<String> fetchRootPath() async {
     late final String path;
