@@ -121,7 +121,7 @@ class ScreenWelcome extends StatelessWidget {
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: box.length,
+                    itemCount: 3,
                     itemBuilder: (context, index) {
                       final values = box.values.toList();
 
