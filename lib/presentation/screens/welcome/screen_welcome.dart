@@ -90,54 +90,8 @@ class ScreenWelcome extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 14),
                     ),
-                    onPressed: () async {
-                      try {
-                        final pickedDirectoryPath =
-                            await FilePicker.platform.getDirectoryPath();
-
-                        if (pickedDirectoryPath != null && context.mounted) {
-                          Navigator.pushNamed(
-                            context,
-                            '/chest-view',
-                            arguments: {
-                              'currentPath': pickedDirectoryPath,
-                              'rootPath': pickedDirectoryPath,
-                            },
-                          );
-
-                          if (!box.values.any(
-                            (element) => element.path == pickedDirectoryPath,
-                          )) {
-                            // If it's not already exists, add it
-                            box.add(
-                              ChestRecord(
-                                path: pickedDirectoryPath,
-                                ts: DateTime.now().millisecondsSinceEpoch,
-                              ),
-                            );
-                          } else {
-                            // if it's already exists, update it
-                            final a = box.values.firstWhere(
-                              (element) => element.path == pickedDirectoryPath,
-                            );
-
-                            box.putAt(
-                              a.key,
-                              ChestRecord(
-                                path: pickedDirectoryPath,
-                                ts: DateTime.now().millisecondsSinceEpoch,
-                              ),
-                            );
-                          }
-                        } else {
-                          // TODO: add a error msg
-                          print("Error, pick something you idiot...");
-                        }
-                      } catch (e) {
-                        // TODO: show a error msg
-                        print(e.toString());
-                      }
-                    },
+                    onPressed: () async =>
+                        await onOpenExistingFolderAsChest(context),
                   ),
                 ),
                 SizedBox(height: 64),
@@ -236,5 +190,53 @@ class ScreenWelcome extends StatelessWidget {
     if (diff.inMinutes > 0) return '${diff.inMinutes}m ago';
 
     return '${diff.inSeconds}s ago';
+  }
+
+  Future<void> onOpenExistingFolderAsChest(BuildContext context) async {
+    try {
+      final pickedDirectoryPath = await FilePicker.platform.getDirectoryPath();
+
+      if (pickedDirectoryPath != null && context.mounted) {
+        Navigator.pushNamed(
+          context,
+          '/chest-view',
+          arguments: {
+            'currentPath': pickedDirectoryPath,
+            'rootPath': pickedDirectoryPath,
+          },
+        );
+
+        if (!box.values.any(
+          (element) => element.path == pickedDirectoryPath,
+        )) {
+          // If it's not already exists, add it
+          box.add(
+            ChestRecord(
+              path: pickedDirectoryPath,
+              ts: DateTime.now().millisecondsSinceEpoch,
+            ),
+          );
+        } else {
+          // if it's already exists, update it
+          final a = box.values.firstWhere(
+            (element) => element.path == pickedDirectoryPath,
+          );
+
+          box.putAt(
+            a.key,
+            ChestRecord(
+              path: pickedDirectoryPath,
+              ts: DateTime.now().millisecondsSinceEpoch,
+            ),
+          );
+        }
+      } else {
+        // TODO: add a error msg
+        print("Error, pick something you idiot...");
+      }
+    } catch (e) {
+      // TODO: show a error msg
+      print(e.toString());
+    }
   }
 }
