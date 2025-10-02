@@ -2,6 +2,11 @@
 
 All notable changes to this project are documented here.
 
+## [unknown]
+### changed
+- Whole UI design.
+- Rewrote the FileBloc.
+
 ## [3.3.1]
 ### changed
 - Replaced the folder icons into arrows in home screen.

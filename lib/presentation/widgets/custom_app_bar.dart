@@ -1,102 +1,72 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax_linear/iconsax_linear.dart';
 
 import '../theme/app_themes.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     super.key,
-    this.controller,
-    this.searchQuery,
-    this.hasText,
-    required this.rootPath,
-    this.showBackButton = false,
+    required this.leadingIcon,
+    this.onLeading,
+    required this.title,
+    this.trailingIcon,
+    this.onTrailing,
   });
 
-  final TextEditingController? controller;
-  final String? searchQuery;
-  final ValueNotifier<bool>? hasText;
-  final String rootPath;
-  final bool showBackButton;
+  final IconData leadingIcon;
+  final void Function()? onLeading;
+  final String title;
+  final IconData? trailingIcon;
+  final void Function()? onTrailing;
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      toolbarHeight: 80,
-      title: Container(
-        decoration: BoxDecoration(
-          color: Colors.black.withAlpha(80),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.all(3),
-        child: Row(
-          children: [
-            if (showBackButton)
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(IconsaxLinear.arrow_left_1),
-              ),
-            Expanded(
-              child: controller != null
-                  ? TextField(
-                      controller: controller,
-                      decoration: InputDecoration(
-                        hintText: "Search your notes",
-                        hintStyle: TextStyle(
-                          color: Theme.of(context)
-                              .extension<EndernoteColors>()
-                              ?.clrText
-                              .withAlpha(100),
-                          fontSize: 14,
-                          fontFamily: 'FiraCode',
-                        ),
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        contentPadding: showBackButton
-                            ? null
-                            : const EdgeInsets.only(left: 15),
-                      ),
-                      onSubmitted: (value) {
-                        if (controller!.text.trim().isNotEmpty) {
-                          Navigator.pushNamed(context, '/search', arguments: {
-                            'query': controller!.text.trim(),
-                            'rootPath': rootPath
-                          });
-                        }
-                        controller!.clear();
-                      },
-                    )
-                  : Text('Results for "$searchQuery"'),
+    return SafeArea(
+      child: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: 70,
+        titleSpacing: 0,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color:
+                  Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
             ),
-            if (controller != null && hasText != null)
-              ValueListenableBuilder<bool>(
-                valueListenable: hasText!,
-                builder: (_, hasTextValue, __) => IconButton(
-                  onPressed: () {
-                    if (hasTextValue && controller!.text.trim().isNotEmpty) {
-                      Navigator.pushNamed(context, '/search', arguments: {
-                        'query': controller!.text.trim(),
-                        'rootPath': rootPath
-                      });
-                    } else {
-                      Navigator.pushNamed(context, '/settings');
-                    }
-                  },
-                  tooltip: hasTextValue ? 'Search' : 'Settings',
-                  icon: Icon(
-                    hasTextValue
-                        ? IconsaxLinear.search_normal_1
-                        : IconsaxLinear.setting_2,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                  onPressed: onLeading,
+                  icon: Icon(leadingIcon, size: 24),
+                ),
+                Expanded(
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .extension<EndernoteColors>()
+                          ?.clrText,
+                    ),
                   ),
                 ),
-              ),
-          ],
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                  onPressed: onTrailing,
+                  icon: Icon(trailingIcon, size: 24),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(80);
+  Size get preferredSize => const Size.fromHeight(70);
 }

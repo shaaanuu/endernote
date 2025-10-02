@@ -3,8 +3,12 @@ import 'app_themes.dart';
 
 const Color _clrBase = Color(0xFF1e1e2e);
 const Color _clrText = Color(0xFFcdd6f4);
+const Color _clrSecondary = Color(0xFF11111B);
+const Color _clrTextSecondary = Color(0xFFBAC2DE);
+const Color _clrOverlay = Color(0xFF6C7086);
 
 final ThemeData catppuccinMochaTheme = ThemeData(
+  fontFamily: 'SourceSans3Regular',
   colorScheme: const ColorScheme.dark(primary: _clrText),
   useMaterial3: true,
   scaffoldBackgroundColor: _clrBase,
@@ -27,9 +31,15 @@ final ThemeData catppuccinMochaTheme = ThemeData(
       fixedSize: WidgetStatePropertyAll(Size(50, 50)),
     ),
   ),
-  textButtonTheme: const TextButtonThemeData(
+  textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
-      foregroundColor: WidgetStatePropertyAll(_clrText),
+      foregroundColor: const WidgetStatePropertyAll(_clrText),
+      shape: WidgetStatePropertyAll(
+        RoundedSuperellipseBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      backgroundColor: WidgetStatePropertyAll(_clrSecondary),
     ),
   ),
   elevatedButtonTheme: const ElevatedButtonThemeData(
@@ -39,7 +49,8 @@ final ThemeData catppuccinMochaTheme = ThemeData(
     ),
   ),
   drawerTheme: const DrawerThemeData(
-    backgroundColor: _clrBase,
+    backgroundColor: _clrSecondary,
+    width: 250,
   ),
   listTileTheme: const ListTileThemeData(
     iconColor: _clrText,
@@ -60,10 +71,33 @@ final ThemeData catppuccinMochaTheme = ThemeData(
       borderSide: BorderSide(color: _clrText),
     ),
   ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: _clrSecondary,
+    foregroundColor: _clrText,
+  ),
+  iconTheme: IconThemeData(
+    color: _clrText,
+  ),
+  dividerTheme: DividerThemeData(
+    color: _clrOverlay,
+    thickness: 0.15,
+    indent: 16,
+    endIndent: 16,
+  ),
+  snackBarTheme: SnackBarThemeData(
+    contentTextStyle: TextStyle(color: _clrText),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadiusGeometry.circular(10),
+    ),
+    behavior: SnackBarBehavior.floating,
+    backgroundColor: _clrSecondary,
+  ),
   extensions: const <ThemeExtension<dynamic>>{
     EndernoteColors(
       clrBase: _clrBase,
       clrText: _clrText,
+      clrSecondary: _clrSecondary,
+      clrTextSecondary: _clrTextSecondary,
     ),
   },
 );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_themes.dart';
+
 class CustomListTile extends StatelessWidget {
   const CustomListTile({
     super.key,
@@ -23,11 +25,19 @@ class CustomListTile extends StatelessWidget {
         ListTile(
           leading: Icon(lead),
           title: Text(title),
-          subtitle: subtitle != null ? Text(subtitle!) : null,
+          subtitle: subtitle != null
+              ? Text(
+                  subtitle!,
+                  style: TextStyle(
+                    color: Theme.of(context)
+                        .extension<EndernoteColors>()
+                        ?.clrTextSecondary,
+                  ),
+                )
+              : null,
           trailing: Icon(trail),
           onTap: onTap,
         ),
-        const Divider(),
       ],
     );
   }

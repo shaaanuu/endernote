@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
 
-import '../../bloc/directory/directory_bloc.dart';
-import '../../bloc/directory/directory_events.dart';
+import '../../bloc/file/file_bloc.dart';
+import '../../bloc/file/file_events.dart';
+import '../../bloc/file/file_states.dart';
 import '../theme/app_themes.dart';
 
 class CustomFAB extends StatelessWidget {
@@ -20,43 +21,53 @@ class CustomFAB extends StatelessWidget {
     final TextEditingController folderController = TextEditingController();
     final TextEditingController fileController = TextEditingController();
 
-    return SpeedDial(
-      openCloseDial: isDialOpen,
-      children: [
-        _buildDialChild(
-          context,
-          controller: folderController,
-          icon: IconsaxLinear.folder,
-          label: "Folder",
-          onCreate: () async {
-            if (folderController.text.isNotEmpty) {
-              await Directory(
-                '$rootPath/${folderController.text}',
-              ).create(recursive: true);
-              context.read<DirectoryBloc>().add(FetchDirectory(rootPath));
-            }
-            Navigator.pop(context);
-            folderController.clear();
-          },
+    return BlocBuilder<FileBloc, FileStates>(
+      builder: (context, state) => SpeedDial(
+        shape: RoundedSuperellipseBorder(
+          borderRadius: BorderRadiusGeometry.circular(16),
         ),
-        _buildDialChild(
-          context,
-          controller: fileController,
-          icon: IconsaxLinear.task_square,
-          label: "Note",
-          onCreate: () async {
-            if (fileController.text.isNotEmpty) {
-              await File(
-                '$rootPath/${fileController.text}.md',
-              ).create(recursive: true);
-              context.read<DirectoryBloc>().add(FetchDirectory(rootPath));
-            }
-            Navigator.pop(context);
-            fileController.clear();
-          },
-        ),
-      ],
-      child: const Icon(IconsaxLinear.add),
+        overlayColor: Theme.of(context).extension<EndernoteColors>()?.clrBase,
+        openCloseDial: isDialOpen,
+        children: [
+          _buildDialChild(
+            context,
+            controller: folderController,
+            icon: IconsaxLinear.folder,
+            label: "Folder",
+            onCreate: () async {
+              if (folderController.text.isNotEmpty) {
+                await Directory(
+                  '$rootPath/${folderController.text}',
+                ).create(recursive: true);
+
+                if (!context.mounted) return;
+                context.read<FileBloc>().add(LoadFiles(rootPath));
+              }
+              Navigator.pop(context);
+              folderController.clear();
+            },
+          ),
+          _buildDialChild(
+            context,
+            controller: fileController,
+            icon: IconsaxLinear.document_text_1,
+            label: "Note",
+            onCreate: () async {
+              if (fileController.text.isNotEmpty) {
+                await File(
+                  '$rootPath/${fileController.text}.md',
+                ).create(recursive: true);
+
+                if (!context.mounted) return;
+                context.read<FileBloc>().add(LoadFiles(rootPath));
+              }
+              Navigator.pop(context);
+              fileController.clear();
+            },
+          ),
+        ],
+        child: const Icon(IconsaxLinear.add),
+      ),
     );
   }
 
@@ -70,23 +81,44 @@ class CustomFAB extends StatelessWidget {
     return SpeedDialChild(
       child: Icon(icon),
       label: label,
+      backgroundColor:
+          Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
+      foregroundColor: Theme.of(context).extension<EndernoteColors>()?.clrText,
+      labelBackgroundColor:
+          Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
       onTap: () => showDialog(
         context: context,
         builder: (context) => AlertDialog(
+          actionsPadding: EdgeInsets.all(16),
+          contentPadding: EdgeInsets.all(16),
           backgroundColor:
               Theme.of(context).extension<EndernoteColors>()?.clrBase,
-          title: Text(
-            'New $label',
-            style: TextStyle(
-              color: Theme.of(context).extension<EndernoteColors>()?.clrText,
+          content: Container(
+            decoration: BoxDecoration(
+              color:
+                  Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
+              borderRadius: BorderRadius.circular(10),
             ),
-          ),
-          content: ColoredBox(
-            color: Colors.black.withAlpha(80),
             child: TextField(
               controller: controller,
               autofocus: true,
-              decoration: InputDecoration(hintText: '$label name'),
+              decoration: InputDecoration(
+                hintText: '$label name',
+                hintStyle: TextStyle(
+                  color: Theme.of(context)
+                      .extension<EndernoteColors>()
+                      ?.clrTextSecondary
+                      .withAlpha(179),
+                ),
+                suffixIcon: Icon(icon),
+                suffixIconColor: Theme.of(context)
+                    .extension<EndernoteColors>()
+                    ?.clrTextSecondary
+                    .withAlpha(179),
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                contentPadding: const EdgeInsets.all(16),
+              ),
               onSubmitted: (value) => onCreate(),
             ),
           ),

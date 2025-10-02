@@ -20,11 +20,7 @@ No clouds, no nonsense. Just fast, clean note-taking for people who actually wri
 
 ## **📸 Screenshots**
 
-<p align="center">
-  <img src="screenshots/2.JPG" alt="Screenshot 2" width="300px" />
-  <img src="screenshots/4.JPG" alt="Screenshot 2" width="300px" />
-  <img src="screenshots/3.JPG" alt="Screenshot 2" width="300px" />
-</p>
+coming soon...
 
 ## **🚦 Quick Start**
 

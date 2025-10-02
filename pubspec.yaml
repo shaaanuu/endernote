@@ -13,7 +13,6 @@ dependencies:
 
   flutter_svg: ^2.0.10+1
   flutter_markdown: ^0.7.3
-  equatable: ^2.0.5
   flutter_bloc: ^9.0.0
   path_provider: ^2.1.4
   url_launcher: ^6.3.1
@@ -23,12 +22,16 @@ dependencies:
   flutter_speed_dial: ^7.0.0
   iconsax_linear: ^1.1.0
   shared_preferences: ^2.5.3
+  file_picker: ^10.3.3
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^5.0.0
+  hive_generator: ^2.0.1
+  build_runner: ^2.5.4
 
 flutter:
   uses-material-design: true
@@ -43,3 +46,12 @@ flutter:
     - family: PlayfairDisplay
       fonts:
         - asset: lib/assets/PlayfairDisplay.ttf
+    - family: SourceSans3Regular
+      fonts:
+      - asset: lib/assets/SourceSans3-Regular.ttf
+    - family: SourceSans3Light
+      fonts:
+        - asset: lib/assets/SourceSans3-Light.ttf
+    - family: SourceSans3Bold
+      fonts:
+        - asset: lib/assets/SourceSans3-Bold.ttf

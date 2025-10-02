@@ -1,11 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
 
-import '../../../bloc/directory/directory_bloc.dart';
-import '../../../bloc/directory/directory_events.dart';
 import '../../theme/app_themes.dart';
 import 'edit_mode/edit_mode.dart';
 import 'preview_mode/preview_mode.dart';
@@ -38,7 +35,8 @@ class ScreenCanvas extends StatelessWidget {
         File(oldPath).renameSync(newPath);
         filePathNotifier.value = newPath;
 
-        context.read<DirectoryBloc>().add(FetchDirectory(parentDir.path));
+        // TODO: update the Files after renaming
+        // context.read<DirectoryBloc>().add(FetchDirectory(parentDir.path));
       } catch (e) {
         debugPrint("Error renaming file: $e");
       }
@@ -85,6 +83,8 @@ class ScreenCanvas extends StatelessWidget {
                       valueListenable: filePathNotifier,
                       builder: (context, filePath, _) {
                         return TextField(
+                          // TODO: Enable after fixing the state management
+                          enabled: false,
                           controller: titleController,
                           focusNode: titleFocusNode,
                           onChanged: (newName) =>
