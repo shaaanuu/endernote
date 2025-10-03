@@ -1,7 +1,7 @@
 name: endernote
 description: "Your versatile note-taking companion. Craft, create, and unleash your ideas with ease!"
 
-version: 3.3.1
+version: 4.0.0
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -14,7 +14,6 @@ dependencies:
   flutter_svg: ^2.0.10+1
   flutter_markdown: ^0.7.3
   flutter_bloc: ^9.0.0
-  path_provider: ^2.1.4
   url_launcher: ^6.3.1
   package_info_plus: ^8.1.2
   bloc: ^9.0.0

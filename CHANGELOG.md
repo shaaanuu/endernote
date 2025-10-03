@@ -2,10 +2,13 @@
 
 All notable changes to this project are documented here.
 
-## [unknown]
+## [4.0.0]
 ### changed
 - Whole UI design.
 - Rewrote the FileBloc.
+- Added vaults concept named 'chests'.
+- Added new screens - Welcome, chestRoom and ChestView (previously homeScreen).
+- Added a data model for chests and stored it with Hive.
 
 ## [3.3.1]
 ### changed
