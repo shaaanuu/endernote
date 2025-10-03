@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'bloc/theme/theme_bloc.dart';
 import 'bloc/theme/theme_states.dart';
@@ -23,46 +20,17 @@ Future<void> main() async {
   Hive.registerAdapter(ChestRecordAdapter());
   await Hive.openBox<ChestRecord>('recentChests');
 
-  Future<String> fetchRootPath() async {
-    late final String path;
-
-    if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-      final directory = await getApplicationDocumentsDirectory();
-      path = '${directory.path}/Endernote';
-    } else {
-      final directory = await getExternalStorageDirectory();
-      path = '${directory!.path}/Endernote';
-    }
-
-    final folder = Directory(path);
-
-    if (!await folder.exists()) {
-      await folder.create(recursive: true);
-    }
-
-    return folder.path;
-  }
-
-  runApp(
-    MyApp(rootPath: await fetchRootPath()),
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({
-    super.key,
-    required this.rootPath,
-  });
-
-  final String rootPath;
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => ThemeBloc(),
-        ),
+        BlocProvider(create: (context) => ThemeBloc()),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, themeState) {
