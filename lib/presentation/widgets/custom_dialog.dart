@@ -14,7 +14,7 @@ class CustomDialog extends StatelessWidget {
   final TextEditingController controller;
   final IconData icon;
   final String label;
-  final Future<void> Function() onCreate;
+  final void Function() onCreate;
 
   @override
   Widget build(BuildContext context) {

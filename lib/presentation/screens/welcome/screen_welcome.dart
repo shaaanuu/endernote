@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -6,6 +8,7 @@ import 'package:path/path.dart';
 
 import '../../../data/models/chest_record.dart';
 import '../../theme/app_themes.dart';
+import '../../widgets/custom_dialog.dart';
 
 class ScreenWelcome extends StatelessWidget {
   ScreenWelcome({super.key});
@@ -71,8 +74,7 @@ class ScreenWelcome extends StatelessWidget {
                       'Create new chest',
                       style: TextStyle(fontSize: 14),
                     ),
-                    onPressed: () =>
-                        Navigator.pushNamed(context, '/chest-room'),
+                    onPressed: () => onCreateNewFolderAsChest(context),
                   ),
                 ),
                 SizedBox(height: 16),
@@ -90,8 +92,7 @@ class ScreenWelcome extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 14),
                     ),
-                    onPressed: () async =>
-                        await onOpenExistingFolderAsChest(context),
+                    onPressed: () async => onOpenExistingFolderAsChest(context),
                   ),
                 ),
                 SizedBox(height: 64),
@@ -194,7 +195,7 @@ class ScreenWelcome extends StatelessWidget {
     return '${diff.inSeconds}s ago';
   }
 
-  Future<void> onOpenExistingFolderAsChest(BuildContext context) async {
+  void onOpenExistingFolderAsChest(BuildContext context) async {
     try {
       final pickedDirectoryPath = await FilePicker.platform.getDirectoryPath();
 
@@ -240,5 +241,66 @@ class ScreenWelcome extends StatelessWidget {
       // TODO: show a error msg
       print(e.toString());
     }
+  }
+
+  void onCreateNewFolderAsChest(BuildContext context) {
+    final controller = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) => CustomDialog(
+        controller: controller,
+        icon: IconsaxLinear.box,
+        label: 'Chest',
+        onCreate: () async {
+          try {
+            final pickedDirectoryPath =
+                await FilePicker.platform.getDirectoryPath();
+
+            if (pickedDirectoryPath != null) {
+              await Directory('$pickedDirectoryPath/${controller.text.trim()}')
+                  .create(recursive: true);
+
+              if (context.mounted) {
+                Navigator.pushNamed(
+                  context,
+                  '/chest-view',
+                  arguments: {
+                    'currentPath':
+                        '$pickedDirectoryPath/${controller.text.trim()}',
+                    'rootPath':
+                        '$pickedDirectoryPath/${controller.text.trim()}',
+                  },
+                );
+              }
+
+              if (!box.values.any(
+                (element) =>
+                    element.path ==
+                    '$pickedDirectoryPath/${controller.text.trim()}',
+              )) {
+                // If it's not already exists, add it
+                box.add(
+                  ChestRecord(
+                    path: '$pickedDirectoryPath/${controller.text.trim()}',
+                    ts: DateTime.now().millisecondsSinceEpoch,
+                  ),
+                );
+              } else {
+                // If it's already exists, show error
+                // TODO: show a error snackbar
+                print("Error, already exists");
+              }
+            } else {
+              // TODO: add a error msg
+              print("Error, pick something you idiot...");
+            }
+          } catch (e) {
+            // TODO: show a error msg
+            print(e.toString());
+          }
+        },
+      ),
+    );
   }
 }

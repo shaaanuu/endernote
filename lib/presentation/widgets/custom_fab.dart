@@ -77,7 +77,7 @@ class CustomFAB extends StatelessWidget {
     required TextEditingController controller,
     required IconData icon,
     required String label,
-    required Future<void> Function() onCreate,
+    required void Function() onCreate,
   }) {
     return SpeedDialChild(
       child: Icon(icon),
