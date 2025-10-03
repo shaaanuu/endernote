@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import '../../../data/models/chest_record.dart';
 import '../../theme/app_themes.dart';
 import '../../widgets/custom_app_bar.dart';
+import '../../widgets/custom_fab.dart';
 
 class ScreenChestRoom extends StatelessWidget {
   ScreenChestRoom({super.key});
@@ -93,10 +94,7 @@ class ScreenChestRoom extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(IconsaxLinear.add),
-        onPressed: () {},
-      ),
+      floatingActionButton: CustomChestFAB(box: box),
     );
   }
 

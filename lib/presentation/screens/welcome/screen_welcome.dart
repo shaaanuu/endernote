@@ -9,6 +9,7 @@ import 'package:path/path.dart';
 import '../../../data/models/chest_record.dart';
 import '../../theme/app_themes.dart';
 import '../../widgets/custom_dialog.dart';
+import '../../widgets/custom_fab.dart';
 
 class ScreenWelcome extends StatelessWidget {
   ScreenWelcome({super.key});
@@ -176,10 +177,7 @@ class ScreenWelcome extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(IconsaxLinear.add),
-        onPressed: () {},
-      ),
+      floatingActionButton: CustomChestFAB(box: box),
     );
   }
 
