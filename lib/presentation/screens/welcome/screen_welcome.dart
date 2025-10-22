@@ -270,32 +270,31 @@ class ScreenWelcome extends StatelessWidget {
             final pickedDirectoryPath =
                 await FilePicker.platform.getDirectoryPath();
 
+            final text = controller.text.trim();
+
             if (pickedDirectoryPath != null) {
-              await Directory('$pickedDirectoryPath/${controller.text.trim()}')
+              await Directory('$pickedDirectoryPath/$text')
                   .create(recursive: true);
 
               if (context.mounted) {
-                Navigator.pushNamed(
+                Navigator.pushNamedAndRemoveUntil(
                   context,
                   '/chest-view',
+                  (route) => false,
                   arguments: {
-                    'currentPath':
-                        '$pickedDirectoryPath/${controller.text.trim()}',
-                    'rootPath':
-                        '$pickedDirectoryPath/${controller.text.trim()}',
+                    'currentPath': '$pickedDirectoryPath/$text',
+                    'rootPath': '$pickedDirectoryPath/$text',
                   },
                 );
               }
 
               if (!box.values.any(
-                (element) =>
-                    element.path ==
-                    '$pickedDirectoryPath/${controller.text.trim()}',
+                (element) => element.path == '$pickedDirectoryPath/$text',
               )) {
                 // If it's not already exists, add it
                 box.add(
                   ChestRecord(
-                    path: '$pickedDirectoryPath/${controller.text.trim()}',
+                    path: '$pickedDirectoryPath/$text',
                     ts: DateTime.now().millisecondsSinceEpoch,
                   ),
                 );
