@@ -213,9 +213,10 @@ class ScreenWelcome extends StatelessWidget {
       final pickedDirectoryPath = await FilePicker.platform.getDirectoryPath();
 
       if (pickedDirectoryPath != null && context.mounted) {
-        Navigator.pushNamed(
+        Navigator.pushNamedAndRemoveUntil(
           context,
           '/chest-view',
+          (route) => false,
           arguments: {
             'currentPath': pickedDirectoryPath,
             'rootPath': pickedDirectoryPath,
