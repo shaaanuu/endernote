@@ -10,6 +10,9 @@ All notable changes to this project are documented here.
 - Added new screens - Welcome, chestRoom and ChestView (previously homeScreen).
 - Added a data model for chests and stored it with Hive.
 
+### fixed
+- some issues related to permission in android.
+
 ## [3.3.1]
 ### changed
 - Replaced the folder icons into arrows in home screen.
