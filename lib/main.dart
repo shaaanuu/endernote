@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'bloc/theme/theme_bloc.dart';
 import 'bloc/theme/theme_states.dart';
@@ -15,6 +18,10 @@ import 'presentation/theme/app_themes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (Platform.isAndroid || Platform.isWindows) {
+    await Permission.storage.request();
+  }
 
   await Hive.initFlutter();
   Hive.registerAdapter(ChestRecordAdapter());

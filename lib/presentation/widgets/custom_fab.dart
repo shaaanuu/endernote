@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../bloc/file/file_bloc.dart';
 import '../../bloc/file/file_events.dart';
@@ -90,15 +91,43 @@ class CustomFAB extends StatelessWidget {
       foregroundColor: Theme.of(context).extension<EndernoteColors>()?.clrText,
       labelBackgroundColor:
           Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
-      onTap: () => showDialog(
-        context: context,
-        builder: (context) => CustomDialog(
-          controller: controller,
-          icon: icon,
-          label: label,
-          onCreate: onCreate,
-        ),
-      ),
+      onTap: () async {
+        if (await Permission.storage.isDenied && context.mounted) {
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text(
+                'Permission required',
+                style: TextStyle(
+                  color:
+                      Theme.of(context).extension<EndernoteColors>()?.clrText,
+                ),
+              ),
+              content: Text(
+                'Storage permission is needed.',
+                style: TextStyle(
+                  color: Theme.of(context)
+                      .extension<EndernoteColors>()
+                      ?.clrText
+                      .withAlpha(179),
+                ),
+              ),
+              backgroundColor:
+                  Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
+            ),
+          );
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) => CustomDialog(
+              controller: controller,
+              icon: icon,
+              label: label,
+              onCreate: onCreate,
+            ),
+          );
+        }
+      },
     );
   }
 }
@@ -261,7 +290,35 @@ class CustomChestFAB extends StatelessWidget {
       foregroundColor: Theme.of(context).extension<EndernoteColors>()?.clrText,
       labelBackgroundColor:
           Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
-      onTap: onCreate,
+      onTap: () async {
+        if (await Permission.storage.isDenied && context.mounted) {
+          showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text(
+                'Permission required',
+                style: TextStyle(
+                  color:
+                      Theme.of(context).extension<EndernoteColors>()?.clrText,
+                ),
+              ),
+              content: Text(
+                'Storage permission is needed.',
+                style: TextStyle(
+                  color: Theme.of(context)
+                      .extension<EndernoteColors>()
+                      ?.clrText
+                      .withAlpha(179),
+                ),
+              ),
+              backgroundColor:
+                  Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
+            ),
+          );
+        } else {
+          onCreate;
+        }
+      },
     );
   }
 }

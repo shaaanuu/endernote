@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
 import 'package:path/path.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../data/models/chest_record.dart';
 import '../../theme/app_themes.dart';
@@ -209,111 +210,162 @@ class ScreenWelcome extends StatelessWidget {
   }
 
   void onOpenExistingFolderAsChest(BuildContext context) async {
-    try {
-      final pickedDirectoryPath = await FilePicker.platform.getDirectoryPath();
-
-      if (pickedDirectoryPath != null && context.mounted) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          '/chest-view',
-          (route) => false,
-          arguments: {
-            'currentPath': pickedDirectoryPath,
-            'rootPath': pickedDirectoryPath,
-          },
-        );
-
-        if (!box.values.any(
-          (element) => element.path == pickedDirectoryPath,
-        )) {
-          // If it's not already exists, add it
-          box.add(
-            ChestRecord(
-              path: pickedDirectoryPath,
-              ts: DateTime.now().millisecondsSinceEpoch,
+    if (await Permission.storage.isDenied && context.mounted) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text(
+            'Permission required',
+            style: TextStyle(
+              color: Theme.of(context).extension<EndernoteColors>()?.clrText,
             ),
+          ),
+          content: Text(
+            'Storage permission is needed.',
+            style: TextStyle(
+              color: Theme.of(context)
+                  .extension<EndernoteColors>()
+                  ?.clrText
+                  .withAlpha(179),
+            ),
+          ),
+          backgroundColor:
+              Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
+        ),
+      );
+    } else {
+      try {
+        final pickedDirectoryPath =
+            await FilePicker.platform.getDirectoryPath();
+
+        if (pickedDirectoryPath != null && context.mounted) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/chest-view',
+            (route) => false,
+            arguments: {
+              'currentPath': pickedDirectoryPath,
+              'rootPath': pickedDirectoryPath,
+            },
           );
-        } else {
-          // if it's already exists, update it
-          final a = box.values.firstWhere(
+
+          if (!box.values.any(
             (element) => element.path == pickedDirectoryPath,
-          );
+          )) {
+            // If it's not already exists, add it
+            box.add(
+              ChestRecord(
+                path: pickedDirectoryPath,
+                ts: DateTime.now().millisecondsSinceEpoch,
+              ),
+            );
+          } else {
+            // if it's already exists, update it
+            final a = box.values.firstWhere(
+              (element) => element.path == pickedDirectoryPath,
+            );
 
-          box.putAt(
-            a.key,
-            ChestRecord(
-              path: pickedDirectoryPath,
-              ts: DateTime.now().millisecondsSinceEpoch,
-            ),
-          );
+            box.putAt(
+              a.key,
+              ChestRecord(
+                path: pickedDirectoryPath,
+                ts: DateTime.now().millisecondsSinceEpoch,
+              ),
+            );
+          }
+        } else {
+          // TODO: add a error msg
+          print("Error, pick something you idiot...");
         }
-      } else {
-        // TODO: add a error msg
-        print("Error, pick something you idiot...");
+      } catch (e) {
+        // TODO: show a error msg
+        print(e.toString());
       }
-    } catch (e) {
-      // TODO: show a error msg
-      print(e.toString());
     }
   }
 
-  void onCreateNewFolderAsChest(BuildContext context) {
-    final controller = TextEditingController();
+  void onCreateNewFolderAsChest(BuildContext context) async {
+    if (await Permission.storage.isDenied && context.mounted) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text(
+            'Permission required',
+            style: TextStyle(
+              color: Theme.of(context).extension<EndernoteColors>()?.clrText,
+            ),
+          ),
+          content: Text(
+            'Storage permission is needed.',
+            style: TextStyle(
+              color: Theme.of(context)
+                  .extension<EndernoteColors>()
+                  ?.clrText
+                  .withAlpha(179),
+            ),
+          ),
+          backgroundColor:
+              Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
+        ),
+      );
+    } else {
+      final controller = TextEditingController();
 
-    showDialog(
-      context: context,
-      builder: (context) => CustomDialog(
-        controller: controller,
-        icon: IconsaxLinear.box,
-        label: 'Chest',
-        onCreate: () async {
-          try {
-            final pickedDirectoryPath =
-                await FilePicker.platform.getDirectoryPath();
+      showDialog(
+        context: context,
+        builder: (context) => CustomDialog(
+          controller: controller,
+          icon: IconsaxLinear.box,
+          label: 'Chest',
+          onCreate: () async {
+            try {
+              final pickedDirectoryPath =
+                  await FilePicker.platform.getDirectoryPath();
 
-            final text = controller.text.trim();
+              final text = controller.text.trim();
 
-            if (pickedDirectoryPath != null) {
-              await Directory('$pickedDirectoryPath/$text')
-                  .create(recursive: true);
+              if (pickedDirectoryPath != null) {
+                await Directory('$pickedDirectoryPath/$text')
+                    .create(recursive: true);
 
-              if (context.mounted) {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/chest-view',
-                  (route) => false,
-                  arguments: {
-                    'currentPath': '$pickedDirectoryPath/$text',
-                    'rootPath': '$pickedDirectoryPath/$text',
-                  },
-                );
-              }
+                if (context.mounted) {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/chest-view',
+                    (route) => false,
+                    arguments: {
+                      'currentPath': '$pickedDirectoryPath/$text',
+                      'rootPath': '$pickedDirectoryPath/$text',
+                    },
+                  );
+                }
 
-              if (!box.values.any(
-                (element) => element.path == '$pickedDirectoryPath/$text',
-              )) {
-                // If it's not already exists, add it
-                box.add(
-                  ChestRecord(
-                    path: '$pickedDirectoryPath/$text',
-                    ts: DateTime.now().millisecondsSinceEpoch,
-                  ),
-                );
+                if (!box.values.any(
+                  (element) => element.path == '$pickedDirectoryPath/$text',
+                )) {
+                  // If it's not already exists, add it
+                  box.add(
+                    ChestRecord(
+                      path: '$pickedDirectoryPath/$text',
+                      ts: DateTime.now().millisecondsSinceEpoch,
+                    ),
+                  );
+                } else {
+                  // If it's already exists, show error
+                  // TODO: show a error snackbar
+                  print("Error, already exists");
+                }
               } else {
-                // If it's already exists, show error
-                // TODO: show a error snackbar
-                print("Error, already exists");
+                // TODO: add a error msg
+                print("Error, pick something you idiot...");
               }
-            } else {
-              // TODO: add a error msg
-              print("Error, pick something you idiot...");
+            } catch (e) {
+              // TODO: show a error msg
+              print(e.toString());
             }
-          } catch (e) {
-            // TODO: show a error msg
-            print(e.toString());
-          }
-        },
-      ),
-    );
+          },
+        ),
+      );
+    }
   }
 }
