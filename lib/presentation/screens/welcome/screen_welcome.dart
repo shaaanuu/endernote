@@ -25,6 +25,9 @@ class ScreenWelcome extends StatelessWidget {
       return '...${text.substring(text.length - width)}';
     }
 
+    // sorted by ts
+    final values = box.values.toList()..sort((a, b) => b.ts.compareTo(a.ts));
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -120,57 +123,69 @@ class ScreenWelcome extends StatelessWidget {
                       ?.clrSecondary,
                   borderRadius: BorderRadius.circular(10),
                   clipBehavior: Clip.antiAlias,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      // sorted by ts
-                      final values = box.values.toList()
-                        ..sort((a, b) => b.ts.compareTo(a.ts));
-
-                      return ListTile(
-                        title: Text(
-                          basename(values[index].path),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        subtitle: Text(
-                          shortPath(values[index].path),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .extension<EndernoteColors>()
-                                ?.clrTextSecondary
-                                .withAlpha(128),
+                  child: values.isEmpty
+                      ? SizedBox(
+                          height: 150,
+                          child: Center(
+                            child: Text(
+                              'No recent chests yet...',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme.of(context)
+                                    .extension<EndernoteColors>()
+                                    ?.clrTextSecondary
+                                    .withAlpha(157),
+                              ),
+                            ),
                           ),
-                        ),
-                        trailing: Text(
-                          shortTimeAgo(values[index].ts),
-                          style: TextStyle(
-                            fontFamily: 'SourceSans3Light',
-                            fontSize: 12,
-                            fontStyle: FontStyle.italic,
-                            color: Theme.of(context)
-                                .extension<EndernoteColors>()
-                                ?.clrTextSecondary
-                                .withAlpha(179),
-                          ),
-                        ),
-                        onTap: () => Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/chest-view',
-                          (route) => false,
-                          arguments: {
-                            'currentPath': values[index].path,
-                            'rootPath': values[index].path,
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: values.length > 3 ? 3 : values.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(
+                                basename(values[index].path),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              subtitle: Text(
+                                shortPath(values[index].path),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .extension<EndernoteColors>()
+                                      ?.clrTextSecondary
+                                      .withAlpha(128),
+                                ),
+                              ),
+                              trailing: Text(
+                                shortTimeAgo(values[index].ts),
+                                style: TextStyle(
+                                  fontFamily: 'SourceSans3Light',
+                                  fontSize: 12,
+                                  fontStyle: FontStyle.italic,
+                                  color: Theme.of(context)
+                                      .extension<EndernoteColors>()
+                                      ?.clrTextSecondary
+                                      .withAlpha(179),
+                                ),
+                              ),
+                              onTap: () => Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                '/chest-view',
+                                (route) => false,
+                                arguments: {
+                                  'currentPath': values[index].path,
+                                  'rootPath': values[index].path,
+                                },
+                              ),
+                            );
                           },
                         ),
-                      );
-                    },
-                  ),
                 ),
               ],
             ),
