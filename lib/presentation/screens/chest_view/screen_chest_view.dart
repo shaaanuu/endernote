@@ -78,7 +78,7 @@ class ScreenChestView extends StatelessWidget {
         key: _key,
         appBar: CustomAppBar(
           leadingIcon: IconsaxLinear.menu,
-          title: 'Ender Research',
+          title: basename(rootPath),
           trailingIcon: IconsaxLinear.search_normal_1,
           onLeading: () => _key.currentState!.openDrawer(),
         ),
