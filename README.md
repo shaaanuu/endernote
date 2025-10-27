@@ -20,7 +20,11 @@ No clouds, no nonsense. Just fast, clean note-taking for people who actually wri
 
 ## **📸 Screenshots**
 
-coming soon...
+<img src="screenshots/1.png" width="300" />
+<img src="screenshots/2.png" width="300" />
+<img src="screenshots/3.png" width="300" />
+<img src="screenshots/4.png" width="300" />
+<img src="screenshots/5.png" width="300" />
 
 ## **🚦 Quick Start**
 
@@ -55,8 +59,6 @@ Special thanks to the open-source community—building the future, one commit at
 ## **📜 License**
 
 Licensed under [MIT](https://github.com/shaaanuu/endernote/blob/main/LICENSE). Do whatever you want (responsibly).
-
----
 
 ## **🤝 Contributing**
 
