@@ -15,6 +15,11 @@ import '../../data/models/chest_record.dart';
 import '../theme/app_themes.dart';
 import 'custom_dialog.dart';
 
+Future<bool> _hasStoragePermission() async {
+  if (!Platform.isAndroid || !Platform.isIOS) return true;
+  return !(await Permission.storage.isDenied);
+}
+
 class CustomFAB extends StatelessWidget {
   const CustomFAB({super.key, required this.rootPath});
 
@@ -92,7 +97,7 @@ class CustomFAB extends StatelessWidget {
       labelBackgroundColor:
           Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
       onTap: () async {
-        if (await Permission.storage.isDenied && context.mounted) {
+        if (!await _hasStoragePermission() && context.mounted) {
           showDialog(
             context: context,
             builder: (_) => AlertDialog(
@@ -291,7 +296,7 @@ class CustomChestFAB extends StatelessWidget {
       labelBackgroundColor:
           Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
       onTap: () async {
-        if (await Permission.storage.isDenied && context.mounted) {
+        if (!await _hasStoragePermission() && context.mounted) {
           showDialog(
             context: context,
             builder: (_) => AlertDialog(

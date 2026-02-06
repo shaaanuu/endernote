@@ -209,8 +209,13 @@ class ScreenWelcome extends StatelessWidget {
     return '${diff.inSeconds}s ago';
   }
 
+  Future<bool> hasStoragePermission() async {
+    if (!Platform.isAndroid || !Platform.isIOS) return true;
+    return !(await Permission.storage.isDenied);
+  }
+
   void onOpenExistingFolderAsChest(BuildContext context) async {
-    if (await Permission.storage.isDenied && context.mounted) {
+    if (!await hasStoragePermission() && context.mounted) {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -285,7 +290,7 @@ class ScreenWelcome extends StatelessWidget {
   }
 
   void onCreateNewFolderAsChest(BuildContext context) async {
-    if (await Permission.storage.isDenied && context.mounted) {
+    if (!await hasStoragePermission() && context.mounted) {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
