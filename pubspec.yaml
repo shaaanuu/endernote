@@ -40,12 +40,6 @@ flutter:
     - lib/assets/
 
   fonts:
-    - family: FiraCode
-      fonts:
-        - asset: lib/assets/FiraCode.ttf
-    - family: PlayfairDisplay
-      fonts:
-        - asset: lib/assets/PlayfairDisplay.ttf
     - family: SourceSans3Regular
       fonts:
       - asset: lib/assets/SourceSans3-Regular.ttf
@@ -55,3 +49,12 @@ flutter:
     - family: SourceSans3Bold
       fonts:
         - asset: lib/assets/SourceSans3-Bold.ttf
+    - family: WorkSans
+      fonts:
+        - asset: lib/assets/WorkSans.ttf
+    - family: RobotoSlab
+      fonts:
+        - asset: lib/assets/RobotoSlab.ttf
+    - family: JetBrainsMono
+      fonts:
+        - asset: lib/assets/JetBrainsMono.ttf

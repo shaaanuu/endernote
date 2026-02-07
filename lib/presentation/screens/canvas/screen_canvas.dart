@@ -90,7 +90,7 @@ class ScreenCanvas extends StatelessWidget {
                           onChanged: (newName) =>
                               _renameFile(context, filePath, newName),
                           style: TextStyle(
-                            fontFamily: 'FiraCode',
+                            fontFamily: 'JetBrainsMono',
                             color: Theme.of(context)
                                 .extension<EndernoteColors>()
                                 ?.clrText,
@@ -98,7 +98,7 @@ class ScreenCanvas extends StatelessWidget {
                           decoration: InputDecoration(
                             hintText: "Note Title",
                             hintStyle: TextStyle(
-                              fontFamily: 'FiraCode',
+                              fontFamily: 'JetBrainsMono',
                               color: Theme.of(context)
                                   .extension<EndernoteColors>()
                                   ?.clrText

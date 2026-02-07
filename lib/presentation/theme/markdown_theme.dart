@@ -5,96 +5,92 @@ import 'app_themes.dart';
 
 MarkdownStyleSheet mdTheme(context) => MarkdownStyleSheet(
       h1: TextStyle(
-        fontFamily: 'PlayfairDisplay',
-        fontWeight: FontWeight.w700,
-        fontSize: 26,
-        letterSpacing: 0.2,
+        fontFamily: 'RobotoSlab',
+        fontWeight: FontWeight.bold,
+        fontSize: 28,
+        height: 1.2,
+        letterSpacing: 0.4,
         color: Theme.of(context).extension<EndernoteColors>()?.clrText,
       ),
       h2: TextStyle(
-        fontFamily: 'PlayfairDisplay',
-        fontWeight: FontWeight.w700,
-        fontSize: 23,
-        letterSpacing: 0.2,
+        fontFamily: 'RobotoSlab',
+        fontSize: 24,
+        height: 1.25,
+        letterSpacing: 0.6,
         color: Theme.of(context).extension<EndernoteColors>()?.clrText,
       ),
       h3: TextStyle(
-        fontFamily: 'PlayfairDisplay',
-        fontWeight: FontWeight.w600,
+        fontFamily: 'RobotoSlab',
         fontSize: 21,
-        letterSpacing: 0.1,
+        height: 1.3,
+        letterSpacing: 0.6,
         color: Theme.of(context).extension<EndernoteColors>()?.clrText,
       ),
       h4: TextStyle(
-        fontFamily: 'PlayfairDisplay',
-        fontWeight: FontWeight.w600,
+        fontFamily: 'RobotoSlab',
         fontSize: 19,
-        letterSpacing: 0.1,
+        height: 1.3,
+        letterSpacing: 0.6,
         color: Theme.of(context).extension<EndernoteColors>()?.clrText,
       ),
       h5: TextStyle(
-        fontFamily: 'PlayfairDisplay',
-        fontWeight: FontWeight.w500,
+        fontFamily: 'RobotoSlab',
         fontSize: 17,
-        letterSpacing: 0.1,
+        height: 1.35,
+        letterSpacing: 0.6,
         color: Theme.of(context).extension<EndernoteColors>()?.clrText,
       ),
       h6: TextStyle(
-        fontFamily: 'PlayfairDisplay',
-        fontWeight: FontWeight.w500,
+        fontFamily: 'RobotoSlab',
         fontSize: 16,
-        letterSpacing: 0.1,
+        height: 1.35,
+        letterSpacing: 0.6,
         color: Theme.of(context).extension<EndernoteColors>()?.clrText,
       ),
       p: TextStyle(
-        fontSize: 15,
-        height: 1.6,
+        fontFamily: 'WorkSans',
+        fontSize: 15.5,
+        height: 1.5,
         color: Theme.of(context)
             .extension<EndernoteColors>()
             ?.clrText
             .withAlpha(240),
       ),
       em: TextStyle(
+        fontFamily: 'WorkSans',
         fontStyle: FontStyle.italic,
+        fontSize: 15.5,
+        height: 1.65,
         color: Theme.of(context)
             .extension<EndernoteColors>()
             ?.clrText
             .withAlpha(240),
       ),
       strong: TextStyle(
+        fontFamily: 'WorkSans',
         fontWeight: FontWeight.bold,
+        fontSize: 15.5,
+        height: 1.65,
         color: Theme.of(context)
             .extension<EndernoteColors>()
             ?.clrText
             .withAlpha(240),
       ),
       code: TextStyle(
+        fontFamily: 'JetBrainsMono',
+        fontSize: 14.5,
+        height: 1.55,
         color: Theme.of(context)
             .extension<EndernoteColors>()
             ?.clrText
             .withAlpha(240),
-        fontFamily: 'FiraCode',
-        fontSize: 14,
       ),
       codeblockDecoration: BoxDecoration(
-        color: Theme.of(context)
-            .extension<EndernoteColors>()
-            ?.clrBase
-            .withValues(blue: 255, green: 255, red: 255, alpha: 200),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: Theme.of(context)
-              .extension<EndernoteColors>()!
-              .clrText
-              .withValues(alpha: 0.2),
-        ),
+        color: Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
+        borderRadius: BorderRadius.circular(10),
       ),
-      blockquoteAlign: WrapAlignment.center,
       blockquoteDecoration: BoxDecoration(
-        color: Theme.of(context)
-            .extension<EndernoteColors>()
-            ?.clrBase
-            .withValues(blue: 255, green: 255, red: 255, alpha: 200),
+        color: Theme.of(context).extension<EndernoteColors>()?.clrSecondary,
         borderRadius: BorderRadius.circular(10),
         border: Border(
           left: BorderSide(
@@ -102,9 +98,19 @@ MarkdownStyleSheet mdTheme(context) => MarkdownStyleSheet(
                 .extension<EndernoteColors>()!
                 .clrText
                 .withAlpha(230),
-            width: 4,
+            width: 1.5,
           ),
         ),
+      ),
+      blockquote: TextStyle(
+        fontFamily: 'WorkSans',
+        fontSize: 15.5,
+        height: 1.65,
+        fontStyle: FontStyle.italic,
+        color: Theme.of(context)
+            .extension<EndernoteColors>()
+            ?.clrText
+            .withAlpha(200),
       ),
       horizontalRuleDecoration: BoxDecoration(
         border: Border(
@@ -118,17 +124,20 @@ MarkdownStyleSheet mdTheme(context) => MarkdownStyleSheet(
         ),
       ),
       a: TextStyle(
-        color: Color(0xFF80AFFC),
+        fontFamily: 'WorkSans',
+        color: const Color(0xFF80AFFC),
         decoration: TextDecoration.underline,
         decorationColor:
             Theme.of(context).extension<EndernoteColors>()!.clrText,
       ),
       listBullet: TextStyle(
+        fontFamily: 'WorkSans',
+        fontSize: 16,
+        height: 1.65,
         color: Theme.of(context)
             .extension<EndernoteColors>()!
             .clrText
             .withAlpha(230),
-        fontSize: 16,
       ),
       tableBorder: TableBorder.all(
         color: Theme.of(context)
@@ -137,5 +146,25 @@ MarkdownStyleSheet mdTheme(context) => MarkdownStyleSheet(
             .withAlpha(120),
         borderRadius: BorderRadius.circular(10),
         width: 1.5,
+      ),
+      tableHead: TextStyle(
+        fontFamily: 'WorkSans',
+        fontSize: 14.5,
+        height: 1.35,
+        fontWeight: FontWeight.w700,
+        color: Theme.of(context)
+            .extension<EndernoteColors>()!
+            .clrText
+            .withAlpha(245),
+      ),
+      tableBody: TextStyle(
+        fontFamily: 'WorkSans',
+        fontSize: 14.5,
+        height: 1.45,
+        fontWeight: FontWeight.w500,
+        color: Theme.of(context)
+            .extension<EndernoteColors>()!
+            .clrText
+            .withAlpha(235),
       ),
     );

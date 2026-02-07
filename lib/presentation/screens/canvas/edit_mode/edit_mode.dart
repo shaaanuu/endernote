@@ -223,7 +223,7 @@ class EditMode extends StatelessWidget {
                         expands: true,
                         minLines: null,
                         maxLines: null,
-                        style: const TextStyle(fontFamily: 'FiraCode'),
+                        style: const TextStyle(fontFamily: 'JetBrainsMono'),
                         decoration: InputDecoration(
                           floatingLabelStyle: TextStyle(
                             color: Theme.of(context)
