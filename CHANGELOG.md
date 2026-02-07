@@ -2,6 +2,11 @@
 
 All notable changes to this project are documented here.
 
+## [4.1.0]
+### changed
+- Changed the fonts in the preview mode.
+- Replaced `Firacode` with `JetBrainsMono`.
+
 ## [4.0.0]
 ### changed
 - Whole UI design.
