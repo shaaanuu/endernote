@@ -34,6 +34,7 @@ class PreviewMode extends StatelessWidget {
             );
           } else {
             return Markdown(
+              selectable: true,
               checkboxBuilder: (val) {
                 return Transform.translate(
                   offset: const Offset(0, 2),
