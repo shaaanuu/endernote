@@ -34,20 +34,28 @@ class PreviewMode extends StatelessWidget {
             );
           } else {
             return Markdown(
-              selectable: true,
               checkboxBuilder: (val) {
-                return Checkbox(
-                  value: val,
-                  side: BorderSide(
-                    color:
-                        Theme.of(context).extension<EndernoteColors>()!.clrText,
-                    width: 1.5,
+                return Transform.translate(
+                  offset: const Offset(0, 2),
+                  child: SizedBox(
+                    height: 20,
+                    child: Checkbox(
+                      value: val,
+                      side: BorderSide(
+                        color: Theme.of(context)
+                            .extension<EndernoteColors>()!
+                            .clrText,
+                        width: 1.5,
+                      ),
+                      activeColor: Theme.of(context)
+                          .extension<EndernoteColors>()!
+                          .clrText,
+                      checkColor: Theme.of(context)
+                          .extension<EndernoteColors>()!
+                          .clrBase,
+                      onChanged: (value) {},
+                    ),
                   ),
-                  activeColor:
-                      Theme.of(context).extension<EndernoteColors>()!.clrText,
-                  checkColor:
-                      Theme.of(context).extension<EndernoteColors>()!.clrBase,
-                  onChanged: (value) {},
                 );
               },
               data: snapshot.data!,
