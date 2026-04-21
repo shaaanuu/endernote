@@ -161,7 +161,7 @@ class CustomChestFAB extends StatelessWidget {
           onCreate: () async {
             try {
               final pickedDirectoryPath =
-                  await FilePicker.platform.getDirectoryPath();
+                  await FilePicker.getDirectoryPath();
 
               if (pickedDirectoryPath != null && context.mounted) {
                 Navigator.pushNamed(
@@ -224,7 +224,7 @@ class CustomChestFAB extends StatelessWidget {
                 onCreate: () async {
                   try {
                     final pickedDirectoryPath =
-                        await FilePicker.platform.getDirectoryPath();
+                        await FilePicker.getDirectoryPath();
 
                     if (pickedDirectoryPath != null) {
                       await Directory(

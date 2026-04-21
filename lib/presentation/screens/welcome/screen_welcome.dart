@@ -241,7 +241,7 @@ class ScreenWelcome extends StatelessWidget {
     } else {
       try {
         final pickedDirectoryPath =
-            await FilePicker.platform.getDirectoryPath();
+            await FilePicker.getDirectoryPath();
 
         if (pickedDirectoryPath != null && context.mounted) {
           Navigator.pushNamedAndRemoveUntil(
@@ -325,7 +325,7 @@ class ScreenWelcome extends StatelessWidget {
           onCreate: () async {
             try {
               final pickedDirectoryPath =
-                  await FilePicker.platform.getDirectoryPath();
+                  await FilePicker.getDirectoryPath();
 
               final text = controller.text.trim();
 
