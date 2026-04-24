@@ -21,17 +21,19 @@ dependencies:
   iconsax_linear: ^1.1.0
   shared_preferences: ^2.5.3
   file_picker: ^11.0.2
-  hive_flutter: ^1.1.0
   permission_handler: ^12.0.1
   flutter_markdown_plus: ^1.0.7
+  isar_community: ^3.3.2
+  isar_community_flutter_libs: ^3.3.2
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^6.0.0
-  hive_generator: ^2.0.1
-  build_runner: ^2.4.13
+  isar_community_generator: ^3.3.2
+  build_runner: ^2.13.1
 
 flutter:
   uses-material-design: true

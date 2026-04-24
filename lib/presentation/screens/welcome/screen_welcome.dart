@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
+import 'package:isar_community/isar.dart';
 import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -13,9 +13,9 @@ import '../../widgets/custom_dialog.dart';
 import '../../widgets/custom_fab.dart';
 
 class ScreenWelcome extends StatelessWidget {
-  ScreenWelcome({super.key});
+  const ScreenWelcome({super.key, required this.isar});
 
-  final box = Hive.box<ChestRecord>('recentChests');
+  final Isar isar;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,6 @@ class ScreenWelcome extends StatelessWidget {
       if (text.length <= width) return text;
       return '...${text.substring(text.length - width)}';
     }
-
-    // sorted by ts
-    final values = box.values.toList()..sort((a, b) => b.ts.compareTo(a.ts));
 
     return Scaffold(
       body: SafeArea(
@@ -118,82 +115,120 @@ class ScreenWelcome extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 16),
-                Material(
-                  color: Theme.of(context)
-                      .extension<EndernoteColors>()
-                      ?.clrSecondary,
-                  borderRadius: BorderRadius.circular(10),
-                  clipBehavior: Clip.antiAlias,
-                  child: values.isEmpty
-                      ? SizedBox(
+                FutureBuilder<List<ChestRecord>>(
+                  future: isar.chestRecords.where().sortByTsDesc().findAll(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Material(
+                        color: Theme.of(context)
+                            .extension<EndernoteColors>()
+                            ?.clrSecondary,
+                        borderRadius: BorderRadius.circular(10),
+                        child: SizedBox(
                           height: 150,
                           child: Center(
-                            child: Text(
-                              'No recent chests yet...',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Theme.of(context)
-                                    .extension<EndernoteColors>()
-                                    ?.clrTextSecondary
-                                    .withAlpha(157),
-                              ),
-                            ),
+                            child: CircularProgressIndicator(),
                           ),
-                        )
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: values.length > 3 ? 3 : values.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(
-                                basename(values[index].path),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              subtitle: Text(
-                                shortPath(values[index].path),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .extension<EndernoteColors>()
-                                      ?.clrTextSecondary
-                                      .withAlpha(128),
-                                ),
-                              ),
-                              trailing: Text(
-                                shortTimeAgo(values[index].ts),
-                                style: TextStyle(
-                                  fontFamily: 'SourceSans3Light',
-                                  fontSize: 12,
-                                  fontStyle: FontStyle.italic,
-                                  color: Theme.of(context)
-                                      .extension<EndernoteColors>()
-                                      ?.clrTextSecondary
-                                      .withAlpha(179),
-                                ),
-                              ),
-                              onTap: () => Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                '/chest-view',
-                                (route) => false,
-                                arguments: {
-                                  'currentPath': values[index].path,
-                                  'rootPath': values[index].path,
-                                },
-                              ),
-                            );
-                          },
                         ),
+                      );
+                    }
+
+                    if (snapshot.hasError) {
+                      return Material(
+                        color: Theme.of(context)
+                            .extension<EndernoteColors>()
+                            ?.clrSecondary,
+                        borderRadius: BorderRadius.circular(10),
+                        child: SizedBox(
+                          height: 150,
+                          child: Center(
+                            child: Text('Error loading chests'),
+                          ),
+                        ),
+                      );
+                    }
+
+                    final values = snapshot.data ?? [];
+
+                    return Material(
+                      color: Theme.of(context)
+                          .extension<EndernoteColors>()
+                          ?.clrSecondary,
+                      borderRadius: BorderRadius.circular(10),
+                      clipBehavior: Clip.antiAlias,
+                      child: values.isEmpty
+                          ? SizedBox(
+                              height: 150,
+                              child: Center(
+                                child: Text(
+                                  'No recent chests yet...',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Theme.of(context)
+                                        .extension<EndernoteColors>()
+                                        ?.clrTextSecondary
+                                        .withAlpha(157),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: values.length > 3 ? 3 : values.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  title: Text(
+                                    basename(values[index].path),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  subtitle: Text(
+                                    shortPath(values[index].path),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .extension<EndernoteColors>()
+                                          ?.clrTextSecondary
+                                          .withAlpha(128),
+                                    ),
+                                  ),
+                                  trailing: Text(
+                                    shortTimeAgo(values[index].ts),
+                                    style: TextStyle(
+                                      fontFamily: 'SourceSans3Light',
+                                      fontSize: 12,
+                                      fontStyle: FontStyle.italic,
+                                      color: Theme.of(context)
+                                          .extension<EndernoteColors>()
+                                          ?.clrTextSecondary
+                                          .withAlpha(179),
+                                    ),
+                                  ),
+                                  onTap: () =>
+                                      Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    '/chest-view',
+                                    (route) => false,
+                                    arguments: {
+                                      'currentPath': values[index].path,
+                                      'rootPath': values[index].path,
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                    );
+                  },
                 ),
               ],
             ),
           ),
         ),
       ),
-      floatingActionButton: CustomChestFAB(box: box),
+      floatingActionButton: CustomChestFAB(isar: isar),
     );
   }
 
@@ -240,8 +275,7 @@ class ScreenWelcome extends StatelessWidget {
       );
     } else {
       try {
-        final pickedDirectoryPath =
-            await FilePicker.getDirectoryPath();
+        final pickedDirectoryPath = await FilePicker.getDirectoryPath();
 
         if (pickedDirectoryPath != null && context.mounted) {
           Navigator.pushNamedAndRemoveUntil(
@@ -254,30 +288,17 @@ class ScreenWelcome extends StatelessWidget {
             },
           );
 
-          if (!box.values.any(
-            (element) => element.path == pickedDirectoryPath,
-          )) {
-            // If it's not already exists, add it
-            box.add(
-              ChestRecord(
-                path: pickedDirectoryPath,
-                ts: DateTime.now().millisecondsSinceEpoch,
-              ),
-            );
-          } else {
-            // if it's already exists, update it
-            final a = box.values.firstWhere(
-              (element) => element.path == pickedDirectoryPath,
-            );
-
-            box.putAt(
-              a.key,
-              ChestRecord(
-                path: pickedDirectoryPath,
-                ts: DateTime.now().millisecondsSinceEpoch,
-              ),
-            );
-          }
+          // If it's new, add it. if it's already exists, update it
+          await isar.writeTxn(
+            () async {
+              await isar.chestRecords.put(
+                ChestRecord(
+                  path: pickedDirectoryPath,
+                  ts: DateTime.now().millisecondsSinceEpoch,
+                ),
+              );
+            },
+          );
         } else {
           // TODO: add a error msg
           print("Error, pick something you idiot...");
@@ -324,8 +345,7 @@ class ScreenWelcome extends StatelessWidget {
           label: 'Chest',
           onCreate: () async {
             try {
-              final pickedDirectoryPath =
-                  await FilePicker.getDirectoryPath();
+              final pickedDirectoryPath = await FilePicker.getDirectoryPath();
 
               final text = controller.text.trim();
 
@@ -345,18 +365,24 @@ class ScreenWelcome extends StatelessWidget {
                   );
                 }
 
-                if (!box.values.any(
-                  (element) => element.path == '$pickedDirectoryPath/$text',
-                )) {
-                  // If it's not already exists, add it
-                  box.add(
-                    ChestRecord(
-                      path: '$pickedDirectoryPath/$text',
-                      ts: DateTime.now().millisecondsSinceEpoch,
-                    ),
-                  );
+                // If it's new, add it.
+                if (await isar.chestRecords
+                        .filter()
+                        .pathEqualTo(
+                          '$pickedDirectoryPath/$text',
+                        )
+                        .findFirst() ==
+                    null) {
+                  await isar.writeTxn(() async {
+                    await isar.chestRecords.put(
+                      ChestRecord(
+                        path: '$pickedDirectoryPath/$text',
+                        ts: DateTime.now().millisecondsSinceEpoch,
+                      ),
+                    );
+                  });
                 } else {
-                  // If it's already exists, show error
+                  //  if it's already exists, error.
                   // TODO: show a error snackbar
                   print("Error, already exists");
                 }
