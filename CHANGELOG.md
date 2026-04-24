@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here.
 
+## [5.0.0]
+### changed
+- Migrated completely from `hive` to `isar_community`. - `hive` is unmaintained currently.
+
+### removed
+- `flutter_svg` - I wasn't even using it... idk why I even added it at the first place.
+
 ## [4.1.0]
 ### changed
 - Changed the fonts in the preview mode.
