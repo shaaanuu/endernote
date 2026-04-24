@@ -4,8 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
+import 'package:isar_community/isar.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../bloc/file/file_bloc.dart';
@@ -138,145 +138,139 @@ class CustomFAB extends StatelessWidget {
 }
 
 class CustomChestFAB extends StatelessWidget {
-  const CustomChestFAB({super.key, required this.box});
+  const CustomChestFAB({super.key, required this.isar});
 
-  final Box<ChestRecord> box;
+  final Isar isar;
 
   @override
   Widget build(BuildContext context) {
     final ValueNotifier<bool> isDialOpen = ValueNotifier(false);
     final TextEditingController folderController = TextEditingController();
 
-    return SpeedDial(
-      shape: RoundedSuperellipseBorder(
-        borderRadius: BorderRadiusGeometry.circular(16),
-      ),
-      overlayColor: Theme.of(context).extension<EndernoteColors>()?.clrBase,
-      openCloseDial: isDialOpen,
-      children: [
-        _buildDialChild(
-          context,
-          icon: IconsaxLinear.box_1,
-          label: "Open chest",
-          onCreate: () async {
-            try {
-              final pickedDirectoryPath =
-                  await FilePicker.getDirectoryPath();
+    return FutureBuilder(
+      future: isar.chestRecords.where().findAll(),
+      builder: (context, snapshot) {
+        return SpeedDial(
+          shape: RoundedSuperellipseBorder(
+            borderRadius: BorderRadiusGeometry.circular(16),
+          ),
+          overlayColor: Theme.of(context).extension<EndernoteColors>()?.clrBase,
+          openCloseDial: isDialOpen,
+          children: [
+            _buildDialChild(
+              context,
+              icon: IconsaxLinear.box_1,
+              label: "Open chest",
+              onCreate: () async {
+                try {
+                  final pickedDirectoryPath =
+                      await FilePicker.getDirectoryPath();
 
-              if (pickedDirectoryPath != null && context.mounted) {
-                Navigator.pushNamed(
-                  context,
-                  '/chest-view',
-                  arguments: {
-                    'currentPath': pickedDirectoryPath,
-                    'rootPath': pickedDirectoryPath,
-                  },
-                );
+                  if (pickedDirectoryPath != null && context.mounted) {
+                    Navigator.pushNamed(
+                      context,
+                      '/chest-view',
+                      arguments: {
+                        'currentPath': pickedDirectoryPath,
+                        'rootPath': pickedDirectoryPath,
+                      },
+                    );
 
-                if (!box.values.any(
-                  (element) => element.path == pickedDirectoryPath,
-                )) {
-                  // If it's not already exists, add it
-                  box.add(
-                    ChestRecord(
-                      path: pickedDirectoryPath,
-                      ts: DateTime.now().millisecondsSinceEpoch,
-                    ),
-                  );
-                } else {
-                  // if it's already exists, update it
-                  final a = box.values.firstWhere(
-                    (element) => element.path == pickedDirectoryPath,
-                  );
-
-                  box.putAt(
-                    a.key,
-                    ChestRecord(
-                      path: pickedDirectoryPath,
-                      ts: DateTime.now().millisecondsSinceEpoch,
-                    ),
-                  );
-                }
-              } else {
-                // TODO: add a error msg
-                print("Error, pick something you idiot...");
-              }
-            } catch (e) {
-              // TODO: show a error msg
-              print(e.toString());
-            }
-          },
-        ),
-        _buildDialChild(
-          context,
-          controller: folderController,
-          icon: IconsaxLinear.box,
-          label: "New chest",
-          onCreate: () {
-            final controller = TextEditingController();
-
-            showDialog(
-              context: context,
-              builder: (context) => CustomDialog(
-                controller: controller,
-                icon: IconsaxLinear.box,
-                label: 'Chest',
-                onCreate: () async {
-                  try {
-                    final pickedDirectoryPath =
-                        await FilePicker.getDirectoryPath();
-
-                    if (pickedDirectoryPath != null) {
-                      await Directory(
-                              '$pickedDirectoryPath/${controller.text.trim()}')
-                          .create(recursive: true);
-
-                      if (context.mounted) {
-                        Navigator.pushNamed(
-                          context,
-                          '/chest-view',
-                          arguments: {
-                            'currentPath':
-                                '$pickedDirectoryPath/${controller.text.trim()}',
-                            'rootPath':
-                                '$pickedDirectoryPath/${controller.text.trim()}',
-                          },
-                        );
-                      }
-
-                      if (!box.values.any(
-                        (element) =>
-                            element.path ==
-                            '$pickedDirectoryPath/${controller.text.trim()}',
-                      )) {
-                        // If it's not already exists, add it
-                        box.add(
-                          ChestRecord(
-                            path:
-                                '$pickedDirectoryPath/${controller.text.trim()}',
-                            ts: DateTime.now().millisecondsSinceEpoch,
-                          ),
-                        );
-                      } else {
-                        // If it's already exists, show error
-                        // TODO: show a error snackbar
-                        print("Error, already exists");
-                      }
-                    } else {
-                      // TODO: add a error msg
-                      print("Error, pick something you idiot...");
-                    }
-                  } catch (e) {
-                    // TODO: show a error msg
-                    print(e.toString());
+                    // If it's new, add it. if it's already exists, update it
+                    await isar.writeTxn(() async {
+                      await isar.chestRecords.put(
+                        ChestRecord(
+                          path: pickedDirectoryPath,
+                          ts: DateTime.now().millisecondsSinceEpoch,
+                        ),
+                      );
+                    });
+                  } else {
+                    // TODO: add a error msg
+                    print("Error, pick something you idiot...");
                   }
-                },
-              ),
-            );
-          },
-        ),
-      ],
-      child: const Icon(IconsaxLinear.add),
+                } catch (e) {
+                  // TODO: show a error msg
+                  print(e.toString());
+                }
+              },
+            ),
+            _buildDialChild(
+              context,
+              controller: folderController,
+              icon: IconsaxLinear.box,
+              label: "New chest",
+              onCreate: () {
+                final controller = TextEditingController();
+
+                showDialog(
+                  context: context,
+                  builder: (context) => CustomDialog(
+                    controller: controller,
+                    icon: IconsaxLinear.box,
+                    label: 'Chest',
+                    onCreate: () async {
+                      try {
+                        final pickedDirectoryPath =
+                            await FilePicker.getDirectoryPath();
+
+                        if (pickedDirectoryPath != null) {
+                          await Directory(
+                            '$pickedDirectoryPath/${controller.text.trim()}',
+                          ).create(recursive: true);
+
+                          if (context.mounted) {
+                            Navigator.pushNamed(
+                              context,
+                              '/chest-view',
+                              arguments: {
+                                'currentPath':
+                                    '$pickedDirectoryPath/${controller.text.trim()}',
+                                'rootPath':
+                                    '$pickedDirectoryPath/${controller.text.trim()}',
+                              },
+                            );
+                          }
+
+                          // If it's new, add it.
+                          if (await isar.chestRecords
+                                  .filter()
+                                  .pathEqualTo(
+                                    '$pickedDirectoryPath/${controller.text.trim()}',
+                                  )
+                                  .findFirst() ==
+                              null) {
+                            await isar.writeTxn(() async {
+                              await isar.chestRecords.put(
+                                ChestRecord(
+                                  path:
+                                      '$pickedDirectoryPath/${controller.text.trim()}',
+                                  ts: DateTime.now().millisecondsSinceEpoch,
+                                ),
+                              );
+                            });
+                          } else {
+                            //  if it's already exists, error.
+                            // TODO: show a error snackbar
+                            print("Error, already exists");
+                          }
+                        } else {
+                          // TODO: add a error msg
+                          print("Error, pick something you idiot...");
+                        }
+                      } catch (e) {
+                        // TODO: show a error msg
+                        print(e.toString());
+                      }
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+          child: const Icon(IconsaxLinear.add),
+        );
+      },
     );
   }
 

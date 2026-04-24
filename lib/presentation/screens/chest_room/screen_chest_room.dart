@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:iconsax_linear/iconsax_linear.dart';
+import 'package:isar_community/isar.dart';
 import 'package:path/path.dart';
 
 import '../../../data/models/chest_record.dart';
@@ -9,9 +9,9 @@ import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_fab.dart';
 
 class ScreenChestRoom extends StatelessWidget {
-  ScreenChestRoom({super.key});
+  const ScreenChestRoom({super.key, required this.isar});
 
-  final box = Hive.box<ChestRecord>('recentChests');
+  final Isar isar;
 
   @override
   Widget build(BuildContext context) {
@@ -22,92 +22,110 @@ class ScreenChestRoom extends StatelessWidget {
       return '...${text.substring(text.length - width)}';
     }
 
-    // sorted by ts
-    final values = box.values.toList()..sort((a, b) => b.ts.compareTo(a.ts));
+    return FutureBuilder(
+      future: isar.chestRecords.where().findAll(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
 
-    return Scaffold(
-      appBar: CustomAppBar(
-        leadingIcon: IconsaxLinear.arrow_left_1,
-        title: 'Chest Room',
-        trailingIcon: IconsaxLinear.box_search,
-        onLeading: () => Navigator.pop(context),
-      ),
-      body: values.isEmpty
-          ? Center(
-              child: Text(
-                'No recent chests yet...',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Theme.of(context)
-                      .extension<EndernoteColors>()
-                      ?.clrText
-                      .withAlpha(157),
-                ),
-              ),
-            )
-          : ListView.builder(
-              itemCount: box.length,
-              padding: const EdgeInsets.only(bottom: 80),
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadiusGeometry.circular(10),
-                    ),
-                    tileColor: Theme.of(context)
-                        .extension<EndernoteColors>()
-                        ?.clrSecondary
-                        .withAlpha(179),
-                    title: Text(
-                      basename(values[index].path),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Theme.of(context)
-                            .extension<EndernoteColors>()
-                            ?.clrTextSecondary,
-                        fontSize: 18,
-                      ),
-                    ),
-                    subtitle: Text(
-                      shortPath(values[index].path),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: Theme.of(context)
-                            .extension<EndernoteColors>()
-                            ?.clrTextSecondary
-                            .withAlpha(128),
-                      ),
-                    ),
-                    trailing: Text(
-                      shortTimeAgo(values[index].ts),
-                      style: TextStyle(
-                        fontFamily: 'SourceSans3Light',
-                        fontSize: 12,
-                        fontStyle: FontStyle.italic,
-                        color: Theme.of(context)
-                            .extension<EndernoteColors>()
-                            ?.clrTextSecondary
-                            .withAlpha(179),
-                      ),
-                    ),
-                    onTap: () => Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      '/chest-view',
-                      (route) => false,
-                      arguments: {
-                        'currentPath': values[index].path,
-                        'rootPath': values[index].path,
-                      },
+        if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(child: Text('Error loading chests')),
+          );
+        }
+
+        final values = snapshot.data ?? [];
+
+        return Scaffold(
+          appBar: CustomAppBar(
+            leadingIcon: IconsaxLinear.arrow_left_1,
+            title: 'Chest Room',
+            trailingIcon: IconsaxLinear.box_search,
+            onLeading: () => Navigator.pop(context),
+          ),
+          body: values.isEmpty
+              ? Center(
+                  child: Text(
+                    'No recent chests yet...',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context)
+                          .extension<EndernoteColors>()
+                          ?.clrText
+                          .withAlpha(157),
                     ),
                   ),
-                );
-              },
-            ),
-      floatingActionButton: CustomChestFAB(box: box),
+                )
+              : ListView.builder(
+                  itemCount: values.length,
+                  padding: const EdgeInsets.only(bottom: 80),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 24,
+                      ),
+                      child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                        ),
+                        tileColor: Theme.of(context)
+                            .extension<EndernoteColors>()
+                            ?.clrSecondary
+                            .withAlpha(179),
+                        title: Text(
+                          basename(values[index].path),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                .extension<EndernoteColors>()
+                                ?.clrTextSecondary,
+                            fontSize: 18,
+                          ),
+                        ),
+                        subtitle: Text(
+                          shortPath(values[index].path),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                .extension<EndernoteColors>()
+                                ?.clrTextSecondary
+                                .withAlpha(128),
+                          ),
+                        ),
+                        trailing: Text(
+                          shortTimeAgo(values[index].ts),
+                          style: TextStyle(
+                            fontFamily: 'SourceSans3Light',
+                            fontSize: 12,
+                            fontStyle: FontStyle.italic,
+                            color: Theme.of(context)
+                                .extension<EndernoteColors>()
+                                ?.clrTextSecondary
+                                .withAlpha(179),
+                          ),
+                        ),
+                        onTap: () => Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/chest-view',
+                          (route) => false,
+                          arguments: {
+                            'currentPath': values[index].path,
+                            'rootPath': values[index].path,
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+          floatingActionButton: CustomChestFAB(isar: isar),
+        );
+      },
     );
   }
 
