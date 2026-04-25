@@ -33,6 +33,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   isar_community_generator: ^3.3.2
   build_runner: ^2.13.1
+  bloc_test: ^10.0.0
 
 flutter:
   uses-material-design: true
