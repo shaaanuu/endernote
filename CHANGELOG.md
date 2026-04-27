@@ -2,6 +2,10 @@
 
 All notable changes to this project are documented here.
 
+## [next]
+### changed
+- Reduced the width and height of windows in windows and linux.
+
 ## [5.0.0]
 ### changed
 - Migrated completely from `hive` to `isar_community`. - `hive` is unmaintained currently.
